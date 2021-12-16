@@ -1,0 +1,71 @@
+<div class="register-container">
+  
+  <mat-toolbar class="register-navbar">
+    <img src="./assets/img1.png" width="40" height="40">
+    <div style="color:#ffffff;">mySaloon server</div>
+  </mat-toolbar>
+
+
+  <mat-card class="register-card">
+
+    <mat-card-title>
+      <h5 style="color:darkcyan;">Registrazione</h5>
+    </mat-card-title>
+
+    <mat-divider></mat-divider>
+
+    <mat-card-content style="padding-top: 20px;">
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <mat-form-field appearance="outline" style="width:100%;">
+          <mat-label>Nome</mat-label>
+          <input matInput placeholder="Nome" formControlName="nome">
+          <mat-error *ngIf="f.nome.errors.required">Il nome è obbligatorio</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="width:100%;">
+          <mat-label>Cognome</mat-label>
+          <input matInput placeholder="Cognome" formControlName="cognome">
+          <mat-error *ngIf="f.cognome.errors.required">Il cognome è obbligatorio</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="width:100%;">
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="uid">
+          <mat-error *ngIf="f.uid.errors.required">Il nome utente è obbligatorio</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="width:100%;">
+          <mat-label>Password</mat-label>
+          <input type="password" matInput formControlName="pwd">
+          <mat-error *ngIf="f.pwd.errors.required">La password è obbligatoria</mat-error>
+          <mat-error *ngIf="f.pwd.errors.minlength">La password deve contenere almeno 2 caratteri</mat-error>
+        </mat-form-field>
+
+        <section>
+          <mat-slide-toggle formControlName="super">Consulente supervisore</mat-slide-toggle>
+        </section>
+
+        <div *ngIf="alert" role="alert">
+          <a class="close" (click)="removeAlert()">&times;</a>
+          {{alertText}}
+        </div>
+
+        <mat-form-field appearance="outline" style="width:100%;">
+          <mat-label>Codice operatore</mat-label>
+          <input type="password" keyboardType="phone" matInput formControlName="token">
+          <mat-error *ngIf="f.token?.errors.required">Il codice operatore è obbligatorio</mat-error>
+        </mat-form-field>
+        <mat-card-actions style="display: flex;justify-content: space-between;">
+          <a mat-button routerLink="../login">Annulla</a>
+          <button mat-button [disabled]="loading" style="background-color: darkslategray;color:white;">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Registra
+          </button>
+        </mat-card-actions>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

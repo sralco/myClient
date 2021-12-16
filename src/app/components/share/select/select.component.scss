@@ -1,0 +1,28 @@
+
+.select-card{
+  margin-bottom: 5px;
+  padding: 6px;
+  cursor: pointer;
+}
+.select-card mat-card-content{
+  display:flex;
+  align-items: center;
+}
+.select-card-label{
+  margin-left: 10px;
+  font-size: 14px;
+  text-transform: capitalize;
+}
+.select-card-image {
+  width: 40px;
+  height: 40px;
+  //background-image: url('./src/assets/a.png');
+  background-size: cover;
+  background-color: lightgray;
+  display: block;
+  border-radius: 125px;
+  -webkit-border-radius: 125px;
+  -moz-border-radius: 125px;
+  background-position: 50% 50%;
+  box-shadow: 1px 2px 6px #838383;
+}

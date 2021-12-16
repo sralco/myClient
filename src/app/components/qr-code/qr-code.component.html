@@ -1,0 +1,47 @@
+<div class="qrcode-container">
+
+  <!--navbar-->
+  <mat-toolbar class="qrcode-navbar">
+    <div class="navbar-left">
+      <img src="assets/imgx32.png" width="40" height="40" alt="logo">
+      <h4 class="gruppo">mySaloon</h4>
+    </div>
+    <div class="navbar-right">
+      <button class="btn-back" mat-icon-button (click)="back()">
+        <mat-icon>undo</mat-icon>
+      </button>
+
+    </div>
+
+  </mat-toolbar>
+
+  <mat-divider></mat-divider>
+
+  <!-- main -->
+  <mat-card class="qrcode-card">
+    <mat-card-content>
+      <div class="qrcode-content">
+        <qrcode [qrdata]="myAngularxQrCode" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+      </div>
+      <div class="qrcode-button-container">
+        <button class="whatsapp-button" mat-button color="Basic" type="submit" (click)="copyText(myAngularxQrCode)">
+          <a href="https://wa.me/?text={{myAngularxQrCode.replace('http://','')}}" data-action="share/whatsapp/share"
+            data-text="Condividi su WhatsApp">Condividi su WhatsApp</a>
+          <mat-icon class="whatsapp-icon">whatsapp</mat-icon>
+        </button>
+        <button class="content-button" mat-raised-button color="Basic" type="submit"
+          (click)="copyText(myAngularxQrCode)">
+          <span>Copia indirizzo</span>
+          <mat-icon class="indirizzo-icon">content_copy</mat-icon>
+        </button>
+        <button class="content-button" mat-raised-button color="Basic" type="submit" (click)="apriPlanner()">
+          <span>Apri planner clienti</span>
+          <mat-icon class="planner-icon">edit_calendar</mat-icon>
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <notifier-container></notifier-container>
+
+</div>

@@ -1,0 +1,42 @@
+<mat-toolbar class="scatta-foto-navbar">
+  <div class="scatta-foto-navbar-left">
+    <img src="./assets/img1.png" width="45" height="45" routerLink="/setting/" />
+    <h4>mySaloon</h4>
+  </div>
+  <button mat-mini-fab (click)="goBack()">
+    <mat-icon>undo</mat-icon>
+  </button>
+</mat-toolbar>
+
+
+
+<div style="margin-top:20px; width:100%; text-align:center">
+  <h5>
+    {{cliente.nome + ' ' + cliente.cognome}}
+  </h5>
+</div>
+
+<div *ngIf="!webcamImage" style="width: 100%;">
+  <webcam style="width:100%;height:100%" [height]="350" [width]="350" [trigger]="triggerObservable"
+    (imageCapture)="handleImage($event)" [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable"
+    [videoOptions]="videoOptions" [imageQuality]="1" (cameraSwitched)="cameraWasSwitched($event)"
+    (initError)="handleInitError($event)"></webcam>
+</div>
+
+<div class="snapshot" *ngIf="webcamImage">
+  <img width="350" height="350" [src]="webcamImage.imageAsDataUrl" />
+</div>
+
+<div class="btn-scatta">
+  <button mat-button (click)="triggerSnapshot();">Scatta <mat-icon inline="true">photo_camera</mat-icon></button>
+</div>
+
+<!--     <br/>
+    DeviceId: <input id="deviceId" type="text" [(ngModel)]="deviceId" style="width: 500px">
+    <button (click)="showNextWebcam(deviceId);">Activate</button>
+ -->
+
+<h4 *ngIf="errors.length > 0">Messages:</h4>
+<ul *ngFor="let error of errors">
+  <li>{{error | json}}</li>
+</ul>

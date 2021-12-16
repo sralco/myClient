@@ -1,0 +1,113 @@
+
+@import "~angular-notifier/styles";
+
+ html, body { height: 100%; }
+
+.application {
+  /*
+  background-image: url("/assets/penta.jpg");
+  background-repeat: repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  */
+  margin: 0;
+  padding:0;
+  font-family: 'Roboto Condensed', sans-serif;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+ }
+
+/** 
+* iPad with portrait orientation.
+*/
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait){
+.application {
+  min-height: 1024px;
+}
+}
+
+/** 
+* iPad with landscape orientation.
+*/
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape){
+.application {
+  min-height: 768px;
+}
+}
+
+/**
+* iPhone 5
+* You can also target devices with aspect ratio.
+*/
+@media screen and (device-aspect-ratio: 40/71) {
+.application {
+  min-height: 500px;
+}
+}
+
+  .fc .fc-toolbar.fc-footer-toolbar {
+    margin-top: 5px !important;
+  }
+  .fc .fc-col-header-cell.fc-resource {
+    overflow: hidden !important;
+    background-color:azure;
+  }
+  .fc .fc-timegrid-col.fc-day {
+    border: 1px solid black;
+  }
+  .fc .fc-highlight {
+    background-image:url('assets/penta.jpg');
+    box-shadow: 0 10px 10px 0 rgba(110, 57, 57, 0.2), 0 10px 10px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 7px 7px 15px;
+    border: 1px solid red;
+    border-width: 2px;
+    border-color: white;
+  }
+
+  .modal {
+    pointer-events: none !important;
+  }
+
+  .modal-content {
+    pointer-events: all !important;
+  }
+
+  .fc-header-title{
+    color: #0052ba;
+    background: #000;
+    font-size: 10px;
+}
+
+ a, button {
+   outline: 0 !important;
+ }
+
+ form.control {
+   background-color: rgba(0,0,0,0.7);
+ }
+ .mat-vertical-content-container {
+  margin-left: 30px;
+ }
+mat-vertical-stepper{
+  margin-left: -23px!important;
+}
+.mat-list-base .mat-list-item .mat-list-item-content{
+  padding:0 6px!important;
+}
+/*
+.mat-step-header {
+  padding-left: 4px;
+}
+*/
+/* Hide scrollbar for IE, Edge and Firefox */
+.prenotazione-orario td div{
+  -ms-overflow-style: none!important;  /* IE and Edge */
+  scrollbar-width: none!important;  /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.prenotazione-orario td div::-webkit-scrollbar {
+  display: none!important;
+  overflow-y: hidden;
+}

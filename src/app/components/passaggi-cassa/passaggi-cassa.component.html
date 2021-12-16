@@ -1,0 +1,35 @@
+<table style="width: 100%;">
+  <tr>
+    <td><strong style="display:block; position:sticky">Passaggi</strong></td>
+    <td style="text-align: right;"><button mat-fab mat-dialog-close color="warn">Chiudi</button></td>
+  </tr>
+</table>
+
+<mat-dialog-content class="mat-typography" sty>
+<div class="card-body table-responsive" style="padding-top: 0;padding-bottom: 0;">
+  <table id="dettagli" style="width: 100%; font-size:small;font-weight: bolder; overflow:scroll;"
+    class="table table-hover">
+    <thead class="text-warning">
+      <th>Data</th>
+      <th>Cliente</th>
+      <th style="text-align: right;">Importo</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of pageOfItems">
+        <td class="padding0">
+          {{c.data | date:'dd/MM/yyyy HH:mm'}}
+        </td>
+        <td>
+          <strong>{{c.cliente}}</strong>
+        </td>
+
+        <td class="testoadestra">
+          {{c.importo | currency:'EUR'}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <jw-pagination [maxPages]="4" [pageSize]="9" [items]="temps" (changePage)="onChangePage($event)">
+  </jw-pagination>
+</div>
+</mat-dialog-content>

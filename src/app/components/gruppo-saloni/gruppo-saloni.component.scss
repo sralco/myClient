@@ -1,0 +1,69 @@
+.navbar{
+  top: 0;
+  z-index: 999;
+  background: darkslategray;
+  width: 100%;
+  position: sticky;
+  justify-content: space-between;
+  color: white;
+}
+
+.navbar-left{
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+ 
+
+.gruppo{
+  margin-left:10px;
+  text-transform: capitalize;
+}
+
+.btn-back{
+  background-color: #fff;
+  color: darkcyan;
+}
+
+.temps{
+  margin: 20px auto;
+  width: 95%;
+  max-width: 350px;
+}
+
+.freccia .fa {
+  transition: .3s transform ease-in-out;
+}
+.freccia .collapsed .fa {
+  transform: rotate(180deg);
+}
+.descrizione {
+  color: #7b7992;
+  font-weight: bolder;
+  font-size: 9pt;
+}
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0d0925;
+}
+.colore {
+  color:slategrey;
+}
+
+.colore button {background-color: slategray;}
+
+.testoadestra
+{text-align: right; font-size: 10pt;}
+
+.padding0
+{ padding-left: 0;padding-right: 0;}
+
+#dettagli i
+{ font-size: 16pt; color: red;}
+
+.giorno, .settimana, .mese, .anno {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}

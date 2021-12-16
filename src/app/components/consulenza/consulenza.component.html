@@ -1,0 +1,58 @@
+<div
+  style="display: flex;justify-content: space-between;align-items: center;padding: 10px;background: black;color: white;">
+  <h5 style="margin:0;text-transform: capitalize;">{{titolo}}</h5>
+
+  <button style="background: white;color: black;" mat-button (click)="goBack()">
+    <mat-icon inline="true" style="transform: scale(1.5);">arrow_back</mat-icon>
+  </button>
+</div>
+
+<mat-card style="margin: 20px;">
+  <mat-card-content style="margin-bottom:0;">
+
+    <form novalidate name="frm">
+      <mat-form-field appearance="outline" style="width:100%;">
+        <mat-label>Colore Attuale</mat-label>
+        <input matInput type="text" id="coloreAttuale" name="coloreAttuale" value="" required
+          [(ngModel)]="consulenza.coloreAttuale" autofocus>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width:100%;">
+        <mat-label>Desiderio di Immagine</mat-label>
+        <input matInput type="text" id="desiderioImmagine" name="desiderioImmagine" value="" required
+          [(ngModel)]="consulenza.desiderioImmagine">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width:100%;">
+        <mat-label>Taglio</mat-label>
+        <input matInput type="text" id="taglio" name="taglio" value="" required [(ngModel)]="consulenza.taglio">
+        <mat-icon matPrefix>content_cut</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width:100%;">
+        <mat-label>Piega</mat-label>
+        <input matInput type="text" id="piega" name="piega" value="" required [(ngModel)]="consulenza.piega">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width:100%;">
+        <mat-label>Prodotti</mat-label>
+        <input matInput type="text" id="prodotti" name="prodotti" value="" required [(ngModel)]="consulenza.prodotti">
+        <mat-icon matPrefix>shopping_cart</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width:100%;">
+        <mat-label>Altro</mat-label>
+        <input matInput type="text" id="altro" name="altro" value="" required [(ngModel)]="consulenza.testoLibero">
+        <mat-icon matPrefix>phone_iphone</mat-icon>
+      </mat-form-field>
+
+    </form>
+
+  </mat-card-content>
+  <mat-card-actions style="display: flex;justify-content: end;">
+    <button style="background-color: black;color:white;" mat-button name="btn" (click)="salvaCliente()"
+      [disabled]="!btnEnable">Salva
+      consulenza</button>
+  </mat-card-actions>
+
+</mat-card>

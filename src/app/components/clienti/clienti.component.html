@@ -1,0 +1,52 @@
+<div class="card" style="background-color: transparent" style="width: 100%">
+
+  <div style="opacity: 0.8; position: sticky; top: 0;">
+    <nav class="navbar  navbar-dark bg-info shadow">
+      <div class="pull-left">
+        <h3 class="display-6 font-italic"><a class="navbar-brand text-white" >Clienti</a></h3>
+      </div>
+
+      <div class="pull-right">
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" name="search" [(ngModel)]="search" aria-label="Search" style="width:150px"
+            (keyup)="searchClienti($event.target.value)" id="search">&nbsp;&nbsp;
+         <button type="button" class="btn btn-warning" style=" width: 80; height: 40px" (click)="goBack()">
+          <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        </button>
+       </form>
+      </div>
+      <!-- <app-datepicker></app-datepicker> -->
+    </nav>
+  </div>
+
+
+  <div class="container">
+    <table class="table table-sm table-dark">
+      <thead>
+        <tr>
+          <th scope="col">Nome</th>
+          <th scope="col">Cognome</th>
+          <th scope="col">Cellulare</th>
+          <th scope="col">Add</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of clienti">
+          <th scope="row">{{s.nome}}</th>
+          <th scope="row">{{s.cognome}}</th>
+          <td>{{s.cell}}</td>
+          <td><button type="button" class="btn btn-primary" style=" width: 80px; height: 60px"
+              (click)="nuovoIngresso(s.id)">
+              <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+</div>
+
+  <div class="bottomright">
+    <a href="" [routerLink]="['/cliente']"><img src="assets/piu.png" alt="Nuovo cliente" /></a>
+  </div>

@@ -1,0 +1,25 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+  },
+  "angularCompilerOptions": {
+    "enableIvy": true,
+    "allowEmptyCodegenFiles": true
+  },
+  "files": [
+    "src/main.ts",
+    "src/polyfills.ts",
+  ],
+  "include": [
+    "src/**/*.d.ts",
+    "src/**/*.ts",
+  ],
+  "exclude": [
+    "src/test.ts",
+    "src/**/*.spec.ts",
+    "src/app/Models/Area.ts",
+    "src/environments/environment.prod.ts"
+
+  ]
+}

@@ -1,0 +1,121 @@
+<mat-toolbar>
+  <mat-toolbar-row style="background-color: darkcyan;color:#ffffff;">
+    <h3>{{gruppo}}</h3>
+  </mat-toolbar-row>
+  <mat-toolbar-row>
+    <h5>Nuovo cliente</h5>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<!-- <div style="opacity: 0.8;position: sticky; top: 0px; z-index: 999;">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="pull-left">
+      <h3 class="display-6 font-italic"><span class="navbar-brand text-white">{{gruppo}}</span></h3>
+    </div>
+  </nav>
+</div> -->
+
+
+
+<div *ngIf="alert" role="alert">
+  {{alertText}}
+</div>
+
+<mat-card>
+  <mat-card-title>
+
+  </mat-card-title>
+
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+      <mat-form-field appearance="outline" style="width:100%;">
+        <mat-label>Nome</mat-label>
+        <input matInput placeholder="Nome" formControlName="nome" required>
+        <mat-error *ngIf="f.nome.errors.required">Il nome è obbligatorio</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width:100%;">
+        <mat-label>Cognome</mat-label>
+        <input matInput placeholder="Cognome" formControlName="cognome" required>
+        <mat-error *ngIf="f.cognome.errors.required">Il cognome è obbligatorio</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width:100%;">
+        <mat-label>Cellulare</mat-label>
+        <input matInput placeholder="Cellulare" formControlName="phone" required>
+        <mat-error *ngIf="f.phone.errors.required">Il cellulare è obbligatorio</mat-error>
+        <mat-error *ngIf="f.phone.errors.minlength">Il cellulare non è valido</mat-error>
+        <mat-error *ngIf="f.phone.errors.pattern">Sono ammessi solo numeri</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width:100%;">
+        <mat-label>E-mail</mat-label>
+        <input type="email" name="email" matInput placeholder="E-mail" formControlName="email" required>
+        <mat-error *ngIf="f.email.errors.email">L'email non è valida</mat-error>
+        <mat-error *ngIf="f.email.errors.required">L'email è obbligatoria</mat-error>
+      </mat-form-field>
+
+      <mat-card-actions style="display: flex;justify-content: space-between;">
+        <a mat-flat-button mat-dialog-close tabindex="-1">Annulla</a>
+        <button mat-button [disabled]="loading" style="background: darkcyan;color: #ffffff;">
+           <mat-spinner *ngIf="loading"></mat-spinner>
+            Registra
+        </button>
+        
+      </mat-card-actions>
+
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<!-- <div class="card">
+  <h5 class="card-header">Nuovo cliente</h5>
+  <div class="card-body">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="nome">Nome</label>
+        <input type="text" formControlName="nome" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f.nome.errors }" />
+        <div *ngIf="submitted && f.nome.errors" class="invalid-feedback">
+          <div *ngIf="f.nome.errors.required">Il nome è obbligatorio</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="cognome">Cognome</label>
+        <input type="text" formControlName="cognome" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f.cognome.errors }" />
+        <div *ngIf="submitted && f.cognome.errors" class="invalid-feedback">
+          <div *ngIf="f.cognome.errors.required">Il cognome è obbligatorio</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="phone">Cellulare</label>
+        <input type="text" formControlName="phone" #email class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f.phone.errors }" />
+        <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
+          <div *ngIf="f.phone.errors.required">Il cellulare è obbligatorio</div>
+          <div *ngIf="f.phone.errors.minlength">Il cellulare non è valido</div>
+          <div *ngIf="f.phone.errors.pattern">Sono ammessi solo numeri</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">E-Mail</label>
+        <input type="text" formControlName="email" #email class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f.email.errors }" [email]="true" />
+        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+          <div *ngIf="f.email.errors.email">L'email non è valida</div>
+          <div *ngIf="f.email.errors.required">L'email è obbligatoria</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button [disabled]="loading" class="btn btn-dark">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+          Registra
+        </button>
+        <a mat-dialog-close tabindex="-1" class="btn btn-link">Annulla</a>
+      </div>
+    </form>
+  </div>
+</div> -->

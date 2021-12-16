@@ -1,0 +1,101 @@
+// variabili
+$background-color:var(--background-color);
+$color:var(--color);
+
+
+.login-clienti-container {
+    max-width: 450px;
+    margin: 0 auto;
+    height: 100%;
+    overflow-y: clip;
+  }
+
+.login-clienti-navbar{
+    background-color:$background-color;
+    color:$color;
+    width: 100%;
+    position: sticky;
+    top: 0px;
+    z-index: 999;
+    justify-content: space-between;
+}
+.login-clienti-navbar h4{
+    margin:0;
+    line-height: normal;
+}
+.login-clienti-navbar .login-navbar-left{
+    display: flex;
+    align-items: center;
+    line-height: 15px;
+    gap: 5px;
+}
+
+.login-clienti-navbar .btn-back{
+    background-color: $color;
+    color: $background-color;
+}
+
+.login-clienti-navbar .gruppo{
+    text-transform: capitalize;
+}
+
+.login-clienti-card{
+    width:90%;
+    max-width:350px;
+    margin:20px auto;
+    color: $background-color;
+  }
+
+.login-clienti-card .mat-card-content{
+    margin-top:20px;
+}
+
+.login-messaggio{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    background: brown;
+    color: $color;
+    padding: 10px;
+}
+
+
+.password-field, .email-field{
+    width:100%;
+}
+
+.login-clienti-card .mat-card-actions{
+    width: 100%;
+    margin: 0;
+}
+
+.login-clienti-card .main-actions{
+    justify-content: space-between;
+    display:flex;
+}
+
+.recupera-password{
+    width:100%;
+}
+.recupera-password a{
+    color:cornflowerblue;
+    text-decoration:underline;
+    margin-top:10px;
+    font-size:14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.btn-login{
+    color: $color;
+    background-color: $background-color;
+    flex: 1;
+}
+.btn-registrati{
+    color: $color;
+    background-color: #dd0000;
+    flex: 1;
+    margin-right: 0!important;
+}

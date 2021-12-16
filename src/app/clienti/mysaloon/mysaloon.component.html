@@ -1,0 +1,301 @@
+<div class="mysaloon-container">
+
+  <mat-toolbar class="mysaloon-navbar">
+    <h4 class="mysaloon-navbar-gruppo">{{gruppo}}</h4>
+  </mat-toolbar>
+
+  <!-- css loader -->
+  <div *ngIf="attesa" class="mysaloon-loader" data-title=".dot-pulse">
+    <div class="stage" style="height: 20px;display: flex;align-items: center;">
+      <div class="dot-pulse"></div>
+    </div>
+  </div>
+
+  <div class="mysaloon-salone" *ngIf="!selezionandoSalone">
+    <div style="display: flex;align-items: center;gap: 5px;">
+      <div class="mysaloon-logo-salone">
+        <img src="./assets/imgx32.png" width="50" height="50" alt="logo">
+      </div>
+      <div class="mysaloon-dettagli-salone">
+        <div class="mysaloon-titolo-salone">
+          <mat-icon>location_on</mat-icon>
+          <a
+            href="https://www.google.com/maps/search/?api=1&query={{saloneSelezionato.gruppo}}%2c%20{{saloneSelezionato.salone}}">{{ saloneSelezionato.salone }}</a>
+        </div>
+        <div class="mysaloon-indirizzo-salone">
+          <span>{{ saloneSelezionato.indirizzo }}</span>
+        </div>
+      </div>
+    </div>
+    <div style="display: flex;align-items: center;">
+      <div class="mysaloon-azioni-salone">
+        <a *ngIf="saloneSelezionato.telefono" mat-stroked-button href="tel:{{ saloneSelezionato.telefono }}">
+          <mat-icon inline="true">phone</mat-icon> {{ saloneSelezionato.telefono }}
+        </a>
+        <div class="mysaloon-seleziona-salone" *ngIf="saloni?.length > 1">
+          <mat-icon titolo="Seleziona salone" (click)="selezionandoSaloneFlag()">settings</mat-icon>
+        </div>
+        <!-- <button mat-stroked-button (click)="prenota(saloneSelezionato)">Prenota</button> -->
+      </div>
+
+    </div>
+  </div>
+
+  <div class="mysaloon-seleziona-saloni" *ngIf="selezionandoSalone">
+    <div class="mysaloon-seleziona-salone" *ngFor="let salone of saloni" (click)="selezionaSalone(salone)">
+      <div class="mysaloon-seleziona-logo-salone">
+        <img src="./assets/imgx32.png" width="40" height="40" alt="logo"
+          [ngStyle]="(salone == saloneSelezionato) && {'filter' : 'none'}">
+      </div>
+      <div class="mysaloon-seleziona-saloni-titolo" [ngStyle]="(salone == saloneSelezionato) && {'color' : 'darkcyan'}">
+        {{salone.salone}}
+      </div>
+    </div>
+  </div>
+
+  <!-- [ngStyle]="(salone == saloneSelezionato) && {'filter' : 'none'}" -->
+
+  <div *ngIf="userLoggedIn" class="mysaloon-user-bar">
+    <div style="width:20px;">&nbsp;</div>
+    <h5>{{user?.nome}} {{user?.cognome}}</h5>
+    <div>
+      <button mat-icon-button [matMenuTriggerFor]="menu"
+        style="font-size: 20px;width: 20px;height: 20px;line-height: 20px;margin-right: 10px;">
+        <mat-icon inline="true">menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button (click)="logout()" mat-menu-item>
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+  <div class="mysaloon-nouser-bar" *ngIf="!userLoggedIn">&nbsp;</div>
+
+  <div class="mysaloon-bottoni-azione">
+    <mat-button-toggle-group #group="matButtonToggleGroup" name="azione" value="prenotazioni" aria-label="Font Style"
+      appearance="legacy">
+      <mat-button-toggle style="color:darkcyan;" value="orari" aria-pressed="true">Orari</mat-button-toggle>
+      <mat-button-toggle style="color:darkcyan;" value="prenotazioni">Prenotazioni</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+  <!-- <app-spinner1center *ngIf="attesa"></app-spinner1center> -->
+
+  <mat-card *ngIf="group.value == 'orari'" class="mysaloon-card">
+
+    <mat-card-content>
+      <mat-tab-group mat-align-tabs="center">
+        <mat-tab label="Orario">
+          <table class="orario">
+
+            <tr *ngIf="saloneSelezionato.opzioniPlanner?.lun">
+              <th>Lunedì</th>
+              <td>dalle {{saloneSelezionato.opzioniPlanner.lunInizio}}</td>
+              <td *ngIf="saloneSelezionato.opzioniPlanner.lunPausaInizio">alle
+                {{saloneSelezionato.opzioniPlanner.lunPausaInizio}}</td>
+            </tr>
+            <tr *ngIf="saloneSelezionato.opzioniPlanner?.lun">
+              <th></th>
+              <td *ngIf="saloneSelezionato.opzioniPlanner.lunPausaInizio">dalle
+                {{saloneSelezionato.opzioniPlanner.lunPausaFine}}</td>
+              <td>alle {{saloneSelezionato.opzioniPlanner.lunFine}}</td>
+            </tr>
+            <tr *ngIf="!saloneSelezionato.opzioniPlanner?.lun">
+              <th>Lunedì</th>
+              <td class="chiuso">Chiuso</td>
+            </tr>
+
+            <tr *ngIf="saloneSelezionato.opzioniPlanner?.mar">
+              <th>Martedì</th>
+              <td>dalle {{saloneSelezionato.opzioniPlanner.marInizio}}</td>
+              <td *ngIf="saloneSelezionato.opzioniPlanner.marPausaInizio">alle
+                {{saloneSelezionato.opzioniPlanner.marPausaInizio}}</td>
+            </tr>
+            <tr *ngIf="saloneSelezionato.opzioniPlanner?.mar">
+              <th></th>
+              <td *ngIf="saloneSelezionato.opzioniPlanner?.marPausaInizio">dalle
+                {{saloneSelezionato.opzioniPlanner.marPausaFine}}</td>
+              <td>alle {{saloneSelezionato.opzioniPlanner.marFine}}</td>
+            </tr>
+            <tr *ngIf="!saloneSelezionato.opzioniPlanner?.mar">
+              <th>Martedì</th>
+              <td class="chiuso">Chiuso</td>
+            </tr>
+
+            <tr *ngIf="saloneSelezionato.opzioniPlanner?.mer">
+              <th>Mercoledì</th>
+              <td>dalle {{saloneSelezionato.opzioniPlanner.merInizio}}</td>
+              <td *ngIf="saloneSelezionato.opzioniPlanner?.merPausaInizio">alle
+                {{saloneSelezionato.opzioniPlanner.merPausaInizio}}</td>
+            </tr>
+            <tr *ngIf="saloneSelezionato.opzioniPlanner?.mer">
+              <th></th>
+              <td *ngIf="saloneSelezionato.opzioniPlanner?.merPausaInizio" class="contenuto">dalle
+                {{saloneSelezionato.opzioniPlanner?.merPausaFine}}
+              </td>
+              <td>alle {{saloneSelezionato.opzioniPlanner.merFine}}</td>
+            </tr>
+            <tr *ngIf="!saloneSelezionato.opzioniPlanner?.mer">
+              <th>Mercoledì</th>
+              <td class="chiuso">Chiuso</td>
+            </tr>
+
+            <tr *ngIf="saloneSelezionato.opzioniPlanner?.gio">
+              <th>Giovedì</th>
+              <td>dalle {{saloneSelezionato.opzioniPlanner.gioInizio}}</td>
+              <td *ngIf="saloneSelezionato.opzioniPlanner?.gioPausaInizio">alle
+                {{saloneSelezionato.opzioniPlanner.gioPausaInizio}}</td>
+            </tr>
+            <tr *ngIf="saloneSelezionato.opzioniPlanner?.gio">
+              <th></th>
+              <td *ngIf="saloneSelezionato.opzioniPlanner?.gioPausaInizio">dalle
+                {{saloneSelezionato.opzioniPlanner.gioPausaFine}}</td>
+              <td>alle {{saloneSelezionato.opzioniPlanner.gioFine}}</td>
+            </tr>
+            <tr *ngIf="!saloneSelezionato.opzioniPlanner?.gio">
+              <th>Giovedì</th>
+              <td class="chiuso">Chiuso</td>
+            </tr>
+
+            <tr *ngIf="saloneSelezionato.opzioniPlanner?.ven">
+              <th>Venerdì</th>
+              <td>dalle {{saloneSelezionato.opzioniPlanner.venInizio}}</td>
+              <td *ngIf="saloneSelezionato.opzioniPlanner?.venPausaInizio" class="contenuto">alle
+                {{saloneSelezionato.opzioniPlanner.venPausaInizio}}
+              </td>
+            </tr>
+            <tr *ngIf="saloneSelezionato.opzioniPlanner?.ven">
+              <th></th>
+              <td *ngIf="saloneSelezionato.opzioniPlanner?.venPausaInizio" class="contenuto">dalle
+                {{saloneSelezionato.opzioniPlanner.venPausaFine}}
+              </td>
+              <td>alle {{saloneSelezionato.opzioniPlanner.venFine}}</td>
+            </tr>
+            <tr *ngIf="!saloneSelezionato.opzioniPlanner?.ven">
+              <th>Venerdì</th>
+              <td class="chiuso">Chiuso</td>
+            </tr>
+
+            <tr *ngIf="saloneSelezionato.opzioniPlanner?.sab">
+              <th>Sabato</th>
+              <td>dalle {{saloneSelezionato.opzioniPlanner.sabInizio}}</td>
+              <td *ngIf="saloneSelezionato.opzioniPlanner?.sabPausaInizio" class="contenuto">alle
+                {{saloneSelezionato.opzioniPlanner.sabPausaInizio}}
+              </td>
+            </tr>
+            <tr *ngIf="saloneSelezionato.opzioniPlanner?.sab">
+              <th></th>
+              <td *ngIf="saloneSelezionato.opzioniPlanner?.sabPausaInizio" class="contenuto">dalle
+                {{saloneSelezionato.opzioniPlanner.sabPausaFine}}
+              </td>
+              <td>alle {{saloneSelezionato.opzioniPlanner.sabFine}}</td>
+            </tr>
+            <tr *ngIf="!saloneSelezionato.opzioniPlanner?.sab">
+              <th>Sabato</th>
+              <td class="chiuso">Chiuso</td>
+            </tr>
+
+            <tr *ngIf="saloneSelezionato.opzioniPlanner?.dom">
+              <th>Domenica</th>
+              <td>dalle {{saloneSelezionato.opzioniPlanner.domInizio}}</td>
+              <td *ngIf="saloneSelezionato.opzioniPlanner?.lunPausaInizio">alle
+                {{saloneSelezionato.opzioniPlanner.domPausaInizio}}</td>
+            </tr>
+            <tr *ngIf="saloneSelezionato.opzioniPlanner?.dom">
+              <th></th>
+              <td *ngIf="saloneSelezionato.opzioniPlanner?.domPausaInizio">dalle
+                {{saloneSelezionato.opzioniPlanner.domPausaFine}}</td>
+              <td>alle {{saloneSelezionato.opzioniPlanner.domFine}}</td>
+            </tr>
+            <tr *ngIf="!saloneSelezionato.opzioniPlanner?.dom">
+              <th>Domenica</th>
+              <td class="chiuso">Chiuso</td>
+            </tr>
+
+          </table>
+        </mat-tab>
+
+        <mat-tab label="Chiusure">
+          <table style="margin-left: 40px; margin-top:20px">
+            <tr *ngFor="let f of saloneSelezionato.opzioniPlanner?.festivi">
+              <td class="intestazione">{{f}}</td>
+            </tr>
+          </table>
+        </mat-tab>
+      </mat-tab-group>
+
+    </mat-card-content>
+  </mat-card>
+
+  <div *ngIf="group.value == 'prenotazioni'" class="mysaloon-card-prenotazioni">
+
+    <div class="mysaloon-card-prenotazioni-ticket"
+      style="height: 146.4px;color: white;background: #50bcbb;margin-bottom: 10px;display: grid;"
+      [ngStyle]="((saloneSelezionato.prenotazioniAttive?.length > 0) && userLoggedIn) && {'margin-bottom':'10px'}">
+      <div class="mysaloon-card-button" (click)="prenota(saloneSelezionato)">
+        <button mat-fab style="border: 3px solid darkcyan;">
+          <mat-icon inline="true" style="transform: scale(2);">add</mat-icon>
+        </button>
+        <div class="mysaloon-card-prenotaora">Prenota ora</div>
+      </div>
+    </div>
+
+    <div *ngIf="userLoggedIn" style="display: flex;flex-direction: column;gap: 10px;">
+      <div *ngFor="let prenotazioniAttive of saloneSelezionato.prenotazioniAttive"
+        class="mysaloon-card-prenotazioni-ticket">
+        <div class="mysaloon-card-prenotazione-header">
+          <div style="text-transform: capitalize;font-weight:800;">
+            {{prenotazioniAttive.start | date:'EEEE, dd/MM/yy HH:mm'}}</div>
+          <!-- <button [style.color]="prenotazioniAttive.backgroundColor" mat-button><mat-icon (click)="annullaAppuntamento(prenotazioniAttive)">more_vert</mat-icon></button> -->
+          <div>
+            <mat-icon [matMenuTriggerFor]="menu" style="cursor: pointer;">more_vert</mat-icon>
+            <mat-menu #menu="matMenu">
+              <button style="display: flex;justify-content: center;margin: 0;padding: 0;"
+                (click)="annullaAppuntamento(prenotazioniAttive)" mat-menu-item>Annulla</button>
+            </mat-menu>
+          </div>
+        </div>
+        <div class="mysaloon-card-prenotazione-content">
+          <mat-chip-list aria-label="Fish selection">
+            <mat-chip [style.background-color]="prenotazioniAttive.backgroundColor"
+              *ngFor="let servizi of prenotazioniAttive.extendedProps.servizi.split('\r\n')" style="color:white;">
+              <span *ngIf="(servizi != '')">{{ servizi }}</span></mat-chip>
+          </mat-chip-list>
+          <!-- <ul>
+            <li *ngFor="let servizi of prenotazioniAttive.extendedProps.servizi.split('\r\n')">
+              <span *ngIf="(servizi != '')">{{ servizi }}</span>
+            </li>
+          </ul> -->
+        </div>
+        <div class="mysaloon-card-prenotazione-actions">
+          <div class="salone-appuntamento">
+            <div style="display: flex;gap: 5px;align-items: center;" (click)="googleMap(saloneSelezionato)">
+              <mat-icon style="transform: scale(1.8);">place</mat-icon>
+              <div style="display: flex;flex-direction: column;line-height: initial;">
+                <div style="font-weight: 900;">{{saloneSelezionato.salone}}</div>
+                <div style="font-size: 12px;color: black;font-weight: 500;">{{saloneSelezionato.indirizzo}}</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <notifier-container></notifier-container>
+
+  <!-- <div id="exampleSlider" *ngIf="t.prenotazioniAttive && user"
+              style="padding: 0;position: absolute; margin-top:-30px;right:10px; width: 160px;">
+              <div class="MS-content">
+                <button class="item" *ngFor="let p of t.prenotazioniAttive" mat-raised-button color="warn"
+                  (click)="dettagliEvento(t, p)" style="height:45px; margin-bottom: 10px;line-height: 15px;"
+                  [style.text-decoration]="p.extendedProps.annullato?'line-through':''">
+                  {{p.extendedProps.annullato?'Annullato per il':'Prenotato il'}} <br> {{p.start | date:'dd/MM/yy
+                HH:mm'}}&nbsp;&nbsp;
+                <i class="fas fa-info-circle" style="font-size: 1.5em;"></i>
+                </button>
+              </div>
+            </div> -->

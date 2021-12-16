@@ -1,0 +1,23 @@
+<mat-card class="card">
+
+  <mat-card-title>
+    <h5>{{mydata.titolo}}</h5>
+  </mat-card-title>
+  <form>
+    <mat-card-content style="margin-bottom: 0;">
+      <mat-form-field appearance="outline" style="width:100%;">
+        <mat-label>{{mydata.placeholder}}</mat-label>
+        <input [(ngModel)]="data.testo" name="testo" matInput value="{{mydata.testo}}"
+          placeholder="{{mydata.placeholder}}" autofocus #myInput>{{ myInput.focus() }}
+      </mat-form-field>
+    </mat-card-content>
+
+    <mat-dialog-actions style="justify-content: end;">
+      <button mat-button [mat-dialog-close]="'x'" style="background-color: brown;color: #ffffff;">Annulla</button>
+      <button type="submit" mat-button [mat-dialog-close]="data.testo" cdkFocusInitial
+        style="background-color: cornflowerblue;color: #ffffff;"
+        (keydown)="keyDownFunction($event, data.testo)">OK</button>
+    </mat-dialog-actions>
+  </form>
+
+</mat-card>

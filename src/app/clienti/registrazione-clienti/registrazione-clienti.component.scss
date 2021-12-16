@@ -1,0 +1,77 @@
+// variabili
+$background-color:var(--background-color);
+$color:var(--color);
+
+.registrazione-clienti-container {
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+.registrazione-clienti-navbar{
+    top: 0;
+    z-index: 999;
+    background: $background-color;
+    width: 100%;
+    position: sticky;
+    justify-content: space-between;
+    color: $color;
+  }
+  
+ .registrazione-clienti-navbar .navbar-left{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  
+ .registrazione-clienti-navbar .gruppo{
+    text-transform: capitalize;
+    line-height: 20px;
+  }
+
+  .registrazione-clienti-navbar .salone{
+    text-transform: capitalize;
+    line-height: 16px;
+  }
+
+  .registrazione-clienti-navbar .gruppo-salone{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .registrazione-clienti-navbar .btn-back{
+    background-color: $color;
+    color: $background-color;
+  }
+
+  .btn-registra{
+    background-color: $background-color;
+    color: $color;  
+  }
+
+
+ 
+ .btn-annulla{
+    background-color: #dd0000;
+    color: $color;
+  }
+
+  .card {
+    width:90%;
+    margin: 20px auto;
+    max-width: 350px;
+  }
+  .card-title{
+    color: $background-color;
+  }
+
+mat-form-field.mat-form-field{
+  width:100%;
+}
+
+mat-card-actions.mat-card-actions{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

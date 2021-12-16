@@ -1,0 +1,79 @@
+<mat-toolbar style="background-color: darkslategrey;">
+  <mat-toolbar-row>
+    <span style="flex: 1 1 auto; color: white;">Obiettivi ({{collaboratore.nome + ' ' + collaboratore.cognome}})</span>
+    <button mat-icon-button (click)="back()"
+      style="background-color:tan; font-size: 16px; font-size:small;font-weight: bolder;">
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-sidenav-container style="background-image: url('./assets/penta.jpg');">
+  <mat-sidenav #sidenav style="background-image: url('./assets/sidebar-1.jpg'); background-color: transparent;">
+    <mat-nav-list>
+
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div style="height: 90vh;">
+
+      <app-spinner1center *ngIf="attesa" style="z-index: 999; position: absolute; left: 0; right: 0; top:0; bottom: 0;">
+      </app-spinner1center>
+
+
+      <div class="card" style="width: 100%;">
+
+        <div *ngFor="let c of listaObiettivi" class="accordion" [attr.id]="'accordion'+constService.replaceAll(c.value,' ' ,'')"
+          style="width: 100%" (click)="getObiettivi(c)" >
+          <div class="card shadow p-0 mb-2 bg-white rounded" style="padding-left: 0;width: 100%">
+            <div class="card-header pull-left " id="heading1" [attr.aria-controls]="constService.replaceAll(c.value,' ' ,'')"
+              data-toggle="collapse" style="width: 100%; background-color:tan;"
+              [attr.data-target]="'#' + constService.replaceAll(c.value,' ' ,'')">
+
+              <button class="btn btn-link collapsed text-white" type="button" style="padding: 0">
+                <h6 class="mb-0"><i class="fas fa-money-bill-wave">
+                  </i>&nbsp;&nbsp;&nbsp;{{c.value}}</h6>
+              </button>
+              <div class="pull-right">
+                <h6 class="mb-0"></h6>
+              </div>
+            </div>
+
+            <div id="{{constService.replaceAll(c.value,' ' ,'')}}" class="collapse multi-collapse" aria-labelledby="headingOne"
+              [attr.data-parent]="'#accordion' + constService.replaceAll(c.value,' ' ,'')">
+              <div class="card-body" style="padding: 0">
+                <div class="card-body pull-left list list-group-item list-group-item-action active bg-light"
+                  style="margin:1px" style="padding: 0">
+                  <div class="card-body table-responsive" style="padding-top: 0;padding-bottom: 0;">
+                    <table id="dettagli" style="width: 100%;" class="table table-hover">
+                      <thead class="text-warning">
+                        <th>Servizio</th>
+                        <th>Obiettivo</th>
+                        <th>Eseguiti</th>
+                        <th>Mancano</th>
+                      </thead>
+                      <tbody class="descrizione">
+                        <tr *ngFor="let s of c.obiettivi" [style.background-color]="s.mancano<=0?'lightgreen':''">
+                          <td class="padding0">{{s.gruppo}}</td>
+                          <td class="testoadestra">{{s.obiettivoEseguiti}}</td>
+                          <td class="testoadestra">{{s.eseguiti}}</td>
+                          <td class="testoadestra"><strong>{{s.mancano}}</strong></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+<notifier-container></notifier-container>

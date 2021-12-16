@@ -1,0 +1,242 @@
+<app-spinner1center *ngIf="attesa" style="z-index: 999; position: absolute; left: 0; right: 0; top:0; bottom: 0; margin-top: 30px;">
+</app-spinner1center>
+
+<mat-toolbar style="background-color: darkslategrey;">
+  <mat-toolbar-row style="justify-content: space-between;">
+    <h3 class="display-6 font-italic">
+        <img src="./assets/img1.png" width="40" height="40" alt="logo">
+        <span class="navbar-brand text-white" style="margin-left:20px;padding:0;">{{salone.salone}}</span></h3>
+
+    <button mat-icon-button (click)="back()" style="background-color:tan; font-size: 16px; font-size:small;font-weight: bolder;">
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-sidenav-container style="background-image: url('./assets/penta.jpg');">
+
+  <mat-sidenav-content>
+    <div style="height: 90vh;">
+      <div class="card" style="width: 100%;">
+        <div class="card-header card-header-warning" style=" width: 100%;padding:0;">
+          <div class="pull-right" style="width: 100%;padding:0;">
+            <button class="btn "
+              style="background-color:tan; width: 100%; padding-left: 0; padding-right: 0;font-size:small;font-weight: bolder;">Produzione
+              {{intervallo.name}}</button>
+
+              <app-intervallo-data (messageEvent)="receiveMessage($event)" style="padding: 0; margin: 0;" [data1]="intervallo.data1" [data2]="intervallo.data2"></app-intervallo-data>
+          </div>
+
+        </div>
+        <div class="card-body table-responsive" style="padding-top: 0;padding-bottom: 0;">
+          <table id="dettagli" style="width: 100%;" class="table table-hover">
+            <thead class="text-warning">
+              <th></th>
+              <th></th>
+              <th style="text-align: right;">{{anno1}}</th>
+              <th style="text-align: right;">{{anno2}}</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td></td>
+                <td class="padding0">
+                  <strong>Parrucco</strong>
+                </td>
+                <td class="testoadestra">
+                  {{temps.parrucco1| currency:'EUR'}}
+                </td>
+                <td class="testoadestra">
+                  {{temps.parrucco2| currency:'EUR'}}
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td class="padding0">
+                  <strong>Estetica</strong>
+                </td>
+                <td class="testoadestra">
+                  {{temps.estetica1| currency:'EUR'}}
+                </td>
+                <td class="testoadestra">
+                  {{temps.estetica2| currency:'EUR'}}
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td class="padding0">
+                  <strong>Rivendita</strong>
+                </td>
+                <td class="testoadestra">
+                  {{temps.rivendita1| currency:'EUR'}}
+                </td>
+                <td class="testoadestra">
+                  {{temps.rivendita2| currency:'EUR'}}
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+
+
+
+
+        <div class="accordion" [attr.id]="'accordionuno'" style="width: 100%">
+          <div class="card shadow p-0 mb-2 bg-white rounded" style="padding-left: 0;width: 100%">
+            <div class="card-header pull-left " id="heading1" [attr.aria-controls]="'uno'" data-toggle="collapse"
+              style="width: 100%; background-color:tan;" [attr.data-target]="'#uno'">
+
+              <button class="btn btn-link collapsed text-white" type="button" style="padding: 0">
+                <h6 class="mb-0"><i class="fas fa-money-bill-wave"></i>&nbsp;&nbsp;&nbsp;Percentuale su passaggi</h6>
+              </button>
+              <div class="pull-right">
+                <h6 class="mb-0"></h6>
+              </div>
+            </div>
+
+            <div id="uno" class="collapse multi-collapse" aria-labelledby="headingOne"
+              [attr.data-parent]="'#accordionuno'">
+              <div class="card-body" style="padding: 0">
+                <div class="card-body pull-left list list-group-item list-group-item-action active bg-light"
+                  style="margin:1px" style="padding: 0">
+                  <div class="card-body table-responsive" style="padding-top: 0;padding-bottom: 0;">
+                    <table id="dettagli" style="width: 100%;" class="table table-hover">
+                      <thead class="text-warning">
+                        <th colspan="2">Gruppo servizi</th>
+                        <th class="testoadestra">% /pass. {{anno1}}</th>
+                        <th class="testoadestra">% /pass. {{anno2}}</th>
+                        <th class="testoadestra">Diff.</th>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let c of temps.gruppi">
+                          <td class="padding0">
+                            <i class="fa fa-arrow-circle-up pull-right" style="color: greenyellow;"
+                              *ngIf="c.percentualePassaggi>=c.percentualePassaggi1"></i>
+                            <i class="fa fa-arrow-circle-down pull-right" style="color: red;"
+                              *ngIf="c.percentualePassaggi<c.percentualePassaggi1"></i>
+                          </td>
+                          <td>
+                            {{c.gruppo}}
+                          </td>
+                          <td class="testoadestra">
+                            {{c.percentualePassaggi | number : '1.2-2'}}%
+                          </td>
+
+                          <td class="testoadestra">
+                            {{c.percentualePassaggi1 | number : '1.2-2'}}%
+                          </td>
+                          <td class="testoadestra padding0">
+                            {{((c.percentualePassaggi-c.percentualePassaggi1)<0?'':'+')}}{{(c.percentualePassaggi-c.percentualePassaggi1) | number : '1.2-2'}}%
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion" [attr.id]="'accordiondue'" style="width: 100%">
+          <div class="card shadow p-0 mb-2 bg-white rounded" style="padding-left: 0;width: 100%">
+            <div class="card-header pull-left " id="heading2" [attr.aria-controls]="'due'" data-toggle="collapse"
+              style="width: 100%; background-color:tan;" [attr.data-target]="'#due'">
+
+              <button class="btn btn-link collapsed text-white" type="button" style="padding: 0">
+                <h6 class="mb-0"><i class="fas fa-money-bill-wave"></i>&nbsp;&nbsp;&nbsp;Dettagli produzione</h6>
+              </button>
+              <div class="pull-right">
+                <h6 class="mb-0"></h6>
+              </div>
+            </div>
+
+            <div id="due" class="collapse multi-collapse" aria-labelledby="headingdue"
+              [attr.data-parent]="'#accordiondue'">
+              <div class="card-body" style="padding: 0">
+                <div class="card-body pull-left list list-group-item list-group-item-action active bg-light"
+                  style="margin:1px" style="padding: 0">
+                  <div class="card-body table-responsive" style="padding-top: 0;padding-bottom: 0;">
+                    <ngb-tabset [destroyOnHide]="false" style="width: 100%;">
+
+                      <ngb-tab style="font-weight: bolder;" title="">
+                        <ng-template ngbTabTitle style="font-weight: bolder;"><span
+                            style="font-size:14px; font-weight: 500;">Servizi</span>
+                        </ng-template>
+
+                        <ng-template ngbTabContent>
+
+                          <div class="card-body table-responsive" style="padding-top: 0;padding-bottom: 0;">
+                            <table id="dettagli" style="width: 100%;" class="table table-hover">
+                              <thead class="text-warning">
+                                <th>Servizi</th>
+                                <th class="testoadestra">Qtà</th>
+                                <th class="testoadestra">Incasso</th>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let c of filtraArray('Servizi')">
+                                  <td>
+                                    {{c.gruppo}}
+                                  </td>
+                                  <td class="testoadestra">
+                                    {{c.numero}}
+                                  </td>
+
+                                  <td class="testoadestra">
+                                    {{c.totale | numberFormat}}
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+
+                        </ng-template>
+                      </ngb-tab>
+
+                      <ngb-tab>
+                        <ng-template ngbTabTitle style="font-weight: bolder;"><span
+                            style="font-size:14px; font-weight: 500;">Rivendita</span></ng-template>
+                        <ng-template ngbTabContent>
+                          <div class="card-body table-responsive" style="padding-top: 0;padding-bottom: 0;">
+                            <table id="dettagli" style="width: 100%;" class="table table-hover">
+                              <thead class="text-warning">
+                                <th>Servizi</th>
+                                <th class="testoadestra">Qtà</th>
+                                <th class="testoadestra">Incasso</th>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let c of filtraArray('Prodotti')">
+                                  <td>
+                                    {{c.gruppo}}
+                                  </td>
+                                  <td class="testoadestra">
+                                    {{c.numero}}
+                                  </td>
+                                  <td class="testoadestra">
+                                    {{c.totale | numberFormat}}
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+
+                          </div>
+                        </ng-template>
+                      </ngb-tab>
+
+                    </ngb-tabset>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+<notifier-container></notifier-container>

@@ -1,0 +1,100 @@
+<div class="planner-container">
+  <div #pop id="pop" style="display:none; top: 150; left: 150; position: absolute;">
+    <button mat-raised-button color="primary" style="width:190px; margin-left: 5px; margin-right:5px">
+      {{dataCorrente.toLocaleDateString()}}
+    </button>
+  </div>
+
+    <!-- navbar -->
+    <mat-toolbar class="navbar">
+      <div class="navbar-left">
+        <div class="logo"><img src="assets/imgx32.png" width="32" height="32" /></div>
+        <div style="display: flex;flex-direction: column;line-height: 10px;">
+          <h4 class="gruppo">{{salone.gruppo}}</h4>
+          <div class="salone" style="margin-top: 2px;"><small>{{salone.salone}}</small></div>
+        </div>
+      </div>
+      <div class="navbar-right">
+        <button class="btn-back" *ngIf="user.tipo==='Receptionist'" mat-mini-fab color="Basic" (click)="logout()">
+          <mat-icon>person_remove</mat-icon>
+        </button>
+        <button class="btn-back" *ngIf="user.tipo!=='Receptionist'" mat-icon-button (click)="back()">
+          <mat-icon>undo</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+
+  <!-- <div id="navbar">
+    <mat-toolbar style="background-color: darkslategrey; width: 100%;position: sticky; top: 0px; z-index: 999;">
+      <mat-toolbar-row style="justify-content: space-between;">
+        <img src="./assets/imgx32.png" alt="logo" width="40" height="40">
+        <h3>
+          <span class="brand" style="color: white;padding:0;">{{salone.gruppo + ' (' + salone.salone+')'}}</span>
+        </h3>
+        <button *ngIf="user.tipo==='Receptionist'" mat-mini-fab color="Basic"  style="width: 35px; height: 35px;" (click)="logout()">
+          <mat-icon>person_remove</mat-icon>
+        </button>
+        <button *ngIf="user.tipo!=='Receptionist'" mat-icon-button (click)="back()" style="background-color:white; font-size: 16px; font-size:small;font-weight: bolder;">
+          <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        </button>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </div> -->
+
+
+  <div id="search" style="margin: 3px;display: flex;justify-content: center;">
+  <!--  <button mat-raised-button type="submit"
+      style="margin-right:5px;width: 60px !important; min-width: unset !important;" (click)="cambiaGiorno('')">
+      Oggi
+    </button>
+         <button mat-raised-button color="Basic"
+      style="margin-left: 5px; width: 50px !important; min-width: unset !important;" (click)="cambiaGiorno('indietro')">
+      <mat-icon>navigate_before</mat-icon>
+    </button>
+    <button mat-raised-button
+      style="width:150px; margin-left: 5px; margin-right:5px; min-height: 20px; height: 35px; margin-top:5px"
+      (click)="openDatePicker()">
+      {{dataCorrente.toLocaleDateString('it-IT',{'weekday': 'long', 'month': '2-digit', 'day': '2-digit'})}}
+      <mat-icon>event_note</mat-icon>
+
+    </button>
+    <button mat-raised-button color="Basic" style=" width: 50px !important; min-width: unset !important;"
+      (click)="cambiaGiorno('avanti')">
+      <mat-icon>navigate_next</mat-icon>
+    </button> -->
+    <input matInput [matDatepicker]="picker" style="display: none;" #datePicker (dateChange)="updateDate($event)">
+    <mat-datepicker #picker touchUi="true"></mat-datepicker>
+    <mat-button-toggle-group name="fontStyle" aria-label="Font Style" style="display: flex;justify-content: center;">
+      <mat-button-toggle value="bold" (click)="cambiaGiorno('')">Oggi</mat-button-toggle>
+      <mat-button-toggle value="italic" (click)="openDatePicker()" style="padding-right: 0;">
+        {{dataCorrente.toLocaleDateString('it-IT',{'weekday': 'long', 'month': '2-digit', 'day': '2-digit'})}} <mat-icon style="color:#343a40;">event_note</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle value="bold" (click)="cambiaGiorno('indietro')"><mat-icon>navigate_before</mat-icon></mat-button-toggle>
+      <mat-button-toggle value="underline" (click)="cambiaGiorno('avanti')"><mat-icon>navigate_next</mat-icon></mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+  <div id="table" style="height: 100%;">
+    <div id="table-container" style="height: 100%;">
+      <!-- <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+        <mat-spinner></mat-spinner>
+      </div> -->
+      <full-calendar #fullcalendar [options]="calendarOptions">
+        <!-- (click)="onClick($event)"> -->
+      </full-calendar>
+
+    </div>
+
+  </div>
+  <div class="bottomButtons" style="display: flex;position: absolute;bottom: 0px;right: 2%;z-index: 999;justify-content: space-between;width: 100px;">
+    <div>
+    <a href="" [routerLink]="['/prenotazione']" (click)="resetDatiPrefissati()"><i class="fa fa-plus-circle"
+        aria-hidden="true" style="font-size: 44px; color: darkslategray; text-shadow: 1px 1px 1px #000000;"></i></a>
+  </div>
+  <div>
+    <a href="" [routerLink]="['/utentiplanner']"><i class="fa fa-users-cog"
+        aria-hidden="true" style="font-size: 42px; color: darkslategray; text-shadow: 1px 1px 1px #000000;"></i></a>
+  </div>
+  </div>
+  
+</div>

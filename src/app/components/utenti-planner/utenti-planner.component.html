@@ -1,0 +1,124 @@
+<div class="utenti-planner-container">
+
+  <!-- navbar -->
+  <mat-toolbar class="utenti-planner-navbar">
+    <div class="navbar-left">
+      <div class="logo"><img src="assets/imgx32.png" width="32" height="32" /></div>
+      <div style="display: flex;flex-direction: column;line-height: 10px;">
+        <h4 class="gruppo">{{salone.gruppo}}</h4>
+        <div class="salone" style="margin-top: 2px;"><small>{{salone.salone}}</small></div>
+      </div>
+    </div>
+    <div class="navbar-right">
+      <button class="btn-back" mat-icon-button (click)="back()">
+        <mat-icon>undo</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+
+  <!-- <div id="navbar">
+    <mat-toolbar
+      style="background-color: darkslategrey; width: 100%;position: sticky; top: 0px; z-index: 999;">
+      <mat-toolbar-row style="justify-content: space-between;">
+        <img src="./assets/imgx32.png" width="40" height="40" alt="logo">
+        <h3 style="margin-left: 20px;">
+          <span class="brand" style="color: white;">{{salone.gruppo + ' (' + salone.salone +')'}}</span>
+        </h3>
+
+        <button mat-icon-button (click)="back()" style="background-color:white; font-size: 16px; font-size:small;font-weight: bolder;">
+          <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        </button>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </div> -->
+
+
+  <div class="search">
+    <form [formGroup]="searchForm" class="searchForm">
+      <mat-form-field style="width:50%;" appearance="outline">
+        <mat-label>Cerca cliente</mat-label>
+        <input matInput name="name" (keyup)="searchClienti($event.target.value)"
+          formControlName="srcCliente">
+        <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="cleatTxt('srcCliente')">
+          <mat-icon *ngIf="searchForm.get('srcCliente').value!==''">close</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-form-field style="width: 50%;" class="search__form_field" appearance="outline">
+        <mat-label>Paese</mat-label>
+        <input matInput (keyup)="searchClienti($event.target.value)"
+          formControlName="srcPaese">
+        <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="cleatTxt('srcPaese')">
+          <mat-icon *ngIf="this.searchForm.get('srcPaese').value!==''">close</mat-icon>
+        </button>
+      </mat-form-field>
+    </form>
+  </div>
+
+  <div class="table-container">
+    <table mat-table matSort matSortActive="id" matSortDirection="desc" matSortDisableClear multiTemplateDataRows
+      [dataSource]="dataSource">
+
+      <ng-container matColumnDef="bloccato">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>OFF</th>
+        <td mat-cell *matCellDef="let element" (click)="aggiornaBlocco(element)">
+          <span style="color: blue; text-decoration: underline;">{{element['bloccato']?'Si':'No'}}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="prenotazioniMultiple">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Figli</th>
+        <td mat-cell *matCellDef="let element" (click)="aggiornaPrenotazioniMultiple(element)">
+          <span style="color: blue; text-decoration: underline;">{{element['prenotazioniMultiple']?'Si':'No'}}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
+        <td mat-cell *matCellDef="let element" style="padding-left: 5px; padding-right: 5px;">
+          {{element['nome']}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cognome">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="padding-left: 5px;">Cognome</th>
+        <td mat-cell *matCellDef="let element" style="padding-left: 5px; padding-right: 5px;">
+          {{element['cognome']}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cell">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Cellulare</th>
+        <td mat-cell *matCellDef="let element" style="padding-left: 5px; padding-right: 5px;">
+          {{element['cell']}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+        <td mat-cell *matCellDef="let element" style="padding-left: 5px; padding-right: 5px;">
+          {{element['email']}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="password">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Password</th>
+        <td mat-cell *matCellDef="let element" style="padding-left: 5px; padding-right: 5px;">
+          {{element['password']}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="confermato">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Confermato</th>
+        <td mat-cell *matCellDef="let element" (click)="aggiornaConfermato(element)" style="text-align: center;">
+          <span style="color: blue; text-decoration: underline;">{{element['confermato']?'Si':'No'}}</span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky:true"></tr>
+      <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"></tr>
+    </table>
+
+  </div>
+    <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+
+</div>

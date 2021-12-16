@@ -1,0 +1,34 @@
+<table style="width: 100%;">
+  <tr>
+    <td>
+      <strong style="display:block; position:sticky">Clienti persi</strong>
+<!--       <mat-card-subtitle>{{t.ingresso.replace('_',' ')}}</mat-card-subtitle>
+ -->    </td>
+    <td style="text-align: right;"><button mat-fab mat-dialog-close color="warn">Chiudi</button></td>
+  </tr>
+</table>
+<div style="height: 20px;"></div>
+<div mat-dialog-content style="width: 100%;">
+  <div class="card-body table-responsive" style="padding-top: 0;padding-bottom: 0;width: 100%; height: 100%;">
+    <table id="dettagli" style="width: 100%; font-size:small;font-weight: bolder;" class="table table-hover">
+      <thead class="text-warning">
+        <th>Cliente</th>
+        <th style="text-align: right;">Servizio</th>
+        <th style="text-align: right;">Assenza</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of t">
+          <td>
+            <mat-icon aria-hidden="false">person</mat-icon><strong>&nbsp;{{c.nome + ' ' + c.cognome }}</strong>
+          </td>
+          <td style="text-align: right;">
+            <strong>&nbsp;{{c.servizio}}</strong>
+          </td>
+          <td style="text-align: right;">
+            <strong>&nbsp;{{c.giorniAssenza}}gg</strong>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+.aggiungiservizi-accordion{
+  margin: 20px!important;
+}
+
+.aggiungiservizi-accordion .mat-expansion-indicator::after {
+display:none!important;
+}
+
+.aggiungiservizi-card .mat-card-header-text {
+  display:none;
+}
+
+.aggiungiservizi-card .mat-expansion-panel-body {
+  padding: 0!important;
+}
+
+.bottomright {
+  position: fixed;
+  bottom: 10px;
+  right: 12px;
+  margin-left: auto;
+  z-index: 1001;
+}

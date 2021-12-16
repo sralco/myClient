@@ -1,0 +1,45 @@
+<table style="width: 100%;">
+  <tr>
+    <td>
+      <strong style="display:block; position:sticky">{{t.nominativo}}</strong>
+      <mat-card-subtitle>{{t.ingresso.replace('_',' ')}}</mat-card-subtitle>
+    </td>
+    <td style="text-align: right;"><button mat-fab mat-dialog-close color="warn">Chiudi</button></td>
+  </tr>
+</table>
+<div style="height: 20px;"></div>
+<div mat-dialog-content style="width: 100%;">
+  <div class="card-body table-responsive" style="padding-top: 0;padding-bottom: 0;width: 100%; height: 100%;">
+    <table id="dettagli" style="width: 100%; font-size:small;font-weight: bolder;" class="table table-hover">
+      <thead class="text-warning">
+        <th>Descrizione</th>
+        <th style="text-align: right;">Qta</th>
+        <th style="text-align: right;">Prezzo</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of t.servizi">
+          <td>
+            <mat-icon aria-hidden="false">content_cut</mat-icon><strong>&nbsp;{{c.descrizione}}</strong>
+          </td>
+          <td style="text-align: right;">
+            <strong>&nbsp;{{c.qta}}</strong>
+          </td>
+          <td style="text-align: right;">
+            <strong>&nbsp;{{c.prezzo | numberFormat}}</strong>
+          </td>
+        </tr>
+        <tr *ngFor="let c of t.prodotti">
+          <td>
+            <mat-icon aria-hidden="false">category</mat-icon><strong>&nbsp;{{c.descrizione}}</strong>
+          </td>
+          <td style="text-align: right;">
+            <strong>&nbsp;{{c.qta}}</strong>
+          </td>
+          <td style="text-align: right;">
+            <strong>&nbsp;{{c.prezzo}}</strong>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

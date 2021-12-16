@@ -1,0 +1,53 @@
+<div class="header">
+  <h5 class="title">Dettagli</h5>
+  <button mat-mini-fab mat-dialog-close color="warn">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<mat-divider></mat-divider>
+
+<div class="body">
+
+  <div *ngIf="eliminato">
+    Ti confermiamo l' eliminazione del tuo appuntamento.<br>Grazie
+  </div>
+
+  <div *ngIf="annullato" class="messaggio-annullamento">
+    Abbiamo preso in carico la tua richiesta di annullamento.<br>Clicca sul pulsante per chiamare subito il salone
+      <a *ngIf="tel" mat-stroked-button href="tel:{{ tel }}"
+        style="text-decoration: none;color: darkcyan;font-weight: bold;">
+        <mat-icon style="color:darkcyan;">phone</mat-icon> {{ tel }}
+      </a>
+  </div>
+  <div style="padding-top:10px;">
+    <div style="position: relative; opacity: 0.8;" id="temps">
+      <button [disabled]="loading" *ngIf="!annullato" mat-raised-button color="warn" (click)="richiediAnnullamento()"
+        style="z-index: 999;padding-left: 5px; position: absolute; height:80px; max-width: 100px; margin-top:-10px;left:0; right:0; margin-left:10px; margin-right: auto;">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>Richiedi<br>annullamento
+      </button>
+      <div
+        class="row no-gutters border rounded-lg overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative shadow"
+        style="background-color: linen;">
+        <div class="col-auto d-lg-block row-auto">
+          <svg [attr.fill]="prenotazione.backgroundColor" class="bd-placeholder-img" width="120" style="height: 100%; "
+            xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
+            aria-label="Placeholder: Thumbnail">
+
+            <rect width="100%" height="100%" /><text x="50%" y="50%" fill="#eceeef" dy=".3em">
+            </text>
+          </svg>
+        </div>
+        <div class="col p-2 d-flex flex-column position-static">
+          <strong class="d-inline-block mb-2 text-primary">{{prenotazione.start | date:'dd/MM/yy HH:mm'}}</strong>
+          <strong><i class="fa fa-cut" aria-hidden="true"></i> Servizi</strong>
+          <div class="ml-3">
+            <p class="card-text mb-auto" style="font-size: smaller">-{{prenotazione.extendedProps.servizi}}</p>
+          </div>
+        </div>
+        <!-- <div class="pull-right">
+          <img src="{{ './assets/' + t.classe + '.png' }}" style="width: 30px">
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>

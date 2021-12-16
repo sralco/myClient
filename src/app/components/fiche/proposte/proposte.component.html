@@ -1,0 +1,30 @@
+<div style="width:100%; display:flex;justify-content: space-between;align-items: center;">
+  <h4 style="margin:0;">Proposte aperte</h4>
+  <button mat-mini-fab mat-dialog-close color="warn">
+    <mat-icon inline="treu">close</mat-icon>
+  </button>
+</div>
+
+<div class="proposte">
+  <mat-card class="proposta" *ngFor="let proposta of proposte">
+    <div style="display:flex;justify-content:space-between;align-items: center;">
+      <div>Data: {{proposta.data}}</div>
+      <mat-icon [matMenuTriggerFor]="menu" (click)="openMenu(proposta)">more_vert</mat-icon>
+    </div>
+    <div>Collab: {{proposta.collaboratore}}</div>
+    <div>Proposta:c {{proposta.descrizione}}</div>
+  </mat-card>
+</div>
+
+<mat-menu #menu="matMenu">
+  <ng-template matMenuContent>
+    <button mat-menu-item (click)="rifiutaProposta()">
+      <mat-icon>dialpad</mat-icon>
+      <span>Rifiuta proposta</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>notifications_off</mat-icon>
+      <span>Chiudi</span>
+    </button>
+  </ng-template>
+</mat-menu>

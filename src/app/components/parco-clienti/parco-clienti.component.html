@@ -1,0 +1,161 @@
+<mat-toolbar style="background-color: darkslategrey;">
+  <mat-toolbar-row style="justify-content: space-between;">
+    <h3 class="display-6 font-italic">
+      <img src="./assets/img1.png" width="40" height="40" alt="logo">
+      <span class="navbar-brand text-white" style="margin-left:20px;padding:0;">{{salone.salone}}</span></h3>
+
+    <mat-icon (click)="setFlagCercaServizi()" style="margin-right: 15px; color: white;">search</mat-icon>
+
+    <button mat-icon-button (click)="back()" style="background-color:white; font-size: 16px; font-size:small;font-weight: bolder;">
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </button>
+
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-sidenav-container style="background-image: url('./assets/penta.jpg');">
+
+  <mat-sidenav-content>
+    <form [formGroup]="searchForm" class="search__form" style="background:#ffffff;text-align: center;padding-top:10px; " *ngIf="flagCercaServizi">
+
+      <mat-form-field style="width: 100%;" appearance="outline" style="margin-left: 1px; margin-right: 1px;margin-bottom: 0;">
+        <mat-label>Cerca cliente</mat-label>
+        <input matInput placeholder="Nome o cellulare" (keyup)="searchClienti($event.target.value)" id="srcCliente" #srcCliente formControlName="srcCliente">
+        <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="cleatTxt('srcCliente')">
+          <mat-icon *ngIf="searchForm.get('srcCliente').value!==''">close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <div id="table-container" *ngIf="mostraTabella" style="margin-bottom: 15px;">
+        <table mat-table matSort matSortActive="id" matSortDirection="desc" matSortDisableClear multiTemplateDataRows [dataSource]="dataSource" style="width: 100%;">
+
+          <ng-container matColumnDef="classe">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Classe</th>
+            <td mat-cell *matCellDef="let element" style="padding-left:5px">
+              <img src="{{ './assets/' + element.classe + '.png' }}" style="width: 30px">
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
+            <td mat-cell *matCellDef="let element">
+                {{element['nome']}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="cognome">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="padding-left: 5px;">Cognome</th>
+            <td mat-cell *matCellDef="let element">
+                {{element['cognome']}}
+            </td>
+          </ng-container>
+
+         <ng-container matColumnDef="cell">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Cellulare</th>
+            <td mat-cell *matCellDef="let element" >
+                {{element['cell']}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="paese">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Paese</th>
+            <td mat-cell *matCellDef="let element" >
+                {{element['paese']}}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky:true"></tr>
+          <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row" (click)="apriDettagliCliente(element)"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+      </div>
+
+    </form>
+
+    <div style="height: 90vh;">
+
+      <app-spinner1center *ngIf="attesa" style="z-index: 999; position: absolute; left: 0; right: 0; top:0; bottom: 0;">
+      </app-spinner1center>
+
+
+      <div class="card" style="width: 100%;">
+        <div class="card-body table-responsive" style="padding-top: 0;padding-bottom: 0;">
+          <table id="dettagli" style="width: 100%;" class="table table-hover">
+            <thead class="text-warning">
+              <th><strong>Parco clienti attivi:</strong></th>
+              <th></th>
+              <th style="text-align: right;"></th>
+              <th style="text-align: right;">{{totaleClienti}}</th>
+            </thead>
+          </table>
+        </div>
+
+
+        <div class="chart-wrapper">
+          <canvas id="chart1" baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+            [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType">
+          </canvas>
+        </div>
+
+        <div *ngFor="let c of temps" class="accordion" [attr.id]="'accordion'+replaceAll(c.classe,' ' ,'')"
+          style="width: 100%">
+          <div class="card shadow p-0 mb-2 bg-white rounded" style="padding-left: 0;width: 100%">
+            <div class="card-header pull-left " id="heading1" [attr.aria-controls]="replaceAll(c.classe,' ' ,'')"
+              data-toggle="collapse" style="width: 100%; background-color:tan;"
+              [attr.data-target]="'#' + replaceAll(c.classe,' ' ,'')">
+
+              <button class="btn btn-link collapsed text-white" type="button" style="padding: 0">
+                <h6 class="mb-0"><i class="fas fa-money-bill-wave">
+                  </i>&nbsp;&nbsp;&nbsp;{{c.classe}}</h6>
+              </button>
+              <div class="pull-right">
+                <h6 class="mb-0">{{c.importo | numberFormat}}</h6>
+              </div>
+            </div>
+
+            <div id="{{replaceAll(c.classe,' ' ,'')}}" class="collapse multi-collapse" aria-labelledby="headingOne"
+              [attr.data-parent]="'#accordion' + replaceAll(c.classe,' ' ,'')">
+              <div class="card-body" style="padding: 0">
+                <div class="card-body pull-left list list-group-item list-group-item-action active bg-light"
+                  style="margin:1px" style="padding: 0">
+                  <div class="card-body table-responsive" style="padding-top: 0;padding-bottom: 0;">
+                    <table id="dettagli" style="width: 100%;" class="table table-hover">
+                      <thead class="text-warning">
+                        <th></th>
+                        <th class="testoadestra">Importo</th>
+                        <th class="testoadestra">Numero</th>
+                        <th class="testoadestra">Soglia</th>
+                      </thead>
+                      <tbody class="descrizione">
+                        <tr>
+                          <td class="padding0">{{c.classe}}</td>
+                          <td>{{c.importo | numberFormat}}</td>
+                          <td>{{c.qta}}</td>
+                          <td class="testoadestra"><strong>{{c.intervallo1 | numberFormat}}</strong></td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <div class="chart-wrapper" *ngIf="c.classe==='Persi'">
+                      <canvas id="chart1" baseChart [datasets]="barChartDataSottoClasse"
+                        [labels]="barChartLabelsSottoClasse" [options]="barChartOptions" [plugins]="barChartPlugins"
+                        [legend]="barChartLabelsSottoClasse" [chartType]="barChartType">
+                      </canvas>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+<notifier-container></notifier-container>

@@ -1,0 +1,26 @@
+   <!-- <div>
+  <mat-form-field [style.width.%]=70 class="search__form_field" appearance="outline">
+    <mat-label>Nuova area</mat-label>
+    <input matInput [(ngModel)]="nuovaArea">
+    <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="cleatTxt()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>&nbsp;&nbsp;<button mat-raised-button color="warn" style="height: 100%;" (click)="confermaNuovaArea()">Salva</button>
+
+</div>
+ -->
+
+   <div style="display:flex;justify-content: space-between;align-items: center;">
+     <h6 mat-dialog-title style="margin:0;line-height: 20px;">{{dati.title}}</h6>
+     <button style="padding-right: 0;" mat-icon-button mat-mini-fab mat-dialog-close>
+       <mat-icon>close</mat-icon>
+     </button>
+   </div>
+   <mat-dialog-content style="margin-top:20px;">
+     <mat-card class="select-card" hideToggle *ngFor="let s of dati.list" (click)="ok(s)">
+       <mat-card-content>
+         <div class="select-card-image" style="background-image: url('{{s.foto}}');" *ngIf="flagFoto"></div>
+         <div class="select-card-label">{{s.label}}</div>
+       </mat-card-content>
+     </mat-card>
+   </mat-dialog-content>

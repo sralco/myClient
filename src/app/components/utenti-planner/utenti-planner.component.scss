@@ -1,0 +1,54 @@
+.utenti-planner-container {
+  height: 100%;
+  max-width: 640px;
+  width: 100vw;
+}
+
+.utenti-planner-navbar {
+  top: 0;
+  z-index: 999;
+  background: #008b8b;
+  width: 100%;
+  position: sticky;
+  justify-content: space-between;
+  color: white;
+}
+
+.utenti-planner-navbar .navbar-left {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.utenti-planner-navbar .gruppo {
+  text-transform: capitalize;
+  line-height: 18px;
+}
+
+.utenti-planner-navbar .logo img {
+  width: 45px;
+  height: 45px;
+  margin-right: 10px;
+}
+
+.utenti-planner-navbar .btn-back {
+  background-color: #fff;
+  color: darkcyan;
+}
+
+.utenti-planner-container .search {
+  max-width: 550px;
+}
+
+.utenti-planner-container .searchForm {
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.utenti-planner-container .table-container {
+  width: 100vw;
+  overflow: auto;
+}

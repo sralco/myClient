@@ -1,0 +1,28 @@
+<div
+  style="display: flex;align-items: center;justify-content: space-between;padding: 10px;margin: 10px;background: darkturquoise;color: white;">
+  <h5 style="margin:0;text-transform: capitalize;">{{ fiche?.nominativo }}</h5>
+  <button mat-button style="background-color: #ffc107;" (click)="goBack()">
+    <mat-icon inline="true" style="transform: scale(1.5);">keyboard_double_arrow_left</mat-icon>
+  </button>
+</div>
+
+<mat-card style="margin:20px;">
+  <mat-card-title>
+    <h5>Nuova scheda tecnica</h5>
+  </mat-card-title>
+  <mat-card-content>
+    <form novalidate id="bookForm" name="bookForm" #f="ngForm" (ngSubmit)="save(f)">
+      <mat-form-field style="width: 100%;" appearance="outline">
+        <textarea matInput rows="5" type="text" name="scheda" id="scheda" placeholder="scheda"
+        ngModel cdkFocusInitial autofocus></textarea>
+      </mat-form-field>
+         
+     </form>
+  </mat-card-content>
+  <mat-card-actions style="display:flex;justify-content: end;">
+    <button mat-button color="primary" type="submit" [disabled]="!f.valid" style="background: cornflowerblue;
+    color: white;">
+      Salva scheda
+    </button>
+  </mat-card-actions>
+</mat-card>

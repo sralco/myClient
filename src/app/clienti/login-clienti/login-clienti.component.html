@@ -1,0 +1,55 @@
+<div class="login-clienti-container">
+  <!-- navbar -->
+  <mat-toolbar class="login-clienti-navbar">
+    <div class="login-navbar-left">
+      <img src="assets/imgx32.png" width="45" height="45" alt="logo">
+      <div style="display: flex;flex-direction: column;line-height: 12px;">
+        <h4 class="gruppo">{{gruppo}}</h4>
+        <div class="salone" style="font-size: 17px;">{{salone}}</div>
+      </div>
+    </div>
+    <button class="btn-back" mat-icon-button (click)="back()">
+      <mat-icon>undo</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <!-- login form -->
+  <mat-card class="login-clienti-card">
+    <mat-card-title>
+      <h4>Login</h4>
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content class="mat-card-content">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()"   >
+        <mat-form-field class="email-field" appearance="outline">
+          <mat-label>Email</mat-label>
+          <input type="email" name="email" matInput formControlName="email" placeholder="Email" autocomplete="email">
+          <mat-error *ngIf="f.email.errors">L'email è obbligatoria</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="password-field" appearance="outline">
+          <mat-label>Password</mat-label>
+          <input [type]="hide ? 'password' : 'text'" type="password" name="current-password" matInput formControlName="password" placeholder="Password" autocomplete="current-password">
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-error *ngIf="f.password.errors">La password è obbligatoria</mat-error>
+        </mat-form-field>
+
+        <div *ngIf="alert" class="login-messaggio">
+          {{alertText}}
+        </div>
+
+        <mat-card-actions class="mat-card-actions">
+          <div class="main-actions">
+            <button mat-button [disabled]="loading" class="btn-login">Login</button>
+            <button mat-button (click)="openRegister()" class="btn-registrati">Registrati</button>
+          </div>
+          <div class="recupera-password">
+            <small><a (click)="openPasswordDimenticata()">Recupera password</a></small>
+          </div>
+        </mat-card-actions>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

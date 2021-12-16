@@ -1,0 +1,85 @@
+<div class="registrazione-clienti-container">
+
+<!-- navbar -->
+<mat-toolbar class="registrazione-clienti-navbar">
+  <div class="navbar-left">
+    <img src="assets/imgx32.png" width="45" height="45" />
+    <div class="gruppo-salone">
+      <h4 class="gruppo">{{gruppo}}</h4>
+      <div class="salone"><small>{{salone}}</small></div>
+    </div>
+  </div>
+  <div class="navbar-right">
+    <button class="btn-back" mat-icon-button (click)="back()">
+      <mat-icon>undo</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+
+<!-- form registrazione -->
+<mat-card class="card">
+  <mat-card-header>
+    <mat-card-title>
+      <h5 class="card-title">Nuovo cliente</h5>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-divider></mat-divider>
+
+  <mat-card-content style="margin-top:20px;">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-form-field class="nome-field" appearance="outline">
+        <mat-label>Nome</mat-label>
+        <input type="text" matInput formControlName="nome" placeholder="Nome">
+        <mat-error *ngIf="f.nome?.errors">Il nome è obbligatorio</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="cognome-field" appearance="outline">
+        <mat-label>Cognome</mat-label>
+        <input type="text" matInput formControlName="cognome" placeholder="Cognome">
+        <mat-error *ngIf="f.cognome.errors?.required">Il cognome è obbligatorio</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="email-field" appearance="outline">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput formControlName="email" placeholder="Email">
+        <mat-error *ngIf="f.email.errors?.required">L'email è obbligatorio</mat-error>
+        <mat-error *ngIf="f.email.errors?.email">L'email non è valida</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="phone-field" appearance="outline">
+        <mat-label>Cellulare</mat-label>
+        <input type="number" matInput formControlName="phone" placeholder="Cellulare">
+        <mat-error *ngIf="f.phone.errors?.required">Il cellulare è obbligatorio</mat-error>
+        <mat-error *ngIf="f.phone.errors?.minlength">Il cellulare non è valido</mat-error>
+        <mat-error *ngIf="f.phone.errors?.pattern">Sono ammessi solo numeri</mat-error>
+      </mat-form-field>
+
+
+
+      <mat-form-field class="password-field" appearance="outline">
+        <mat-label>Password</mat-label>
+        <input type="password" matInput formControlName="pwd" placeholder="Password">
+        <mat-error *ngIf="f.pwd.errors?.required">La password è obbligatoria</mat-error>
+        <mat-error *ngIf="f.pwd.errors?.minlength">La password deve contenere almeno 2 caratteri</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="conferma-password-field" appearance="outline">
+        <mat-label>Conferma password</mat-label>
+        <input type="password" matInput formControlName="pwd2" placeholder="Conferma password">
+        <mat-error *ngIf="f.pwd2.errors?.MustMatch">La password noon coincide</mat-error>
+      </mat-form-field>
+
+      <mat-card-actions class="mat-card-actions">
+        <button mat-button [disabled]="loading" class="btn-registra">
+          Registra
+        </button>
+        <a mat-button (click)="back()" class="btn-annulla">Annulla</a>
+      </mat-card-actions>
+
+    </form>
+  </mat-card-content>
+
+</mat-card>
+
+</div>

@@ -1,0 +1,17 @@
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+.header .title{
+    margin-bottom:0;
+}
+
+.messaggio-annullamento{
+    background: aliceblue;
+    border: 2px solid #f44336;
+    padding: 10px;
+    font-size: 14px;
+    margin-top: 10px;
+}

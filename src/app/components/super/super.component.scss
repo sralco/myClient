@@ -1,0 +1,143 @@
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0d0925;
+}
+
+
+
+
+#container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 0;
+}
+
+#navbar {
+  flex: 0 0 auto;
+  width: 100%;
+  padding: 0;
+}
+
+#search {
+  flex: 0 0 auto;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 0;
+}
+
+#table {
+  flex: 1 1 auto;
+  width: 100%;
+  position: relative;
+  margin: 0;
+}
+
+#table-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+  margin: 0;
+}
+
+#table-container table {
+  width: 100%;
+}
+
+.mat-header-row th {
+  position: sticky;
+  top: 0;
+}
+
+
+
+
+
+
+
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.example-element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.example-element-symbol {
+  font-weight: bold;
+  font-size: 20px;
+  line-height: normal;
+}
+
+.example-element-description {
+  padding: 16px;
+}
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}
+
+tr.mat-header-row {
+  font-weight: bold;
+}
+
+/* .mat-row:nth-child(even){
+  background-color:bisque;
+  }
+
+  .mat-row:nth-child(odd){
+    background: rgba(0,0,0,0.025);
+  }
+ */
+ .mat-row:nth-child(2n+1){
+  background-color: #efefef;
+  //background-color: rgba(0,0,0,0.025);
+}
+.mat-row:not(:nth-child(4n+1)){
+  background-color:#ffffff;
+}
+
+
+.mat-header-cell{
+  font-weight:bolder;
+  font-size: 14px;
+  color: black;
+  background-color: gainsboro;
+}
+.mat-list .mat-list-item {
+  height: 30px; /* default is 72px */
+}
+.mat-list-item strong {
+  font-weight:500;
+  font-size: 14px;
+  color: darkcyan;
+}
+

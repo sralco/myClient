@@ -1,0 +1,87 @@
+.prenotazione-completata-navbar {
+  top: 0;
+  z-index: 999;
+  background: #008b8b;
+  width: 100%;
+  position: sticky;
+  justify-content: space-between;
+  color: white;
+}
+
+.prenotazione-completata-navbar .navbar-left {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.prenotazione-completata-navbar .gruppo {
+  text-transform: capitalize;
+  line-height: 18px;
+}
+
+.prenotazione-completata-navbar .logo img {
+  width: 45px;
+  height: 45px;
+  margin-right: 10px;
+}
+
+
+.prenotazione-completata-card {
+  margin-top: 20px;
+  width: 90%;
+  max-width: 450px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 0;
+  border: 3px solid darkcyan;
+  border-radius: 25px !important;
+}
+
+.prenotazione-completata-card mat-card-title {
+  display: flex;
+  justify-content: center;
+  color: darkcyan;
+  align-items: center;
+  padding: 4px;
+}
+
+.prenotazione-completata-card .success-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.prenotazione-completata-card .success-icon mat-icon {
+  color: darkcyan;
+  transform: scale(5);
+}
+
+.prenotazione-completata-card mat-card-title h5 {
+  margin: 0;
+}
+
+.prenotazione-completata-card .mat-card-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  gap:15px;
+}
+
+.prenotazione-completata-card .mat-card-actions button {
+  width: 230px;
+}
+
+.prenotazione-completata-card .mat-card-actions button .mat-icon {
+  transform: scale(1.5);
+}
+
+.prenotazione-completata-card .mat-button-wrapper {
+  display: flex;
+  justify-content: space-between;
+}

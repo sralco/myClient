@@ -1,0 +1,110 @@
+  <div class="card" style="background-color: transparent">
+
+    <div class="card-header pull-left navbar-dark bg-dark ">
+      <button class="btn btn-link text-info" type="button" style="padding: 0">
+        <h5 class="mb-0" style="color: white !important;">Setting</h5>
+      </button>
+      <div class="pull-right">
+        <button type="button" class="btn btn-warning " style=" width: 80; height: 40px" (click)="goBack()">
+          <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </div><div class="container-fluid" style="opacity: 0.9;">
+
+
+
+  <div>
+    <button type="button" class="btn bg-warning text-info m-3" style="width: 300px" (click)="resetServizi()">Aggiorna
+      servizi</button>
+    <button type="button" class="btn bg-warning text-info m-3" style="width: 300px" (click)="resetProdotti()">Aggiorna
+      prodotti</button>
+    <button type="button" class="btn bg-warning text-info m-3" style="width: 300px"
+      (click)="resetCollaboratori()">Aggiorna collaboratori</button>
+
+    <div style="margin-top: 10px;">
+      <label class="ml-3 text-info" for="coll">Colaboratore predefinito</label><br />
+      <button type="button" id="coll" name="coll" class="btn bg-warning text-info ml-3"
+        style="width: 300px; margin-top:0"
+        routerLink="/aggiungiServizi/0">{{ coll.codice ? coll.codice : coll.nome }}</button>
+    </div>
+    <div style="height: 20px"></div>
+    <div class="form-group" style="margin-left: 15px;">
+      <div class="form-control">
+        <label class="checkbox-inline">
+          <input type="checkbox" name="verificaAperturaFiche" [(ngModel)]="verificaAperturaFiche"
+            (click)="impostaVerificaApertura()">Verifica apertura fiche
+        </label>
+      </div>
+    </div>
+
+    <div style="margin-top:10px; margin-bottom:10px;">
+      <label class="ml-3 text-info" for="api">Url servizi esposti
+        <input class="form-control mr-sm-2" type="text" style="width:250px" [(ngModel)]="baseAppURL" id="api"
+          name="api">
+      </label>
+      <button type="button" class="btn btn-warning " style="margin-left:3px; margin-top:-4px; height:37px;"
+        name="btnApi" id="btnApi" (click)="setBaseAppURL()">
+        <i class="fa fa-floppy-o" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div style="margin-top:10px; margin-bottom:10px;">
+      <label class="ml-3 text-info" for="gruppo">Gruppo saloni
+        <input class="form-control mr-sm-2" type="text" style="width:250px" [(ngModel)]="gruppoSaloni" id="gruppo"
+          name="gruppo">
+      </label>
+      <button type="button" class="btn btn-warning " style="margin-left:3px; margin-top:-4px; height:37px;"
+        name="btnApi" id="btnApi" (click)="setGruppoSaloni()">
+        <i class="fa fa-floppy-o" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div style="margin-top:10px; margin-bottom:10px;">
+      <label class="ml-3 text-info" for="timeout">Timeout connessione real time
+        <input class="form-control mr-sm-2" type="text" style="width:250px" [(ngModel)]="timeout" id="timeout"
+          name="timeout">
+      </label>
+      <button type="button" class="btn btn-warning " style="margin-left:3px; margin-top:-4px; height:37px;"
+        name="btnApi" id="btnApi" (click)="setTimeout()">
+        <i class="fa fa-floppy-o" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="form-group" style="margin-left: 15px;">
+      <label class="ml-3 text-info" for="coll" style="display:block;">Sesso predefinito</label>
+      <div class="form-check form-check-inline custom-radio" style="margin-left: 43px;">
+        <input id="credit" name="sesso" type="radio" class="custom-control-input" value="Uomo" #sesso1="ngModel"
+          [(ngModel)]="sesso" required (click)="setGender('Uomo')">
+        <label class="custom-control-label text-info" for="credit">Uomo</label>
+      </div>
+      <div class="form-check form-check-inline custom-radio" style="margin-left: 43px;">
+        <input id="debit" name="sesso" type="radio" class="custom-control-input" value="Donna" #sesso1="ngModel"
+          [(ngModel)]="sesso" required (click)="setGender('Donna')">
+        <label class="custom-control-label text-info" for="debit">Donna</label>
+      </div>
+    </div>
+
+
+    <div style="margin-left: 15px;">
+      <div>
+        <button type="button" class="btn btn-primary" name="abilitaSchede"
+          (click)="mostraPassword()">{{testoSchedaTecnica}}</button>
+      </div>
+      <div class="form-group" *ngIf="mostraCampoPassword">
+        <form class="px-4 py-3">
+          <div class="form-group">
+            <label for="exampleDropdownFormPassword1">Inserisci la password dell'amministratore</label>
+            <input type="password" class="form-control" id="exampleDropdownFormPassword1" placeholder="Password"
+              (keyup)="setPassword($event.target.value)">
+          </div>
+
+          <button type="button" class="btn btn-primary" (click)="confermaPassword()">Conferma</button>
+          <button type="button" class="btn btn-secondary" (click)="mostraCampoPassword = false">Annulla</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+</div>

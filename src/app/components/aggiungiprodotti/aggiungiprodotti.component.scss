@@ -1,0 +1,23 @@
+.aggiungiprodotti-accordion{
+  margin: 20px!important;
+}
+
+.aggiungiprodotti-accordion .mat-expansion-indicator::after {
+display:none!important;
+}
+
+.aggiungiprodotti-card .mat-card-header-text {
+  display:none;
+}
+
+.mat-expansion-panel-body {
+  padding: 0!important;
+}
+
+.bottomright {
+  position: fixed;
+  bottom: 10px;
+  right: 12px;
+  margin-left: auto;
+  z-index: 1001;
+}

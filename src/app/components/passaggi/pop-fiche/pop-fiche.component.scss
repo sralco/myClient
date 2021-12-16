@@ -1,0 +1,32 @@
+/* table {padding: 0;}
+td {padding: 0;}
+ */
+table > thead > tr > th {
+  text-align: left;
+  border-bottom: 2px solid #a9daee;
+  }
+
+  table > tbody > tr > td {
+  text-align: left;
+  border-top: 1px solid lightgray;
+  }
+
+  .success-snack-bar {
+  color: black;
+  background-color: green;
+  }
+  .err-snack-bar {
+  color: black;
+  background-color: crimson;
+  }
+
+  input, div
+  {
+   width: 100%;
+  }
+  .example-full-width {
+  width: 100%;
+  }
+
+  body
+  {width: 100%;}

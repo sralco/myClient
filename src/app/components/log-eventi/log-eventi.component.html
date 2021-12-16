@@ -1,0 +1,24 @@
+<table style="width: 100%;">
+  <tr>
+    <td><strong style="display:block; position:sticky">{{salone.salone}} - LogEventi</strong></td>
+    <td style="text-align: right;"><button mat-fab mat-dialog-close color="warn">Chiudi</button></td>
+  </tr>
+</table>
+
+<div mat-dialog-content style="width: 100%;">
+  <div class="card-body table-responsive" style="padding-top: 0;padding-bottom: 0;width: 100%; height: 100%;">
+    <table id="dettagli" style="width: 100%; font-size:small;font-weight: bolder;" class="table table-hover">
+      <thead class="text-warning">
+        <th>Descrizione ({{salone.logEventi.length}})</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of salone.logEventi">
+          <td>
+            <i class="fas fa-times-circle" style="color:red;"
+              *ngIf="c.categoria.substr(0,3)==='Eli'"></i><strong>&nbsp;{{c.descrizione}}</strong>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

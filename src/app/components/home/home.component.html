@@ -1,0 +1,68 @@
+<mat-toolbar class="home-navbar">
+  <div class="home-navbar-left">
+    <img src="./assets/img1.png" width="45" height="45" routerLink="/setting/" />
+    <h4>mySaloon</h4>
+  </div>
+
+  <input class="home-search-input" matInput type="search" placeholder="Cerca" aria-label="Cerca" (keyup)="searchClienti($event.target.value)"
+    id="search">
+  <mat-icon (click)="reload()">sync</mat-icon>
+
+</mat-toolbar>
+<!-- <app-datepicker></app-datepicker>-->
+
+
+<div class="container-fluid">
+
+  <div style="height: 20px"></div>
+
+  <div class="row mb-2">
+    <div style="opacity: 0.8;" class="col-md-3 " id="temps" *ngFor="let t of temps">
+      <button mat-raised-button color="warn" (click)="scattaFoto(t)"
+        style="z-index: 999; position: absolute; height:50px; max-width: 50px; margin-top:-10px;left:0; right:0; margin-left:35px; margin-right: auto;">
+        <mat-icon *ngIf="!t.foto" mat-list-icon>photo_camera</mat-icon>
+        <img *ngIf="t.foto" [src]="'data:image/jpg;base64,'+t.foto"
+          style="margin-left: -10px; max-height: 50px; max-width: 50px;border-radius: 40%;" />
+      </button>
+      <div
+        class="row no-gutters border rounded-lg overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative shadow"
+        style="background-color: linen;">
+        <div class="col-auto d-lg-block row-auto" (click)="mostraAnagrafica($event, t.idCliente )">
+          <svg [attr.fill]="setColor(t)" class="bd-placeholder-img" width="100" style="height: 100%; "
+            xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
+            aria-label="Placeholder: Thumbnail">
+            <title>Placeholder</title>
+            <rect width="100%" height="100%" /><text x="50%" y="50%" fill="#eceeef" dy=".3em">{{setText(t)}}</text>
+          </svg>
+        </div>
+        <div class="col p-2 d-flex flex-column position-static" (click)="verificaDisponibilitaApertura($event, t.id )">
+          <strong class="d-inline-block mb-2 text-primary">{{ t.ingresso }}</strong>
+          <h5 class="mb-0" style="font-weight: bold">{{ t.nominativo?.split('-')[0] }}</h5>
+          <div class="mb-1 text-muted">{{ t.nominativo?.indexOf('-')>0 ? 'Responsabile: ' + t.nominativo?.split('-')[1]
+            :
+            '' }}</div>
+          <strong><i class="fa fa-cut" aria-hidden="true"></i> Servizi</strong>
+          <div class="ml-3" *ngFor="let s of t.servizi">
+            <p class="card-text mb-auto" style="font-size: smaller">-{{ s.descrizione }}</p>
+          </div>
+          <strong><i class="fas fa-wine-bottle" aria-hidden="true"></i> Prodotti</strong>
+          <div class="ml-3" *ngFor="let p of t.prodotti">
+            <p class="card-text mb-auto">-{{ p.descrizione }}</p>
+          </div>
+        </div>
+        <div class="pull-right">
+          <img src="{{ './assets/' + t.classe + '.png' }}" style="width: 30px">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="bottomright" style="opacity: 0.7;">
+  <a href="" [routerLink]="['/clienti']"><i class="fa fa-plus-circle" aria-hidden="true"
+      style="font-size: 70px; color: aquamarine; text-shadow: 1px 1px 1px #000000; "></i></a>
+</div>
+
+<div class="bottomleft" style="opacity: 0.7;">
+  <a href="" (click)="dettagliCollaboratore()" [routerLink]="['/dettaglicollaboratori']"><i class="fa fa-chart-pie"
+      aria-hidden="true" style="font-size: 65px; color: lightpink; text-shadow: 1px 1px 1px #000000; "></i></a>
+</div>

@@ -1,0 +1,414 @@
+<app-spinner1center *ngIf="!saloniCaricati"></app-spinner1center>
+
+<mat-toolbar class="navbar">
+  <div class="navbar-left">
+    <img src="assets/imgx32.png" alt="logo" width="32" heigth="32">
+    <h4 class="gruppo">{{title}}</h4>
+  </div>
+  <button mat-mini-fab color="Basic" style="margin-top: 5px; width: 35px; height: 35px;" (click)="back()"
+    *ngIf="modalitaConsulente">
+    <mat-icon style="margin-top:-5px">reply</mat-icon>
+  </button>
+  <button mat-icon-button>
+    <mat-icon (click)="sidenav.toggle()" style="color: white;">menu</mat-icon>
+  </button>
+</mat-toolbar>
+
+<mat-sidenav-container style="background-image: url('./assets/penta.jpg');">
+  <mat-sidenav position="end" #sidenav style="background-image: url('./assets/sidebar-1.jpg'); background-color: transparent;">
+    <mat-nav-list>
+      <div class="predefiniti">
+        <h1 matSubheader>Predefiniti</h1>
+        
+        <div class="giorno">
+          <button mat-mini-fab color="Basic" (click)="cambiaGiorno('Indietro','Giorno')">
+            <mat-icon>navigate_before</mat-icon>
+          </button>
+          <button mat-raised-button color="Basic" type="submit" style="width:190px; margin-left: 5px; margin-right:5px" (click)="setDate('Giorno')">Giorno {{menu.giorno}}
+          </button>
+          <button mat-mini-fab color="Basic" (click)="cambiaGiorno('Avanti','Giorno')">
+            <mat-icon>navigate_next</mat-icon>
+          </button>
+        </div>
+
+        <div class="settimana">
+          <button mat-mini-fab color="Basic" (click)="cambiaGiorno('Indietro','Settimana')">
+            <mat-icon>navigate_before</mat-icon>
+          </button>
+          <button mat-raised-button color="Basic" type="submit" style="width:190px; margin-left: 5px; margin-right:5px"
+            (click)="setDate('Settimana')">
+            Settimana {{giornoDelMese(menu.settimana.data1) + '-' + menu.settimana.data2}}
+          </button>
+          <button mat-mini-fab color="Basic" (click)="cambiaGiorno('Avanti','Settimana')">
+            <mat-icon>navigate_next</mat-icon>
+          </button>
+        </div>
+
+        <div class="mese">
+          <button mat-mini-fab color="Basic" (click)="cambiaGiorno('Indietro','Mese')">
+            <mat-icon>navigate_before</mat-icon>
+          </button>
+          <button mat-raised-button color="Basic" type="submit" style="width:190px; margin-left: 5px; margin-right:5px"
+            (click)="setDate('Mese')">Mese:&nbsp; {{giornoDelMese(menu.mese.data1) + '-' + menu.mese.data2}}
+          </button>
+          <button mat-mini-fab color="Basic" (click)="cambiaGiorno('Avanti','Mese')">
+            <mat-icon>navigate_next</mat-icon>
+          </button>
+        </div>
+
+        <div class="anno">
+          <button mat-mini-fab color="Basic" (click)="cambiaGiorno('Indietro','Anno')">
+            <mat-icon>navigate_before</mat-icon>
+          </button>
+          <button mat-raised-button color="Basic" type="submit" style="width:190px; margin-left: 5px; margin-right:5px"
+            (click)="setDate('Anno')">Anno:&nbsp;{{anno1}}
+          </button>
+          <button mat-mini-fab color="Basic" (click)="cambiaGiorno('Avanti','Anno')">
+            <mat-icon>navigate_next</mat-icon>
+          </button>
+        </div>
+    </div>
+      <mat-divider></mat-divider>
+
+      <h1 matSubheader style="margin-bottom: 0;">Flessibile</h1>
+      <app-intervallo-data (messageEvent)="receiveMessage($event)" style="padding: 0; margin-top:-10px"
+        [data1]="intervallo.data1" [data2]="intervallo.data2"></app-intervallo-data>
+      <mat-divider style="margin-top: -10px;"></mat-divider>
+
+      <h1 matSubheader>Personalizzato</h1>
+
+      <button mat-mini-fab color="Basic" style="margin-left: 25px;" (click)="cambiaGiorno('Indietro','Dieci')">
+        <mat-icon>navigate_before</mat-icon>
+      </button>
+      <button mat-raised-button color="Basic" type="submit" style="width:190px; margin-left: 5px; margin-right:5px"
+        (click)="setDate('Dieci')">{{giornoDelMese(menu.dieci.data1) + ' - ' + menu.dieci.data2}}
+      </button>
+      <button mat-mini-fab color="Basic" aria-label="Example icon button with a filter list icon"
+        style="margin-right: 25px;" (click)="cambiaGiorno('Avanti','Dieci')">
+        <mat-icon>navigate_next</mat-icon>
+      </button>
+
+      <div style="height: 10px;"></div>
+      <mat-divider></mat-divider>
+
+      <h1 matSubheader>{{title}}</h1>
+      <a mat-list-item (click)="sidenav.close()" [routerLink]="'/realtime'">
+        <mat-icon matListIcon>watch</mat-icon>
+        Real-Time
+      </a>
+
+      <mat-divider></mat-divider>
+      <a mat-list-item (click)="sidenav.close()" [routerLink]="'/setting'">
+        <mat-icon matListIcon>settings</mat-icon>
+        Setting
+      </a>
+      <a mat-list-item (click)="logOut()" [routerLink]="'/login'">
+        <mat-icon matListIcon>exit_to_app</mat-icon>
+        Log-Out
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content id="divToScroll">
+    <div style="height: 90vh;">
+      <div class="container-fluid">
+
+        <div style="height: 20px"></div>
+
+        <app-spinner1center *ngIf="attesa"></app-spinner1center>
+
+        <div class="row mb-2">
+          <div style="position: relative; opacity: 0.8;" class="col-md-4 " id="temps" *ngFor="let t of temps">
+            <div class="row no-gutters border rounded-lg  flex-md-row mb-4 shadow-sm h-md-250 position-relative shadow"
+              style="background-color:white;color:teal; width: 100%;">
+              <button *ngIf="t.logEventi && t.logEventi.length>0" mat-mini-fab color="warn" (click)="mostraLogEventi(t)"
+                style="position: absolute; width: 30px; height:30px; margin-top:-10px;left:0; right:0; margin-left: auto;margin-right: auto;">
+                {{t.logEventi.length}}
+              </button>
+
+              <div class="col p-2 d-flex flex-column position-static">
+                <div>
+                  <div>
+                    <a (click)="gestisciApertura(t)" class="collapsed d-block colore" data-toggle="collapse"
+                      href="#collapse-collapsed{{t.id}}" aria-expanded="true" aria-controls="collapse-collapsed"
+                      id="heading-collapsed">
+                      <strong class="d-inline-block mb-2 descrizione">{{ t.posizione }}
+                        ({{intervallo.name}})</strong>
+                    </a>
+
+                    <app-spinner1 *ngIf="t.attesa"></app-spinner1>
+
+                    <div class="pull-left" style="margin-top: -4px; margin-left: -1px; margin-right: -5px; padding: 0; width: 45px;">
+                      <button mat-mini-fab style="width: 30px;height: 30px;" color="Basic" (click)="aggiorna(t)">
+                        <i class="fas fa-sync-alt" style="margin-top:-10px; color:darkcyan;" ></i>
+                      </button>
+                    </div>
+                    <div>
+                      <h5 class="mb-0" style="font-weight: bold; ">
+                        <a (click)="gestisciApertura(t)" class=" d-block colore" data-toggle="collapse"
+                          href="#collapse-collapsed{{t.id}}" aria-expanded="true" aria-controls="collapse-collapsed"
+                          id="heading-collapsed">
+                          {{modalitaConsulente?t.gruppo + ' - ':''}}{{t.salone}}<span
+                            style="font-size: 10pt;">&nbsp;&nbsp;(&Oslash;&nbsp;&nbsp;fiche:&nbsp;{{t.media1|currency:'EUR'}})</span>
+                        </a>
+                      </h5>
+                      <div class="mb-1 text-muted">{{ t.indirizzo }}</div>
+
+                    </div>
+
+                  </div>
+
+                  <div style="position: absolute; top:3px; right: 3px;">
+                    <div class="pull-right freccia"
+                      style="margin-right: 10px; margin-top: -20px; height: 20px !important;">
+                      <hr style="color: black;">
+                      <h3><a (click)="gestisciApertura(t)" class="collapsed d-block colore" style="font-weight: bold"
+                          data-toggle="collapse" href="#collapse-collapsed{{t.id}}" aria-expanded="true"
+                          aria-controls="collapse-collapsed" id="heading-collapsed">
+                          <i class="fa fa-arrow-circle-up pull-right"></i>
+                        </a>
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+
+                <table>
+                  <!--*ngIf="t.aperto!='show'"-->
+                  <tr>
+                    <td>
+                      <strong><i class="fa fa-cut" aria-hidden="true"></i> Lavorato </strong>
+                    </td>
+                    <td>
+                      <i *ngIf="t.attesa" class="fa fa-spinner fa-spin fa-1x fa-fw"></i>
+                      <p *ngIf="!t.attesa" class="card-text mb-auto" style="font-size: smaller">
+                        {{ t.produzione1 | numberFormat}}&nbsp;&nbsp;&nbsp;</p>
+                    </td>
+                    <td (click)="openStatistiche(t,'Passaggi')">
+                      <strong><i class="fas fa-street-view" aria-hidden="true"></i>&nbsp;&nbsp;Passaggi</strong>
+                    </td>
+                    <td>
+                      <i *ngIf="t.attesa" class="fa fa-spinner fa-spin fa-1x fa-fw"></i>
+                      <p *ngIf="!t.attesa" class="card-text mb-auto" style="font-size: smaller">{{ t.passaggi1 }}</p>
+                    </td>
+                  </tr>
+                  <tr *ngIf="t.ChartData">
+                    <td colspan="4">
+                      <canvas #myCanvas baseChart [datasets]="t.ChartData" [labels]="barChartLabels"
+                        [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
+                        [chartType]="barChartType" height="120" style="background-color: white;">
+                      </canvas>
+                    </td>
+                  </tr>
+                </table>
+
+
+                <div id="collapse-collapsed{{t.id}}" class="{{t.classeAccordion}}" aria-labelledby="heading-collapsed">
+
+                  <div class="card" style="width: 100%;">
+                    <div class="card-header card-header-warning" style=" width: 100%;">
+                      <button mat-raised-button color="Basic" type="submit"
+                        style="width:37%; margin-left: 0; margin-right:0"
+                        (click)="generaIndirizzoPlanner(t)">
+                        Url planner
+                      </button>
+                      <button mat-raised-button color="Basic" type="submit"
+                        style="width:60%; margin-left: 5px; margin-right:0"
+                        (click)="openStatistiche(t,'Appuntamenti')">
+                        <mat-icon>book_online</mat-icon>&nbsp;Appuntamenti
+                      </button>
+                    </div>
+                    <div class="card-header card-header-warning" style=" width: 100%;">
+                      <button mat-raised-button color="Basic" type="submit"
+                        style="width:98%; margin-left: 5px; margin-right:5px"
+                        (click)="openStatistiche(t,'Collaboratori')">
+                        <mat-icon>bar_chart</mat-icon>&nbsp;Produzione Collaboratori
+                      </button>
+                    </div>
+                    <div class="card-header card-header-warning" style=" width: 100%;">
+                      <button mat-raised-button color="Basic" type="submit"
+                        style="width:53%; margin-left: 5px; margin-right:5px"
+                        (click)="openStatistiche(t,'ParcoClienti')">
+                        <mat-icon>supervisor_account</mat-icon>&nbsp;Parco Clienti
+                      </button>
+                      <button mat-raised-button color="Basic" (click)="openStatistiche(t,'ClientiInSalone')"
+                        style="width: 42%;">
+                        <mat-icon>event_seat</mat-icon>&nbsp;In sala
+                      </button>
+                    </div>
+                    <div class="card-body table-responsive" style="padding: 0;">
+                      <table id="dettagli" style="width: 100%;" class="table table-hover">
+                        <thead class="text-warning">
+                          <th></th>
+                          <th></th>
+                          <th style="text-align: right;">{{anno1}}</th>
+                          <th style="text-align: right;">{{anno2}}</th>
+                        </thead>
+                        <tbody>
+                          <tr (click)="openStatistiche(t,'Produzione')">
+                            <td class="padding0">
+                              <i class="fa fa-arrow-circle-up pull-right" style="color: greenyellow;"
+                                *ngIf="t.produzione1>=t.produzione2"></i>
+                              <i class="fa fa-arrow-circle-down pull-right" style="color: red;"
+                                *ngIf="t.produzione1<t.produzione2"></i>
+                            </td>
+                            <td>
+                              <strong>Produzione</strong>
+                            </td>
+                            <td class="testoadestra">
+                              {{t.produzione1 | numberFormat}}
+                            </td>
+                            <td class="testoadestra">
+                              {{t.produzione2 | numberFormat}}
+                            </td>
+                          </tr>
+                          <tr (click)="openStatistiche(t,'Passaggi')">
+                            <td class="padding0">
+                              <i class="fa fa-arrow-circle-up pull-right" style="color: greenyellow;"
+                                *ngIf="t.passaggi1>=t.passaggi2"></i>
+                              <i class="fa fa-arrow-circle-down pull-right" style="color: red;"
+                                *ngIf="t.passaggi1<t.passaggi2"></i>
+                            </td>
+                            <td>
+                              <strong>Passaggi</strong>
+                            </td>
+                            <td class="testoadestra">
+                              {{t.passaggi1}}
+                            </td>
+                            <td class="testoadestra">
+                              {{t.passaggi2}}
+                            </td>
+                          </tr>
+                          <tr (click)="openStatistiche(t,'Produzione')">
+                            <td class="padding0">
+                              <i class="fa fa-arrow-circle-up pull-right" style="color: greenyellow;"
+                                *ngIf="t.media1>=t.media2"></i>
+                              <i class="fa fa-arrow-circle-down pull-right" style="color: red;"
+                                *ngIf="t.media1<t.media2"></i>
+                            </td>
+                            <td>
+                              <strong>Media</strong>
+                            </td>
+                            <td class="testoadestra">
+                              {{t.media1 | currency:'EUR'}}
+                            </td>
+                            <td class="testoadestra">
+                              {{t.media2 | currency:'EUR'}}
+                            </td>
+                          </tr>
+                          <tr (click)="openStatistiche(t,'Nuovi clienti')">
+                            <td class="padding0">
+                              <i class="fa fa-arrow-circle-up pull-right" style="color: greenyellow;"
+                                *ngIf="t.nuoviClienti1>=t.nuoviClienti2"></i>
+                              <i class="fa fa-arrow-circle-down pull-right" style="color: red;"
+                                *ngIf="t.nuoviClienti1<t.nuoviClienti2"></i>
+                            </td>
+                            <td>
+                              <strong>Nuovi clienti</strong>
+                            </td>
+                            <td class="testoadestra">
+                              {{t.nuoviClienti1}}
+                            </td>
+                            <td class="testoadestra">
+                              {{t.nuoviClienti2}}
+                            </td>
+                          </tr>
+                          <tr (click)="openStatistiche(t,'Clienti movimentati')">
+                            <td class="padding0">
+                              <i class="fa fa-arrow-circle-up pull-right" style="color: greenyellow;"
+                                *ngIf="t.clientiMovimentati1>=t.clientiMovimentati2"></i>
+                              <i class="fa fa-arrow-circle-down pull-right" style="color: red;"
+                                *ngIf="t.clientiMovimentati1<t.clientiMovimentati2"></i>
+                            </td>
+                            <td>
+                              <strong>Movimentati</strong>
+                            </td>
+                            <td class="testoadestra">
+                              {{t.clientiMovimentati1}}
+                            </td>
+                            <td class="testoadestra">
+                              {{t.clientiMovimentati2}}
+                            </td>
+                          </tr>
+
+                          <tr (click)="openStatistiche(t,'Incasso')">
+                            <td class="padding0">
+                              <i class="fa fa-arrow-circle-up pull-right" style="color: greenyellow;"
+                                *ngIf="t.incasso1>=t.incasso2"></i>
+                              <i class="fa fa-arrow-circle-down pull-right" style="color: red;"
+                                *ngIf="t.incasso1<t.incasso2"></i>
+                            </td>
+                            <td>
+                              <strong>Incasso</strong>
+                            </td>
+                            <td class="testoadestra">
+                              {{t.incasso1 | numberFormat}}
+                            </td>
+                            <td class="testoadestra">
+                              {{t.incasso2 | numberFormat}}
+                            </td>
+                          </tr>
+                          <tr (click)="openStatistiche(t,'Spese')">
+                            <td class="padding0">
+                              <i class="fa fa-arrow-circle-down pull-right" style="color: greenyellow;"
+                                *ngIf="t.spese1<t.spese2"></i>
+                              <i class="fa fa-arrow-circle-up pull-right" style="color: red;"
+                                *ngIf="t.spese1>=t.spese2"></i>
+                            </td>
+                            <td>
+                              <strong>Spese</strong>
+                            </td>
+                            <td class="testoadestra">
+                              {{t.spese1 | numberFormat}}
+                            </td>
+                            <td class="testoadestra">
+                              {{t.spese2 | numberFormat}}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="padding0">
+                              <i class="fa fa-arrow-circle-right pull-right"></i>
+                            </td>
+                            <td>
+                              <strong>Totale cassa</strong>
+                            </td>
+                            <td class="testoadestra">
+                              {{(t.incasso1-t.spese1) | numberFormat}}
+                            </td>
+                            <td class="testoadestra">
+
+                            </td>
+                          </tr>
+
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="card-header card-header-warning" style=" width: 100%;">
+                      <button mat-raised-button color="Basic" type="submit"
+                        style="width:100%; margin-left: 5px; margin-right:5px"
+                        (click)="openStatistiche(t,'FuoriFrequenza')">
+                        <mat-icon>supervisor_account</mat-icon>&nbsp;Fuori frequenza
+                      </button><br />
+                      <button mat-raised-button color="Basic" type="submit"
+                        style="width:100%; margin-left: 5px; margin-right:5px; margin-top: 5px;"
+                        (click)="openStatistiche(t,'Stecchiti')">
+                        <mat-icon>close</mat-icon>
+                        <mat-icon>supervisor_account</mat-icon>&nbsp;Clienti stecchiti
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+<notifier-container></notifier-container>

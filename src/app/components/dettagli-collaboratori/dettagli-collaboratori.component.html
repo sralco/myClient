@@ -1,0 +1,110 @@
+<mat-toolbar style="background-color: darkslategrey;padding-left: 0;">
+  <mat-toolbar-row style="justify-content: space-between;">
+    <h3 class="display-6 font-italic">
+      <img src="./assets/img1.png" width="40" height="40" alt="logo">
+      <span class="navbar-brand text-white" style="margin-left:20px;">{{salone.salone}}</span></h3>
+      <button mat-icon-button (click)="back()" style="background-color:tan; font-size: 16px; font-size:small;font-weight: bolder;">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+      </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<app-spinner1center *ngIf="attesa" style="z-index: 999; position: absolute; left: 0; right: 0; top:200px; bottom: 0; margin-top: 70px;">
+</app-spinner1center>
+
+<mat-sidenav-container style="background-image: url('./assets/penta.jpg');">
+
+
+  <mat-sidenav-content style="width: 100%;">
+    <div style="height: 90vh;">
+
+      <div class="card" style="padding: 0;">
+
+        <div class="card-header card-header-warning" style=" width: 100%;padding:0;">
+          <div class="pull-right" style="width: 100%;padding:0;">
+            <button *ngIf="salone.gruppo!=='' && salone.gruppo!==null" class="btn "
+              style="background-color:tan; width: 100%; padding-left: 0; padding-right: 0;font-size:small;font-weight: bolder;">{{collaboratore.nome + ' ' + collaboratore.cognome + ' - ' + intervallo.name}}</button>
+              <app-intervallo-data (messageEvent)="receiveMessage($event)" style="padding: 0; margin: 0;" [data1]="intervallo.data1" [data2]="intervallo.data2"></app-intervallo-data>
+            </div>
+
+        </div>
+
+        <div class="card-body table-responsive" style="padding: 0; width: 100%;">
+
+          <ngb-tabset [destroyOnHide]="false" style="width: 100%;">
+
+            <ngb-tab style="font-weight: bolder;" title="">
+              <ng-template ngbTabTitle style="font-weight: bolder;"><span
+                  style="font-size:14px; font-weight: 500;">Servizi ({{totServizi.toFixed(2) | numberFormat}})</span>
+              </ng-template>
+
+              <ng-template ngbTabContent>
+
+                <div class="card-body table-responsive" style="padding-top: 0;padding-bottom: 0;">
+                  <table id="dettagli" style="width: 100%;" class="table table-hover">
+                    <thead class="text-warning">
+                      <th>Servizi</th>
+                      <th class="testoadestra">Qtà</th>
+                      <th class="testoadestra">Incasso</th>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let c of servizi" (click)="clientiServiti(c)">
+                        <td>
+                          {{c.gruppo}}
+                        </td>
+                        <td class="testoadestra">
+                          {{c.numero}}
+                        </td>
+
+                        <td class="testoadestra">
+                          {{c.totale | numberFormat}}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+              </ng-template>
+            </ngb-tab>
+
+            <ngb-tab>
+              <ng-template ngbTabTitle style="font-weight: bolder;"><span
+                  style="font-size:14px; font-weight: 500;">Rivendita
+                  ({{totRivendita.toFixed(2) | numberFormat}})</span></ng-template>
+              <ng-template ngbTabContent>
+                <div class="card-body table-responsive" style="padding-top: 0;padding-bottom: 0;">
+                  <table id="dettagli" style="width: 100%;" class="table table-hover">
+                    <thead class="text-warning">
+                      <th>Servizi</th>
+                      <th class="testoadestra">Qtà</th>
+                      <th class="testoadestra">Incasso</th>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let c of prodotti">
+                        <td>
+                          {{c.gruppo}}
+                        </td>
+                        <td class="testoadestra">
+                          {{c.numero}}
+                        </td>
+                        <td class="testoadestra">
+                          {{c.totale | numberFormat}}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </div>
+              </ng-template>
+            </ngb-tab>
+
+          </ngb-tabset>
+
+        </div>
+
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<notifier-container></notifier-container>

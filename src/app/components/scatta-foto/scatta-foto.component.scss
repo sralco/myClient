@@ -1,0 +1,39 @@
+.scatta-foto-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #ffffff;
+  background-color: darkcyan;
+}
+
+.scatta-foto-navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.scatta-foto-navbar button {
+  background-color: white;
+  color: darkcyan;
+}
+
+.btn-scatta{
+  width:100%;
+  display:flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn-scatta button{
+  background-color: darkcyan;
+  color:#ffffff;
+}
+
+.snapshot {
+  width: 100%;
+  height: 100%;
+}
+
+ul.links {
+  padding-bottom: 20px;
+}

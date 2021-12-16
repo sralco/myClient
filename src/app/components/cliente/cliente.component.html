@@ -1,0 +1,96 @@
+<link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/checkout/">
+<div class="card-header pull-left bg-dark " style="width: 100%">
+  <button class="btn btn-link text-white" type="button" style="padding: 0">
+    <h5 class="mb-0" style="color: white;">{{titolo}}</h5>
+  </button>
+  <div class="pull-right">
+    <button type="button" class="btn btn-warning" style=" width: 80; height: 40px" (click)="goBack()">
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </button>
+  </div>
+</div>
+<div class="row">
+
+  <div class="col-md-8 order-md-1 mb-4" style="margin-left:10px; margin-right: 10px;background-color: white;">
+
+    <form class="needs-validation" novalidate name="frm" style="padding: 0px 0 20px 0; margin: 20px;">
+      <div class="mb-3">
+        <label for="firstName">Nome</label>
+        <input type="text" class="form-control" id="firstName" name="firstName" value="" required
+          style="margin-top: -10px;" #firstName1="ngModel" [(ngModel)]="cliente.nome">
+        <div class="invalid-feedback">
+          Campo obbligatorio.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="lastName">Cognome</label>
+        <input type="text" class="form-control" id="lastName" name="lastName" placeholder="" value="" required
+          style="margin-top: -10px;" #lastName1="ngModel" [(ngModel)]="cliente.cognome">
+        <div class="invalid-feedback">
+          Campo obbligatorio.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="row">
+          <div class="col-6 col-sm-6">
+            <label for="dataNascita">Compleanno<span class="text-muted"></span></label>
+            <input type="text" maxlength="5" class="form-control" id="dataNascita" name="dataNascita"
+              placeholder="GG/MM" style="margin-top: -10px;" [(ngModel)]="cliente.compleanno" #dataNascita1="ngModel">
+          </div>
+          <div class="col-6 col-sm-6">
+            <label for="dataNascita">Anno nascita</label>
+            <input type="text" maxlength="4" class="form-control" id="anno" name="anno" placeholder="AAAA"
+              style="margin-top: -10px;" [(ngModel)]="cliente.anno" #anno1="ngModel">
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3" style="margin-top: 15px;">
+        <label for="email">Email<span class="text-muted">&nbsp;(Opzionale)</span></label>
+        <div class="input-group">
+          <div class="input-group-prepend" style="margin-top: -10px;">
+            <span class="input-group-text">@</span>
+          </div>
+          <input type="text" class="form-control" id="email" name="email" placeholder="" style="margin-top: -10px;"
+            [(ngModel)]="cliente.email" #email1="ngModel">
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="cell">Cellulare</label>
+        <div class="input-group">
+          <div class="input-group-prepend" style="margin-top: -10px;">
+            <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
+          </div>
+          <input type="text" class="form-control" id="cell" name="cell" style="margin-top: -10px;"
+            [(ngModel)]="cliente.cell" #cell1="ngModel">
+        </div>
+      </div>
+
+      <div class="md-3">
+        <label for="paese">Comune di provenienza</label>
+        <input type="text" class="form-control" id="paese" name="paese" placeholder="" style="margin-top: -10px;"
+          [(ngModel)]="cliente.paese" #paese1="ngModel">
+      </div>
+
+
+      <div class="d-block my-3">
+        <div class="form-check form-check-inline custom-radio" style="margin-left: 23px;">
+          <input id="credit" name="sesso" type="radio" class="custom-control-input" #sesso1="ngModel"
+            [(ngModel)]="sesso" value="Uomo" required>
+          <label class="custom-control-label" for="credit">Uomo</label>
+        </div>
+        <div class="form-check form-check-inline custom-radio" style="margin-left: 23px;">
+          <input id="debit" name="sesso" type="radio" class="custom-control-input" #sesso1="ngModel" [(ngModel)]="sesso"
+            value="Donna" required>
+          <label class="custom-control-label" for="debit">Donna</label>
+        </div>
+      </div>
+
+      <button class="btn btn-dark btn-lg btn-block" name="btn" (click)="salvaCliente()" [disabled]="!btnEnable">Salva
+        cliente</button>
+    </form>
+
+  </div>
+</div>

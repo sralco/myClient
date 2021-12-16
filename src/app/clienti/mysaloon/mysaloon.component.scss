@@ -1,0 +1,443 @@
+// variabili
+$background-color:var(--background-color);
+$color:var(--color);
+
+/**
+ * ==============================================
+ * Dot Pulse
+ * ==============================================
+ */
+.dot-pulse {
+  position: relative;
+  left: -9999px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #008b8b;
+  color: #008b8b;
+  box-shadow: 9999px 0 0 -5px #008b8b;
+  animation: dotPulse 1.5s infinite linear;
+  animation-delay: .25s;
+}
+
+.dot-pulse::before,
+.dot-pulse::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #008b8b;
+  color: #008b8b;
+}
+
+.dot-pulse::before {
+  box-shadow: 9984px 0 0 -5px #008b8b;
+  animation: dotPulseBefore 1.5s infinite linear;
+  animation-delay: 0s;
+}
+
+.dot-pulse::after {
+  box-shadow: 10014px 0 0 -5px #008b8b;
+  animation: dotPulseAfter 1.5s infinite linear;
+  animation-delay: .5s;
+}
+
+.mysaloon-container {
+  max-width: 450px;
+  margin: 0 auto;
+  height: 100vh;
+  overflow-y: clip;
+}
+
+.mysaloon-navbar {
+  top: 0;
+  z-index: 999;
+  background-color: $background-color;
+  width: 100%;
+  position: sticky;
+  justify-content: center;
+  color: $color;
+  height: 40px;
+}
+
+.mysaloon-navbar-gruppo {
+  text-transform: capitalize;
+}
+
+.mysaloon-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 94px;
+}
+
+.mysaloon-saloni {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  height: 70px;
+}
+
+.mysaloon-salone {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.mysaloon-titolo-salone {
+  font-family: Roboto, Helvetica Neue, sans-serif !important;
+  margin: 0;
+  line-height: 20px;
+  color: $background-color;
+  display: flex;
+  align-items: center;
+}
+
+.mysaloon-titolo-salone a {
+  text-decoration: none;
+  font-size: 1.25rem;
+  color: $background-color;
+  font-weight: 700;
+}
+
+.mysaloon-indirizzo-salone {
+  line-height: 10px;
+  max-width: 80px;
+  height: 14px;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  font-size: 13px;
+  left: 15px;
+}
+
+.mysaloon-indirizzo-salone span {
+  line-height: normal;
+  position: absolute;
+  -moz-transform: translateX(100%);
+  -webkit-transform: translateX(100%);
+  transform: translateX(100%);
+  /* Apply animation to this element */
+  -moz-animation: example1 10s linear infinite;
+  -webkit-animation: example1 10s linear infinite;
+  animation: example1 10s linear infinite;
+
+}
+
+/* Move it (define the animation) */
+@-moz-keyframes example1 {
+  0% {
+    -moz-transform: translateX(0%);
+  }
+
+  100% {
+    -moz-transform: translateX(-100%);
+  }
+}
+
+@-webkit-keyframes example1 {
+  0% {
+    -webkit-transform: translateX(0%);
+  }
+
+  100% {
+    -webkit-transform: translateX(-100%);
+  }
+}
+
+@keyframes example1 {
+  0% {
+    -moz-transform: translateX(0%);
+    /* Firefox bug fix */
+    -webkit-transform: translateX(0%);
+    /* Firefox bug fix */
+    transform: translateX(0%);
+  }
+
+  100% {
+    -moz-transform: translateX(-100%);
+    /* Firefox bug fix */
+    -webkit-transform: translateX(-100%);
+    /* Firefox bug fix */
+    transform: translateX(-100%);
+  }
+}
+
+
+.example1 {
+  height: 50px;
+  overflow: hidden;
+  position: relative;
+}
+
+.example1 h3 {
+  font-size: 3em;
+  color: limegreen;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  line-height: 50px;
+  text-align: center;
+  /* Starting position */
+  -moz-transform: translateX(100%);
+  -webkit-transform: translateX(100%);
+  transform: translateX(100%);
+  /* Apply animation to this element */
+  -moz-animation: example1 15s linear infinite;
+  -webkit-animation: example1 15s linear infinite;
+  animation: example1 15s linear infinite;
+}
+
+.mysaloon-azioni-salone {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: $background-color;
+}
+
+.mysaloon-azioni-salone a {
+  text-decoration: none;
+  color: $background-color;
+}
+
+.mysaloon-azioni-salone a mat-icon {
+  transform: scale(1.5);
+}
+
+.mysaloon-azioni-salone button {
+  background: $background-color;
+  color: $color;
+  line-height: 20px;
+}
+
+.mysaloon-seleziona-salone {
+  color: $background-color;
+}
+
+.mysaloon-dettagli.salone {
+  display: flex;
+  flex-direction: column;
+}
+
+.mysaloon-seleziona-saloni {
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  gap: 5px;
+  height: 70px;
+}
+
+.mysaloon-seleziona-saloni-titolo {
+  color: #000000;
+  font-size: 13px;
+  text-align: center;
+  line-height: 13px;
+}
+
+.mysaloon-seleziona-salone {
+  padding: 6px;
+}
+
+.mysaloon-seleziona-logo-salone img {
+  filter: grayscale(100%);
+}
+
+.mysaloon-user-bar {
+  width: 100%;
+  background: $background-color;
+  color: $color;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mysaloon-user-bar h5 {
+  margin: 0px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.mysaloon-nouser-bar {
+  height: 4px;
+  background-color: darkcyan;
+}
+
+.mysaloon-bottoni-azione {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 12px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+.mysaloon-bottoni-azione .mat-button-toggle-group,
+.mysaloon-bottoni-azione .mat-button-toggle,
+.mysaloon-bottoni-azione button,
+.mysaloon-bottoni-azione .mat-button-toggle-label-content {
+  line-height: 26px;
+  height: 26px;
+}
+
+.mysaloon-card {
+  border: none;
+  box-shadow: none !important;
+  margin-top: 0;
+  padding-top: 0 !important;
+}
+
+.mysaloon-card .mat-tab-group.mat-primary .mat-ink-bar,
+.mysaloon-card .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+  background-color: $background-color;
+}
+
+.mysaloon-card-prenotazioni {
+  /*
+  background: #50bcbb;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  */
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background: #50bcbb;
+  height: 100%;
+  overflow: auto;
+}
+
+.mysaloon-card-prenotazione-content {
+  margin-top: 6px;
+  margin-bottom: 6px;
+  overflow: hidden;
+}
+
+.mysaloon-card-prenotazione-content mat-chip:last-child {
+  display: none;
+}
+
+.mysaloon-card-prenotazione-content .mat-chip-list-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  margin: -4px;
+  overflow: auto;
+  padding-bottom: 6px;
+}
+
+.mysaloon-card-prenotazione-content .mat-chip span {
+  width: max-content;
+}
+
+.mysaloon-card-prenotazioni-ticket {
+  padding: 18px;
+  width: 90%;
+  max-width: 450px;
+  margin: 0 auto;
+  border-radius: 15px;
+  border: 3px solid $background-color;
+  background: repeating-linear-gradient(131deg, #ffffff, #ffffff 10px, #ffffffba 10px, #ffffff 20px);
+  position: relative;
+}
+
+.mysaloon-card-prenotazioni-ticket:before,
+.mysaloon-card-prenotazioni-ticket:after{
+  content: "";
+  position: absolute;
+  top: 36%;
+  height: 36px;
+  width: 18px;
+  border: 3px solid $background-color;
+}
+.mysaloon-card-prenotazioni-ticket:before {
+    left: -3px;
+    border-radius: 0 1em 1em 0;
+    border-left:4px solid #50bcbb;
+    background-color: #50bcbb;
+}
+.mysaloon-card-prenotazioni-ticket:after {
+    right: -3px;
+    border-radius: 1em 0 0 1em;
+    border-right:4px solid #50bcbb;
+    background-color: #50bcbb;
+}
+
+.mysaloon-card-prenotaora {
+  color: $color;
+  font-weight: 500;
+}
+
+.mysaloon-card-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.mysaloon-card-button button {
+  background-color: $color !important;
+  color: $background-color !important;
+  box-shadow: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mysaloon-card-prenotazione-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.mysaloon-card-prenotazione-actions {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.mysaloon-card-prenotazione-actions .salone-appuntamento {
+  display: flex;
+  align-items: center;
+  color: $background-color;
+}
+
+.mysaloon-card-prenotazione-actions button {
+  background: red;
+  color: white;
+}
+
+.mysaloon-card .contenuto {
+  font-size: medium;
+  color: black;
+  padding-right: 10px;
+}
+
+.mysaloon-card .orario {
+  margin-left: 10px;
+  margin-top: 20px;
+  font-size: medium;
+
+  & th {
+    font-weight: bold;
+    padding-right: 20px;
+    height: 30px;
+  }
+
+  & td {
+    color: black;
+    padding-right: 10px;
+  }
+
+  & .chiuso {
+    color: red;
+  }
+}

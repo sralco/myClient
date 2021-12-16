@@ -1,0 +1,164 @@
+<div id="container">
+
+  <div id="navbar">
+    <mat-toolbar style="background-color: darkslategrey; width: 100%;position: sticky; top: 0px; z-index: 999;">
+      <mat-toolbar-row style="justify-content: space-between;">
+        <img src="./assets/imgx32.png" width="40" height="40" alt="40">
+        <h3 style="margin-left: 20px;" class="display-6">
+          <span class="brand" style="color: white;">{{consulente}}</span>
+        </h3>
+
+        <button mat-mini-fab color="Basic" style="margin-top: 5px; width: 35px; height: 35px;" (click)="logout()">
+          <mat-icon>person_remove</mat-icon>
+        </button>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </div>
+
+
+  <div id="search">
+    <form [formGroup]="searchForm" class="search__form">
+      <mat-form-field [style.width.%]=25 style="margin-left: 5px;" appearance="outline">
+        <mat-label>Area</mat-label>
+        <mat-select matNativeControl name="area" (selectionChange)="search()" formControlName="area">
+          <mat-option value=""></mat-option>
+          <mat-option [value]="item" *ngFor="let item of aree">{{item}}</mat-option>
+        </mat-select>
+      </mat-form-field>&nbsp;
+      <mat-form-field [style.width.%]=35 class="search__form_field" appearance="outline">
+        <mat-label>Gruppo</mat-label>
+        <input matInput (keyup)="search()" formControlName="gruppo">
+        <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="cleatTxt('gruppo')">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>&nbsp;
+      <mat-form-field [style.width.%]=30 class="search__form_field" appearance="outline">
+        <mat-label>Salone</mat-label>
+        <input matInput (keyup)="search()" formControlName="salone">
+        <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="cleatTxt('salone')">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </form>
+  </div>
+
+  <button mat-raised-button color="Basic" style="margin:  -15px 20px 20px 20px; " (click)="showSel()"
+    *ngIf="selection.selected.length>1">
+    <mat-icon>person_remove</mat-icon> Confronta saloni selezionati
+  </button>
+
+  <div id="table" style="margin-top: -10px;">
+    <div id="table-container">
+      <table mat-table matSort matSortActive="id" matSortDirection="desc" matSortDisableClear multiTemplateDataRows
+        [dataSource]="dataSource">
+
+        <ng-container matColumnDef="select">
+          <th style="padding-top: 5px; padding-left: 10px; padding-right: 5px;" mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+              [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+            </mat-checkbox>
+          </th>
+          <td style="padding-top: 5px; padding-left: 10px; padding-right: 5px;" mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+              [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th md-header-cell *matHeaderCellDef style="background-color: gainsboro; text-align: center;padding: 0;">
+            Azioni</th>
+          <td md-cell *matCellDef="let element" style="text-align: right;padding: 0;">
+            <button mat-button (click)="apriDettagli(element)">
+              <mat-icon style="color:green">info</mat-icon>
+            </button>
+            <button mat-button (click)="delete(element)">
+              <mat-icon color="warn">delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="gruppo" sticky>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Gruppo</th>
+          <td mat-cell *matCellDef="let element" [class.example-expanded-row]="expandedElement === element"
+            (click)="showSalone(element)"> {{element['gruppo']}} </td>
+        </ng-container>
+        <ng-container matColumnDef="salone">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Salone</th>
+          <td mat-cell *matCellDef="let element" style="padding-left:5px"
+            [class.example-expanded-row]="expandedElement === element" (click)="showSalone(element)">
+            {{element['salone']}} </td>
+        </ng-container>
+        <ng-container matColumnDef="idArea">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Area</th>
+          <td mat-cell *matCellDef="let element" [class.example-expanded-row]="expandedElement === element">
+            <button mat-button (click)="modify(element)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <div>
+              <p> {{element['idArea']}}</p>
+            </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="ultimaSincronizzazione">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Ultima Sinc.</th>
+          <td mat-cell *matCellDef="let element" style="text-align: right;"
+            [class.example-expanded-row]="expandedElement === element"
+            (click)="apriDettagli(element)">
+            {{element['ultimaSincronizzazione']}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="expandedDetail">
+          <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+            <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+
+              <mat-card class="example-card" style="background-color:beige; margin: 10px;">
+                <mat-card-header>
+                  <mat-card-title>{{element.ragioneSociale}}</mat-card-title>
+                  <mat-card-subtitle>{{element.indirizzo}}<br /> {{element.paese + ' (' + element.provincia + ')'}}
+                  </mat-card-subtitle>
+                </mat-card-header>
+                <mat-divider></mat-divider>
+                <mat-card-content>
+                  <mat-list>
+                    <mat-list-item>
+                      <mat-icon mat-list-icon>local_phone</mat-icon>
+                      <div mat-line><strong>Telefono: </strong> <a [href]="'tel:' + element.cell">{{element.tel}}</a>
+                      </div>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <mat-icon mat-list-icon>smartphone</mat-icon>
+                      <div mat-line><strong>Cellulare: </strong> <a [href]="'tel:' + element.cell">{{element.cell}}</a>
+                      </div>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <mat-icon mat-list-icon>email</mat-icon>
+                      <div mat-line><strong>E-Mail: </strong>{{element.email}}</div>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-list-item style="margin-top: 10px;">
+                      <mat-icon mat-list-icon>event_available</mat-icon>
+                      <div mat-line><strong>Data scadenza: </strong>{{element.dataAttivazione | date: 'dd-MM-yyyy'}}
+                      </div>
+                    </mat-list-item>
+                  </mat-list>
+                </mat-card-content>
+                <mat-divider></mat-divider>
+              </mat-card>
+
+
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky:true"></tr>
+        <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+
+    <notifier-container></notifier-container>
+  </div>
+</div>

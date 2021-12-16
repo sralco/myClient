@@ -1,0 +1,36 @@
+ <h2 mat-dialog-title><img  src="{{ './assets/' + appClass.c.classe + '.png' }}" style="width: 30px">&nbsp;&nbsp;{{appClass.c.nome + ' ' + appClass.c.cognome}}</h2>
+<mat-dialog-content class="mat-typography">
+  <mat-divider></mat-divider>
+  <mat-list>
+    <h3 matSubheader>Anagrafica</h3>
+    <mat-list-item>
+      <mat-icon matListAvatar>account_box</mat-icon>
+      <h4 matLine>{{appClass.c.paese}}</h4>
+      <p matLine>Paese</p>
+    </mat-list-item>
+    <mat-divider matInset></mat-divider>
+    <mat-list-item>
+      <mat-icon matListAvatar style="color: green;">phone</mat-icon>
+      <h4 matLine><a href="tel:{{appClass.c.cell}}">{{appClass.c.cell}}</a></h4>
+      <p matLine>Celulare</p>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <h3 matSubheader>Schede tecniche</h3>
+    <table style="margin-left: 20px;">
+      <tr *ngFor="let s of appClass.c.schedeTecniche">
+        <td style="vertical-align: top;padding-right: 10px;">
+          <mat-icon matListAvatar>access_time</mat-icon>
+        </td>
+        <td>
+          <mat-card-subtitle>{{s.data}}</mat-card-subtitle><br>
+          <h4 style="overflow: auto;">({{s.servizio}}) - {{s.scheda }} </h4><br>
+        </td>
+      </tr>
+    </table>
+    <mat-divider matInset></mat-divider>
+  </mat-list>
+  <mat-divider></mat-divider>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Chiudi</button>
+</mat-dialog-actions>

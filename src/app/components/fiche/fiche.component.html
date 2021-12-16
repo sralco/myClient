@@ -1,0 +1,151 @@
+<div class="card" style="background-color: transparent" style="width: 100%">
+  <div style="opacity: 0.8; position: sticky; top: 0;">
+    <nav class="navbar  navbar-dark bg-info shadow">
+      <div class="pull-left">
+        <h3 class="display-6 font-italic"><a class="navbar-brand text-white"><img style="height: 30px;"
+              src="./assets/img1.png" routerLink="/setting/">&nbsp;mySaloon</a></h3>
+      </div>
+
+      <div class="pull-right" *ngIf="proposte.length>0" style="padding-right: 0; margin-right: -40px;">
+        <button type="button" class="btn" style=" width: 80; height: 40px; background-color: aqua;"
+          (click)="openProposte()">
+          Proposte
+        </button>
+      </div>
+      <div class="pull-right">
+        <button type="button" class="btn btn-warning" style=" width: 80; height: 40px" (click)="goBack()">
+          <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <div class="card-header pull-left bg-info " style="width: 100%; position: sticky; top: 0;">
+    <button class="btn btn-link text-white" type="button" style="padding: 0">
+      <h5 class="mb-0"><img src="{{ './assets/' + fiche.classe + '.png' }}" style="width: 30px"> {{
+        fiche.nominativo.split('-')[0] }}</h5>
+    </button>
+  </div>
+
+  <div class="container-fluid" style="padding:0" style="background-color: transparent;width: 100%">
+    <div class="accordion" id="accordionExample" style="width: 100%">
+      <div class="card shadow p-0 mb-2 bg-white rounded" style="padding-left: 0" style="width: 100%">
+        <div class="card-header pull-left bg-info " id="headingOne" aria-controls="collapseOne" data-toggle="collapse"
+          style="width: 100%" data-target="#collapseOne" aria-expanded="false">
+
+          <button class="btn btn-link collapsed text-white" type="button" style="padding: 0">
+            <h5 class="mb-0"><i class="fa fa-cut" aria-hidden="true"></i> Servizi
+              {{ fiche.servizi ? '(' + fiche.servizi.length + ')' : '' }}</h5>
+          </button>
+          <div class="pull-right">
+            <button type="button" class="btn btn-primary" style=" width: 40px; height: 40px"
+              routerLink="/aggiungiServizi/{{ idFiche }}" (click)="nuovoServizio($event,false)">
+              <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+          </div>
+          <div class="pull-right">
+            <button type="button" class="btn" style=" width: 40px; height: 39px; background-color: aqua; margin-right: 5px;"
+              routerLink="/aggiungiServizi/{{ idFiche }}" (click)="nuovoServizio($event,true)">
+              <i class="fab fa-product-hunt" style="color: white; font-size: 1em;"></i></button>
+          </div>
+        </div>
+
+        <div id="collapseOne" class="collapse multi-collapse show" aria-labelledby="headingOne"
+          data-parent="#accordionExample">
+          <div class="card-body" style="padding: 0">
+            <div class="card-body pull-left list list-group-item list-group-item-action active bg-light "
+              *ngFor="let s of fiche.servizi" style="margin:1px" style="padding: 0">
+              <div class="pull-left m-1" style="width: 45px">
+                <button (click)="delete($event, s,'Servizi')" type="button" class="btn btn-danger"><i
+                    class="fas fa-trash-alt" aria-hidden="true"></i></button>
+              </div>
+              <div class="pull-left ">
+                <strong class="card-title" style="color: slategrey">
+                  <i class="fa fa-cut" aria-hidden="true"></i> {{ s.descrizione }}
+                </strong>
+                <p class="card-text" style="color: slategrey"> Lavorante:&nbsp;{{
+                  getNomeCollaboratore(s.idcollaboratore) }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="card shadow p-0 mb-2 bg-white rounded">
+        <div class="card-header bg-info" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo"
+          aria-expanded="true" aria-controls="collapseTwo">
+
+          <button class="btn btn-link collapsed text-white" type="button" style="padding-left: 0">
+            <h5 class="mb-0"><i class="fas fa-wine-bottle" aria-hidden="true"></i> Prodotti
+              {{ fiche.prodotti ? '(' + fiche.prodotti.length + ')' : '' }}</h5>
+          </button>
+          <div class="pull-right">
+            <button type="button" class="btn btn-primary" style=" width: 40px; height: 40px"
+              routerLink="/aggiungiProdotti/{{ idFiche }}" (click)="nuovoProdotto($event,false)">
+              <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+          </div>
+          <div class="pull-right">
+            <button type="button" class="btn" style=" width: 40px; height: 39px; background-color: aqua; margin-right: 5px;"
+              routerLink="/aggiungiServizi/{{ idFiche }}" (click)="nuovoServizio($event,true)">
+              <i class="fa fa-plus-circle" aria-hidden="true" style="color: white; font-size: 1em;"></i></button>
+          </div>
+
+        </div>
+        <div id="collapseTwo" class="collapse multi-collapse show" aria-labelledby="headingTwo"
+          data-parent="#accordionExample" style="padding: 0">
+          <div class="card-body" style="padding: 0">
+            <div class="card-body pull-left list list-group-item list-group-item-action active bg-light"
+              *ngFor="let s of fiche.prodotti" style="margin:1px" style="padding: 0">
+              <div class="pull-left m-1" style="width: 45px">
+                <button (click)="delete($event, s,'Prodotti')" type="button" class="btn btn-danger"><i
+                    class="fas fa-trash-alt" aria-hidden="true"></i></button>
+              </div>
+              <div class="pull-left ">
+                <strong class="card-title" style="color: slategrey">
+                  <i class="fas fa-wine-bottle" aria-hidden="true"></i> {{ s.descrizione }}
+                </strong>
+                <p class="card-text" style="color: slategrey">Lavorante:&nbsp;{{
+                  getNomeCollaboratore(s.idcollaboratore) }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow p-0 mb-2 bg-white rounded">
+        <div class="card-header bg-info" id="headingThree" data-toggle="collapse" data-target="#collapseThree"
+          aria-expanded="false" aria-controls="collapseThree">
+
+          <button class="btn btn-link collapsed text-white" type="button" style="padding-left: 0">
+            <h5 class="mb-0"><i class="fa fa-id-card" aria-hidden="true"></i>&nbsp;S. tecniche
+              {{ schedeTecniche ? '(' + schedeTecniche.length + ')' : '' }}</h5>
+          </button>
+          <div class="pull-right">
+            <button type="button" class="btn btn-primary " style=" width: 40px; height: 40px"
+              routerLink="/schedaTecnica/{{ fiche.id}}" (click)="nuovaSchedaTecnica($event)">
+              <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+          </div>
+
+        </div>
+        <div id="collapseThree" class="collapse multi-collapse show" aria-labelledby="headingThree"
+          data-parent="#accordionExample" style="padding: 0">
+          <div class="card-body" style="padding: 0">
+            <div class="card-body pull-left list list-group-item list-group-item-action active bg-light"
+              *ngFor="let sss of schedeTecniche" style="margin:1px" style="padding: 0,0,0,1px">
+              <strong class="card-title" style="color: slategrey">
+                <i class="fa fa-id-card" aria-hidden="true"></i> {{ sss.txt1 }}
+              </strong>
+              <p class="card-text" style="color: slategrey">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ sss.data | date:'dd/MM/yyyy'}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="bottomright" style="opacity: 0.7;">
+  <button type="button" class="btn btn-success" style=" height: 40px" (click)="apriConsulenza()">
+    Consulenza&nbsp;&nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i>
+  </button>
+</div>

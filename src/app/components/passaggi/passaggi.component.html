@@ -1,0 +1,70 @@
+<mat-toolbar style="background-color: darkslategrey;">
+  <mat-toolbar-row style="justify-content: space-between;">
+    <h3 class="display-6">
+      <img src="./assets/img1.png" width="40" height="40" alt="logo">
+      <span class="navbar-brand text-white" style="margin-left:20px;padding:0;">{{salone.salone}}</span></h3>
+
+    <button mat-icon-button (click)="back()"
+      style="background-color:tan; font-size: 16px; font-size:small;font-weight: bolder;">
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-sidenav-container style="background-image: url('./assets/penta.jpg');">
+  <mat-sidenav #sidenav style="background-image: url('./assets/sidebar-1.jpg'); background-color: transparent;">
+    <mat-nav-list>
+
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div style="height: 90vh;">
+
+
+      <app-spinner1center *ngIf="attesa" style="z-index: 999; position: absolute; left: 0; right: 0; top:0; bottom: 0;">
+      </app-spinner1center>
+
+
+      <div class="card" style="width: 100%;">
+        <div class="card-header card-header-warning" style=" width: 100%;">
+          <div class="pull-right" style="width: 100%;padding:0;">
+            <button class="btn "
+              style="background-color:tan; width: 100%; padding-left: 0; padding-right: 0; font-size:small;font-weight: bolder;">Produzione {{intervallo.name}}</button>
+          </div>
+
+        </div>
+        <div class="card-body table-responsive" style="padding-top: 0;padding-bottom: 0;">
+          <table id="dettagli" style="width: 100%; font-size:small;font-weight: bolder; overflow:scroll;"
+            class="table table-hover">
+            <thead class="text-warning">
+              <th>Data</th>
+              <th>Cliente</th>
+              <th style="text-align: right;">Importo</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let c of pageOfItems" (click)="apriFiche(c)">
+                <td class="padding0">
+                  {{c.dataUltimaFiche.replace('_',' ').replace('2019','19').replace('2020','20').replace('2021','21').replace('2022','22')}}
+                </td>
+                <td>
+                  <strong>{{c.nome + ' ' + c.cognome}}</strong>
+                </td>
+
+                <td class="testoadestra">
+                  {{c.importoUltimaFiche | currency:'EUR'}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <jw-pagination [maxPages]="4" [pageSize]="9" [items]="temps" (changePage)="onChangePage($event)">
+          </jw-pagination>
+        </div>
+
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+<notifier-container></notifier-container>

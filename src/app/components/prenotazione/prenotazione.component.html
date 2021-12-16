@@ -1,0 +1,382 @@
+  <!-- navbar -->
+  <mat-toolbar class="navbar">
+    <div class="navbar-left">
+      <div class="logo"><img src="assets/imgx32.png" width="32" height="32" /></div>
+      <div style="display: flex;flex-direction: column;line-height: 10px;">
+        <h4 class="gruppo">{{salone.gruppo}}</h4>
+        <div class="salone" style="margin-top: 2px;"><small>{{salone.salone}}</small></div>
+      </div>
+    </div>
+    <div class="navbar-right">
+      <button class="btn-back" mat-icon-button (click)="back()">
+        <mat-icon>undo</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+
+
+  <form [formGroup]="searchForm" class="search__form" style="padding: 0 10px 0 10px;">
+    <mat-card class="card">
+      <mat-vertical-stepper [linear]="isLinear" #stepper labelPosition="bottom">
+
+        <mat-step [stepControl] = "firstStepControl" label="Cliente: {{clienteObj?.nome + ' ' + clienteObj?.cognome}}" *ngIf="(token==='' || token===null || clienteObj != null)">
+          <div style="display: flex;align-items: center;gap: 10px;">
+            <mat-form-field class="cerca" style="width: 100%;" appearance="outline">
+              <mat-label>Cerca cliente</mat-label>
+              <input matInput placeholder="Cognome, nome o cell" formControlName="candidato" autocomplete="off"
+                (keyup)="searchCliente($event.target.value)" id="candidato" #candidato class="example-full-width">
+              <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="cleatTxt('candidato')">
+                <mat-icon *ngIf="searchForm.get('candidato').value!==''">close</mat-icon>
+              </button>
+            </mat-form-field>
+            <button mat-mini-fab color="Basic" (click)="nuovoCliente()">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+
+          <div *ngIf="mostraFuoriFrequenza">
+            <mat-card-subtitle>Servizi fuori frequenza</mat-card-subtitle>
+            <mat-chip-list aria-label="Fish selection">
+              <mat-chip style="height: auto;" color="accent" selected
+                *ngFor="let s of clienteObj.serviziFuoriFrequenza">{{s}}
+              </mat-chip>
+            </mat-chip-list>
+          </div>
+
+          <div *ngIf="mostraTabella">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Cliente</th>
+                  <th scope="col">Cellulare</th>
+                  <th scope="col">OK</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let s of clienti">
+                  <td scope="row" style="widows: 70%;">{{s.cognome + ' ' + s.nome}}</td>
+                  <td scope="row" style="widows: 25%;">{{s.cell}}</td>
+                  <td style="widows: 5%;">
+                    <button type="button" class="btn btn-primary" style=" width: 100%; height: 100%"
+                      (click)="selezionaCandidato(s)">
+                      <i class="fa fa-check" aria-hidden="true"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+
+          <div style="display:flex;justify-content: space-between;margin-top: 20px;">
+            <button mat-raised-button color="primary" (click)="scegliOccasionale()">
+              Cliente occasionale
+            </button>
+            <button [disabled]="clienteObj.nome == '' || clienteObj.nome == undefined" mat-raised-button color="primary" matStepperNext>
+              Avanti <mat-icon matListAvatar>navigate_next</mat-icon>
+            </button>
+          </div>
+
+        </mat-step>
+
+        <mat-step [stepControl]="formPraticaGroup" label="Servizi:  {{getServiziScelti()}}">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>Cerca servizio</mat-label>
+            <input matInput placeholder="servizio" (keyup)="searchServizi($event.target.value)" id="servizio" #servizio
+              formControlName="servizio">
+            <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="cleatTxt('servizio')">
+              <mat-icon *ngIf="searchForm.get('servizio').value!==''">close</mat-icon>
+            </button>
+          </mat-form-field>
+          <mat-card-subtitle>Servizi selezionati ({{durataPrenotazione}} minuti)</mat-card-subtitle>
+          <mat-chip-list aria-label="Servizi selezionati">
+            <mat-chip color="warn" selected *ngFor="let s of serviziSelezionati" [removable]="true"
+              (removed)="removeService(s)">
+              <div style="display: flex;align-items: center;gap: 5px;">
+
+                <mat-icon (click)="setRichiesto(s)" [style.background-color]="s.richiesto?'yellow':'lightcoral'"
+                  [style.color]="s.richiesto?'black':'white'" style="font-size: 18px;width: 24px;height: 24px;background-color: lightcoral;color: white;display: flex;justify-content: center;
+                      border-radius: 100%;">R</mat-icon>
+
+                <mat-icon (click)="setNotes(s)"
+                  style="font-size: 18px;width: 24px;height: 24px;background-color: lightcoral;color: white;display: flex;justify-content: center;border-radius: 100%;">
+                  N</mat-icon>
+
+                <div style="display:flex;flex-direction: column;line-height: 12px;gap: 3px;">
+                  <span>{{s.servizio + ' - ' + s.nomeCollaboratore.replace(' i collaboratori','')}}</span>
+                  <span style="color:yellow;" *ngIf="s.note">{{s.note}}</span>
+                </div>
+              </div>
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+          </mat-chip-list>
+
+          <button mat-raised-button style="float: right; margin-top:10px; margin-bottom: 10px;" color="primary"
+            matStepperNext (click)="verificaDisponibilita()" disabled="{{flagNextServizi}}">Avanti <mat-icon
+              matListAvatar>
+              navigate_next
+            </mat-icon></button>
+          <div style="max-height: 320px;float: left;overflow: auto;overflow-x:hidden;margin-top: 10px;">
+            <mat-card-subtitle style="margin:5px 0 0;">Servizi Principali</mat-card-subtitle>
+            <button mat-raised-button color="accent" *ngFor="let s of serviziPrincipali()"
+              style="min-width: 280px; margin:5px; text-align: left;" (click)="selezionaServizio(s)">
+              {{s.servizio}} - {{s.durata}} min.
+            </button>
+            <div style="max-height: 320px;float: left;overflow: auto;overflow-x:hidden;margin-top: 10px;">
+              <mat-card-subtitle style="margin:5px 0 0;">Altri Servizi</mat-card-subtitle>
+              <button mat-raised-button color="accent" *ngFor="let s of serviziSecondari()"
+                style="min-width: 280px; margin:5px; text-align: left;" (click)="selezionaServizio(s)">
+                {{s.servizio}} - {{s.durata}} min.
+              </button>
+            </div>
+          </div>
+        </mat-step>
+
+
+        <mat-step *ngIf="idCollaboratorePrefissato===''">
+          <ng-template matStepLabel>Verifica disponibilità</ng-template>
+
+          <div style="background: aliceblue;border-radius: 6px;padding: 10px;margin-top: 10px;">
+
+            <div style="width: 100%;display: flex;justify-content: space-between;color: #000000;align-items: center;">
+              <div>Seleziona data</div>
+              <div style="text-transform: capitalize;color: #ff4081;">{{settimanaCorrente[4] | date: 'MMMM y' }}
+              </div>
+            </div>
+
+            <div class="seleziona-giorno">
+
+              <div *ngIf="fineScroll()" style="width:16px;"></div>
+
+              <div *ngIf="!fineScroll()" class="btn-giorno-indietro" (click)="settimanaIndietro()">
+                <mat-icon style="transform: scale(3);color: #000000;" inline="true">
+                  navigate_before</mat-icon>
+              </div>
+
+              <div class="seleziona-data">
+
+                <div class="settimana settimana-corrente">
+                  <div *ngFor="let data of settimanaCorrente" class="selezione-giorno"
+                    [ngClass]="{'giornoSelezionato' : ifDataSelezionata(data)}" (click)="selezionaGiorno(data)">
+                    <div
+                      style="text-transform: uppercase;font-size: 10px;width: 100%;display: flex;justify-content: center;">
+                      {{data | date:'EEE'}}</div>
+                    <div style="font-size: 20px;line-height: 20px;">{{data | date:'dd'}}</div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="btn-giorno-avanti" (click)="settimanaAvanti()">
+                <mat-icon style="transform: scale(3);color: #000000" inline="true" class="icon-cambia-giorno">
+                  navigate_next</mat-icon>
+              </div>
+
+            </div>
+
+            <button mat-raised-button type="submit" (click)="openDatePicker()" style="width: 100%;background: aliceblue;
+            color: #000000;">
+              <mat-icon>calendar_month</mat-icon>
+              <input matInput [matDatepicker]="picker" style="display:none;" #datePicker
+                (dateChange)="selezionaGiornoCalendario($event.value)">
+              <mat-datepicker #picker touchUi="true"></mat-datepicker>
+            </button>
+
+          </div>
+
+          <!-- <div style="display: flex;justify-content: center;margin-bottom: 10px;margin-top: 10px;">
+            <strong>Scegli il giorno e l'ora</strong>
+          </div>
+
+          <div class="seleziona-giorno">
+
+            <div class="seleziona-data">
+              <button mat-raised-button color="Basic" class="btn-giorno-indietro" (click)="cambiaGiorno('indietro')">
+                <mat-icon inline="true" class="icon-cambia-giorno">navigate_before</mat-icon>
+              </button>
+              <button mat-raised-button type="submit" class="selezione-giorno" (click)="openDatePicker()">
+                {{dataCorrente.toLocaleDateString('it-IT',{'weekday': 'long', 'month': '2-digit', 'day': '2-digit'})}}
+                <input matInput [matDatepicker]="picker" style="display:none;" #datePicker
+                  (dateChange)="updateDate($event)">
+                <mat-datepicker #picker touchUi="true"></mat-datepicker>
+              </button>
+              <button mat-raised-button color="Basic" class="btn-giorno-avanti" (click)="cambiaGiorno('avanti')">
+                <mat-icon inline="true" class="icon-cambia-giorno">navigate_next</mat-icon>
+              </button>
+            </div>
+          </div> -->
+
+          <!-- <div id="search" style="text-align: center; margin-bottom:15px; margin-left: 0; margin-right: 0; padding: 0;">
+            <button mat-raised-button color="Basic" style="width: 12% !important;" (click)="cambiaGiorno('indietro')">
+              <mat-icon>navigate_before</mat-icon>
+            </button>
+            <button mat-raised-button type="submit"
+              style="width:45%; margin-left: 5px; margin-right:5px; text-align: center !important;"
+              (click)="openDatePicker()">
+              {{dataCorrente.toLocaleDateString('it-IT',{'weekday': 'long', 'month': '2-digit', 'day': '2-digit'})}}
+              <input matInput [matDatepicker]="picker" style="visibility: hidden;" #datePicker
+                (dateChange)="updateDate($event)">
+              <mat-datepicker #picker touchUi="true"></mat-datepicker>
+            </button>
+            <button mat-raised-button color="Basic" style=" width: 12% !important;" (click)="cambiaGiorno('avanti')">
+              <mat-icon>navigate_next</mat-icon>
+            </button>
+          </div> -->
+
+          <div>
+            <!-- <div mat-subheader>Orari disponibili per il {{dataCorrente | date: 'dd/MM/yyyy'}}</div>
+            <div mat-subheader *ngIf="orariDisponibili.errore">{{orariDisponibili.errore}}</div> -->
+            <mat-card class="orari-disponibili-errore" mat-subheader *ngIf="orariDisponibili.errore">
+              <mat-icon style="transform: scale(2);color: red;">error</mat-icon>
+              <span>{{orariDisponibili.errore}}</span>
+            </mat-card>
+
+            <!-- css loader -->
+            <div class="snippet" data-title=".dot-pulse"
+              style="display: flex;justify-content: center;align-items: center;width: 100%;height: 40vh;"
+              *ngIf="!orariDisponibili.errore && orariDisponibili.orariDisponibili.length == 0">
+              <div class="stage" style="height: 20px;display: flex;align-items: center;">
+                <div class="dot-pulse"></div>
+              </div>
+            </div>
+
+            <div class="orari-table-wrapper" *ngIf="orariDisponibili.orariDisponibili.length > 0">
+
+              <div style="display: flex;justify-content: space-between;">
+                <div>Orari disponibili</div>
+                <div>{{dataSelezionata | date: 'dd/MM/yy'}}</div>
+              </div>
+
+              <div class="orari-wrapper">
+
+                <div class="orari" *ngIf="getMattino()?.length > 0">
+
+                  <div class="orari-header">
+                    Mattino
+                  </div>
+
+                  <div *ngFor="let ora of getMattino()">
+
+                    <button mat-raised-button color="{{getColor(ora)}}" (click)="selezionaOra(ora)" style="width:100%">
+                      {{ora | date: 'HH:mm'}}
+                    </button>
+                  </div>
+                </div>
+
+                <div class="orari" *ngIf="getPomeriggio()?.length > 0">
+                  <div class="orari-header" style="font-size: 12px;">
+                    Pomeriggio
+                  </div>
+                  <div *ngFor="let ora of getPomeriggio()">
+                    <button mat-raised-button color="{{getColor(ora)}}" (click)="selezionaOra(ora)" style="width:100%">
+                      {{ora | date: 'HH:mm'}}
+                    </button>
+                  </div>
+                </div>
+
+                <div class="orari" *ngIf="getSera()?.length > 0" style="border-right: 5px solid #d7d7d7;">
+                  <div class="orari-header">
+                    Sera
+                  </div>
+                  <div *ngFor="let ora of getSera()">
+                    <button mat-raised-button color="{{getColor(ora)}}" (click)="selezionaOra(ora)" style="width:100%">
+                      {{ora | date: 'HH:mm'}}
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- <table
+              style="max-height: 320px;overflow: auto;overflow-x:hidden;margin-bottom: 10px;margin-top: 15px;width: 100%; padding: 0;">
+              <tr>
+                <td>
+                  <div mat-subheader>Mattino</div>
+                </td>
+                <td>
+                  <div mat-subheader>Pomeriggio</div>
+                </td>
+                <td>
+                  <div mat-subheader>Sera</div>
+                </td>
+              </tr>
+              <tr style="max-height: 320px;overflow: auto;overflow-x:hidden;margin-bottom: 10px;margin-top: 15px;">
+                <td style="border-left: 1px solid black; vertical-align: top;">
+                  <div style="max-height: 320px;overflow: auto;overflow-x:hidden;margin-bottom: 10px;margin-top: 15px;">
+                    <mat-list>
+                      <mat-list-item *ngFor="let ora of getMattino()">
+                        <button mat-raised-button color="{{getColor(ora)}}" (click)="selezionaOra(ora)">
+                          <mat-icon mat-list-icon>book_online</mat-icon>{{ora | date: 'HH:mm'}}
+                        </button>
+                      </mat-list-item>
+                      <mat-divider></mat-divider>
+                    </mat-list>
+                  </div>
+                </td>
+                <td style="border-left: 1px solid black; vertical-align: top;">
+                  <div style="max-height: 320px;overflow: auto;overflow-x:hidden;margin-bottom: 10px;margin-top: 15px;">
+                    <mat-list>
+
+                      <mat-list-item *ngFor="let ora of getPomeriggio()">
+                        <button mat-raised-button color="{{getColor(ora)}}" (click)="selezionaOra(ora)">
+                          <mat-icon mat-list-icon>book_online</mat-icon>{{ora | date: 'HH:mm'}}
+                        </button>
+                      </mat-list-item>
+                      <mat-divider></mat-divider>
+                    </mat-list>
+                  </div>
+                </td>
+                <td style="border-left: 1px solid black;border-right: 1px solid black; vertical-align: top;">
+                  <div style="max-height: 320px;overflow: auto;overflow-x:hidden;margin-bottom: 10px;margin-top: 15px;">
+                    <mat-list>
+
+                      <mat-list-item *ngFor="let ora of getSera()">
+                        <button mat-raised-button color="{{getColor(ora)}}" (click)="selezionaOra(ora)">
+                          <mat-icon mat-list-icon>book_online</mat-icon>{{ora | date: 'HH:mm'}}
+                        </button>
+                      </mat-list-item>
+                      <mat-divider></mat-divider>
+                    </mat-list>
+                  </div>
+                </td>
+              </tr>
+            </table> -->
+          </div>
+          <div style="float: right;margin-top: 20px;">
+            <button mat-raised-button color="primary" matStepperNext (click)="scrollToTop()"
+              disabled="{{flagNextDisponibilita}}">
+              Avanti <mat-icon matListAvatar>navigate_next</mat-icon>
+            </button>
+          </div>
+        </mat-step>
+
+        <mat-step>
+          <ng-template matStepLabel>Conferma prenotazione</ng-template>
+          <strong>Controlla i dati prima di confermare</strong><br /><br />
+
+          <strong>{{clienteObj.nome + ' ' + clienteObj.cognome}}</strong><br />
+          <mat-chip-list aria-label="Servizi selezionati">
+            <mat-chip color="warn" selected *ngFor="let s of serviziSelezionati" [removable]="true"
+              (removed)="removeService(s)">{{s.servizio + ' - ' + s.nomeCollaboratore.replace(' i collaboratori','')}}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+          </mat-chip-list>
+          <strong>{{this.oraSelezionata | date: 'dd/MM/yyyy HH:mm'}}</strong><br />
+          <div style="margin-top: 15px;">
+            <button mat-raised-button color="primary" matStepperPrevious>
+              <mat-icon matListAvatar>navigate_before
+              </mat-icon> Indietro
+            </button> &nbsp; &nbsp;
+            <button [disabled]="loading" mat-raised-button color="accent" type="submit"
+              (click)="confermaPrenotazione()">
+              <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>Prenota<mat-icon matListAvatar>
+                save
+              </mat-icon></button>
+          </div>
+        </mat-step>
+
+      </mat-vertical-stepper>
+
+    </mat-card>
+  </form>

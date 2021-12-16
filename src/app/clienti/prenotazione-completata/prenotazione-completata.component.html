@@ -1,0 +1,56 @@
+<!-- navbar -->
+<mat-toolbar class="prenotazione-completata-navbar">
+  <div class="navbar-left">
+    <div class="logo"><img src="assets/imgx32.png" width="32" height="32" /></div>
+    <div style="display: flex;flex-direction: column;line-height: 10px;">
+      <h4 class="gruppo">{{salone.gruppo}}</h4>
+      <div class="salone"><small>{{salone.salone}}</small></div>
+    </div>
+  </div>
+</mat-toolbar>
+
+<mat-card class="prenotazione-completata-card">
+  <mat-card-title>
+    <h5>Prenotazione confermata</h5>
+  </mat-card-title>
+  <mat-card-content>
+    <div class="success-icon">
+      <mat-icon>check_circle</mat-icon>
+    </div>
+    <mat-divider></mat-divider>
+    <mat-card-actions class="mat-card-actions">
+      <button mat-raised-button color="basic" class="btn-salvacalendar" (click)="salvaGoogleCalendar()">
+        <span>Aggiungi a google calendar</span>
+        <mat-icon inline="true">data_saver_on</mat-icon> 
+      </button>
+      <button mat-raised-button color="warn" (click)="subscribeToNotifications()">
+        <span>Abilita le notifiche</span>
+        <mat-icon inline="true">notifications</mat-icon> 
+      </button>
+      <button mat-raised-button (click)="home()" class="btn-home" style="background: darkcyan;color: white;">
+        <span>Vai alla Home Page</span>
+        <mat-icon matListAvatar inline="true">home</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card-content>
+</mat-card>
+
+<!--
+<mat-card class="card">
+  <h5 class="card-header">Prenotazione confermata</h5>
+  <div class="card-body">
+    <div class="form-group" style="text-align: center; margin-top: 40px; margin-left: auto;margin-right: auto;">
+      <button mat-raised-button color="basic" style="margin-top:30px;left:0; right:0;">
+        <a href="{{linkGoogle}}">Aggiungi questa prenotazione <br /> a google calendar</a>
+      </button>
+      <div class="form-group" style="text-align: center; margin-top: 0;">
+        <button mat-raised-button color="basic" (click)="home()"
+          style="margin-top:20px;left:0; right:0; margin-left: auto;margin-right: auto;">
+          <mat-icon matListAvatar>home
+          </mat-icon>Vai alla Home Page
+        </button>
+      </div>
+    </div>
+  </div>
+</mat-card>
+-->

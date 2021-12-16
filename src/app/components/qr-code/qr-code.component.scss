@@ -1,0 +1,84 @@
+.qrcode-container {
+  max-width: 450px;
+  margin: 0 auto;
+  height: 100%;
+  overflow-y: clip;
+}
+
+.qrcode-navbar {
+  background-color: #008b8b;
+  color: #ffffff;
+  width: 100%;
+  position: sticky;
+  top: 0px;
+  z-index: 999;
+  justify-content: space-between;
+}
+
+.qrcode-navbar .navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.qrcode-navbar .btn-back {
+  background-color: #ffffff;
+  color: #008b8b;
+}
+
+.qrcode-navbar .gruppo {
+  text-transform: capitalize;
+}
+
+.qrcode-card {
+  width: 90%;
+  max-width: 350px;
+  margin: 20px auto;
+}
+
+.qrcode-content {
+  display: flex;
+  justify-content: center;
+}
+
+.qrcode-button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.qrcode-button-container button{
+  width: 250px;
+  margin: 0 auto;
+}
+
+.content-button {
+  width: 100%;
+  padding: 0;
+  color: white;
+  background: darkcyan;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.content-button mat-icon {
+  margin-left: 20px;
+}
+
+.whatsapp-button {
+  width: 100%;
+  background-color: #ffffff;
+  color: darkcyan;
+  border: 2px solid #008b8b;
+}
+
+.whatsapp-button a {
+  color: darkcyan;
+}
+
+.qrcode-button-container .mat-button-wrapper{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

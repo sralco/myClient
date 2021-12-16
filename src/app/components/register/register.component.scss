@@ -1,0 +1,18 @@
+.register-container{
+    max-width:450px;
+    margin:0 auto;
+}
+
+.register-navbar{
+    margin:0 auto;
+    background-color:darkslategray;
+    box-shadow: 0px 2px 5px 1px rgba(0,0,0,0.53);
+    -webkit-box-shadow: 0px 2px 5px 1px rgba(0,0,0,0.53);
+    -moz-box-shadow: 0px 2px 5px 1px rgba(0,0,0,0.53);
+    gap:5px;
+}
+
+.register-card {
+    margin: 20px auto;
+    width: 95%;
+}
