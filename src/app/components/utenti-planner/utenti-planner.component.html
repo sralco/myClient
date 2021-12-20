@@ -35,7 +35,7 @@
 
   <div class="search">
     <form [formGroup]="searchForm" class="searchForm">
-      <mat-form-field style="width:50%;" appearance="outline">
+      <mat-form-field style="width:45%;" appearance="outline">
         <mat-label>Cerca cliente</mat-label>
         <input matInput name="name" (keyup)="searchClienti($event.target.value)"
           formControlName="srcCliente">
@@ -43,7 +43,7 @@
           <mat-icon *ngIf="searchForm.get('srcCliente').value!==''">close</mat-icon>
         </button>
       </mat-form-field>
-      <mat-form-field style="width: 50%;" class="search__form_field" appearance="outline">
+      <mat-form-field style="width: 45%;" class="search__form_field" appearance="outline">
         <mat-label>Paese</mat-label>
         <input matInput (keyup)="searchClienti($event.target.value)"
           formControlName="srcPaese">

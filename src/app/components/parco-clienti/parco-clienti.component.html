@@ -1,16 +1,10 @@
-<mat-toolbar style="background-color: darkslategrey;">
-  <mat-toolbar-row style="justify-content: space-between;">
-    <h3 class="display-6 font-italic">
-      <img src="./assets/img1.png" width="40" height="40" alt="logo">
-      <span class="navbar-brand text-white" style="margin-left:20px;padding:0;">{{salone.salone}}</span></h3>
-
-    <mat-icon (click)="setFlagCercaServizi()" style="margin-right: 15px; color: white;">search</mat-icon>
-
-    <button mat-icon-button (click)="back()" style="background-color:white; font-size: 16px; font-size:small;font-weight: bolder;">
-      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+<mat-toolbar style="display:flex;background-color: darkslategrey;justify-content: space-between; gap:10px;color:#ffffff;">
+    <img src="./assets/img1.png" width="40" height="40" alt="logo">
+    <h3 style="margin:0;">{{salone.salone}}</h3>
+    <mat-icon (click)="setFlagCercaServizi()" style="color: white;transform:scale(1.2);">search</mat-icon>
+    <button mat-icon-button (click)="back()" style="background-color:white; font-size: 16px; font-size:small;font-weight: bolder;color:#000000;">
+      <mat-icon>keyboard_double_arrow_left</mat-icon>
     </button>
-
-  </mat-toolbar-row>
 </mat-toolbar>
 
 <mat-sidenav-container style="background-image: url('./assets/penta.jpg');">

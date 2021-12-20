@@ -1,5 +1,7 @@
 <div class="mysaloon-container">
 
+  <div>
+
   <mat-toolbar class="mysaloon-navbar">
     <h4 class="mysaloon-navbar-gruppo">{{gruppo}}</h4>
   </mat-toolbar>
@@ -19,8 +21,7 @@
       <div class="mysaloon-dettagli-salone">
         <div class="mysaloon-titolo-salone">
           <mat-icon>location_on</mat-icon>
-          <a
-            href="https://www.google.com/maps/search/?api=1&query={{saloneSelezionato.gruppo}}%2c%20{{saloneSelezionato.salone}}">{{ saloneSelezionato.salone }}</a>
+          <a (click)="googleMap(saloneSelezionato)">{{ saloneSelezionato.salone }}</a>
         </div>
         <div class="mysaloon-indirizzo-salone">
           <span>{{ saloneSelezionato.indirizzo }}</span>
@@ -79,6 +80,7 @@
       <mat-button-toggle style="color:darkcyan;" value="orari" aria-pressed="true">Orari</mat-button-toggle>
       <mat-button-toggle style="color:darkcyan;" value="prenotazioni">Prenotazioni</mat-button-toggle>
     </mat-button-toggle-group>
+  </div>
   </div>
 
   <!-- <app-spinner1center *ngIf="attesa"></app-spinner1center> -->
@@ -231,9 +233,9 @@
 
   <div *ngIf="group.value == 'prenotazioni'" class="mysaloon-card-prenotazioni">
 
-    <div class="mysaloon-card-prenotazioni-ticket"
+    <div class="mysaloon-card-prenotazioni-ticket add"
       style="height: 146.4px;color: white;background: #50bcbb;margin-bottom: 10px;display: grid;"
-      [ngStyle]="((saloneSelezionato.prenotazioniAttive?.length > 0) && userLoggedIn) && {'margin-bottom':'10px'}">
+      [ngStyle]="((saloneSelezionato.prenotazioniAttive ?.length > 0) && userLoggedIn) && {'margin-bottom':'10px'}">
       <div class="mysaloon-card-button" (click)="prenota(saloneSelezionato)">
         <button mat-fab style="border: 3px solid darkcyan;">
           <mat-icon inline="true" style="transform: scale(2);">add</mat-icon>
@@ -243,51 +245,55 @@
     </div>
 
     <div *ngIf="userLoggedIn" style="display: flex;flex-direction: column;gap: 10px;">
-      <div *ngFor="let prenotazioniAttive of saloneSelezionato.prenotazioniAttive"
-        class="mysaloon-card-prenotazioni-ticket">
-        <div class="mysaloon-card-prenotazione-header">
-          <div style="text-transform: capitalize;font-weight:800;">
-            {{prenotazioniAttive.start | date:'EEEE, dd/MM/yy HH:mm'}}</div>
-          <!-- <button [style.color]="prenotazioniAttive.backgroundColor" mat-button><mat-icon (click)="annullaAppuntamento(prenotazioniAttive)">more_vert</mat-icon></button> -->
-          <div>
-            <mat-icon [matMenuTriggerFor]="menu" style="cursor: pointer;">more_vert</mat-icon>
-            <mat-menu #menu="matMenu">
-              <button style="display: flex;justify-content: center;margin: 0;padding: 0;"
-                (click)="annullaAppuntamento(prenotazioniAttive)" mat-menu-item>Annulla</button>
-            </mat-menu>
-          </div>
-        </div>
-        <div class="mysaloon-card-prenotazione-content">
-          <mat-chip-list aria-label="Fish selection">
-            <mat-chip [style.background-color]="prenotazioniAttive.backgroundColor"
-              *ngFor="let servizi of prenotazioniAttive.extendedProps.servizi.split('\r\n')" style="color:white;">
-              <span *ngIf="(servizi != '')">{{ servizi }}</span></mat-chip>
-          </mat-chip-list>
-          <!-- <ul>
-            <li *ngFor="let servizi of prenotazioniAttive.extendedProps.servizi.split('\r\n')">
-              <span *ngIf="(servizi != '')">{{ servizi }}</span>
-            </li>
-          </ul> -->
-        </div>
-        <div class="mysaloon-card-prenotazione-actions">
-          <div class="salone-appuntamento">
-            <div style="display: flex;gap: 5px;align-items: center;" (click)="googleMap(saloneSelezionato)">
-              <mat-icon style="transform: scale(1.8);">place</mat-icon>
-              <div style="display: flex;flex-direction: column;line-height: initial;">
-                <div style="font-weight: 900;">{{saloneSelezionato.salone}}</div>
-                <div style="font-size: 12px;color: black;font-weight: 500;">{{saloneSelezionato.indirizzo}}</div>
+      <!-- <div *ngFor="let prenotazioniAttive of saloneSelezionato.prenotazioniAttive" 
+        class="mysaloon-card-prenotazioni-ticket"> -->
+      <div *ngFor="let salone of saloni" style="display: flex;flex-direction: column;gap: 10px;">
+        <div *ngFor="let prenotazioniAttive of salone.prenotazioniAttive"
+          class="mysaloon-card-prenotazioni-ticket">
+
+          <div class="left" [style.background-color]="prenotazioniAttive.backgroundColor.slice(0, -4) + '0.66)'">
+            <div>
+              <mat-icon [matMenuTriggerFor]="menu" style="cursor: pointer;">more_vert</mat-icon>
+              <mat-menu #menu="matMenu">
+                <button style="display: flex;justify-content: center;margin: 0;padding: 0;"
+                  (click)="annullaAppuntamento(prenotazioniAttive)" mat-menu-item>Annulla</button>
+              </mat-menu>
+            </div>
+            <div class="salone-appuntamento" style="height: 100%;">
+              <div style="display: flex;gap: 15px;align-items: center;flex-direction: column;justify-content: center;"
+                (click)="googleMap(salone)">
+                <mat-icon style="transform: scale(1.8);">place</mat-icon>
+                <div style="display: flex;flex-direction: column;line-height: initial;">
+                  <div style="font-weight: 900;display: flex;justify-content: center;">{{salone.salone}}
+                  </div>
+                  <!-- <div style="font-size: 12px;color: #ffffff;font-weight: 500;">{{saloneSelezionato.indirizzo}}</div> -->
+                </div>
               </div>
             </div>
           </div>
 
+          <div class="right">
+            <div style="text-transform: capitalize;font-weight:800;">
+              {{prenotazioniAttive.start | date:'EEEE, dd/MM/yy HH:mm'}}</div>
+            <h6 style="margin-top: 6px;margin-bottom:0;">Servizi</h6>
+            <ul class="servizi">
+              <li *ngFor="let servizi of prenotazioniAttive.extendedProps.servizi.split('\r\n')">
+                {{ servizi }}
+              </li>
+            </ul>
+          </div>
+
         </div>
+
       </div>
+
     </div>
   </div>
+</div>
 
-  <notifier-container></notifier-container>
+<notifier-container></notifier-container>
 
-  <!-- <div id="exampleSlider" *ngIf="t.prenotazioniAttive && user"
+<!-- <div id="exampleSlider" *ngIf="t.prenotazioniAttive && user"
               style="padding: 0;position: absolute; margin-top:-30px;right:10px; width: 160px;">
               <div class="MS-content">
                 <button class="item" *ngFor="let p of t.prenotazioniAttive" mat-raised-button color="warn"

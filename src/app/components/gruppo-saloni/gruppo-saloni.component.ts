@@ -19,6 +19,7 @@ import { TempFiche } from 'src/app/Models/Temp-Fiche';
 import { InAttesaComponent } from '../in-attesa/in-attesa.component';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 
+
 @Component({
   selector: 'app-gruppo-saloni',
   templateUrl: './gruppo-saloni.component.html',
@@ -88,7 +89,7 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
     };
   }
 
-  constructor(private serviceRT: RealtimeService, private router: Router, private loc: Location, private route: ActivatedRoute, private service: SaloniService, private auth: AuthService, private notifier: NotifierService, public dialog: MatDialog,) {
+  constructor( private serviceRT: RealtimeService, private router: Router, private loc: Location, private route: ActivatedRoute, private service: SaloniService, private auth: AuthService, private notifier: NotifierService, public dialog: MatDialog,) {
     this.menu = new VociMenu;
     this.intervallo = new Intervallo;
     this.modalitaConsulente = !!localStorage.getItem('ModalitaConsulente');
@@ -645,7 +646,9 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
     } else if (Statistica === 'Stecchiti') {
       this.router.navigate(['stecchiti']);
     } else if (Statistica === 'Appuntamenti') {
-      this.router.navigate(['planner']);
+      console.log('salone')
+      console.log(s)
+      this.router.navigateByUrl('planner');
     }
   }
 

@@ -7,11 +7,11 @@
 
     <!-- navbar -->
     <mat-toolbar class="navbar">
-      <div class="navbar-left">
+      <div class="left">
         <div class="logo"><img src="assets/imgx32.png" width="32" height="32" /></div>
-        <div style="display: flex;flex-direction: column;line-height: 10px;">
-          <h4 class="gruppo">{{salone.gruppo}}</h4>
-          <div class="salone" style="margin-top: 2px;"><small>{{salone.salone}}</small></div>
+        <div class="gruppo-salone">
+          <h4 class="gruppo">{{saloneSelezionato.gruppo}}</h4>
+          <div class="salone"><small>{{saloneSelezionato.salone}}</small></div>
         </div>
       </div>
       <div class="navbar-right">
@@ -42,7 +42,7 @@
   </div> -->
 
 
-  <div id="search" style="margin: 3px;display: flex;justify-content: center;">
+  <div class="buttons-bar" style="margin: 3px;display: flex;justify-content: end;">
   <!--  <button mat-raised-button type="submit"
       style="margin-right:5px;width: 60px !important; min-width: unset !important;" (click)="cambiaGiorno('')">
       Oggi
@@ -62,9 +62,11 @@
       (click)="cambiaGiorno('avanti')">
       <mat-icon>navigate_next</mat-icon>
     </button> -->
+    
     <input matInput [matDatepicker]="picker" style="display: none;" #datePicker (dateChange)="updateDate($event)">
     <mat-datepicker #picker touchUi="true"></mat-datepicker>
     <mat-button-toggle-group name="fontStyle" aria-label="Font Style" style="display: flex;justify-content: center;">
+      <mat-button-toggle (click)="selezSalone()" *ngIf="saloni.length > 1"><mat-icon>where_to_vote</mat-icon></mat-button-toggle>
       <mat-button-toggle value="bold" (click)="cambiaGiorno('')">Oggi</mat-button-toggle>
       <mat-button-toggle value="italic" (click)="openDatePicker()" style="padding-right: 0;">
         {{dataCorrente.toLocaleDateString('it-IT',{'weekday': 'long', 'month': '2-digit', 'day': '2-digit'})}} <mat-icon style="color:#343a40;">event_note</mat-icon>
@@ -72,6 +74,18 @@
       <mat-button-toggle value="bold" (click)="cambiaGiorno('indietro')"><mat-icon>navigate_before</mat-icon></mat-button-toggle>
       <mat-button-toggle value="underline" (click)="cambiaGiorno('avanti')"><mat-icon>navigate_next</mat-icon></mat-button-toggle>
     </mat-button-toggle-group>
+  </div>
+
+  <div class="planner-seleziona-saloni" *ngIf="selezionandoSalone">
+    <div class="salone" *ngFor="let salone of saloni" (click)="selezionaSalone(salone)">
+      <div class="logo">
+        <img src="./assets/imgx32.png" width="40" height="40" alt="logo"
+          [ngStyle]="(salone.salone == saloneSelezionato.salone) && {'filter' : 'none'}">
+      </div>
+      <div class="titolo" [ngStyle]="(salone == saloneSelezionato) && {'color' : 'darkcyan'}">
+        {{salone.salone}}
+      </div>
+    </div>
   </div>
 
   <div id="table" style="height: 100%;">

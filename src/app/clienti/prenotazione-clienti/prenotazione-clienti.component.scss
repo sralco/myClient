@@ -1,7 +1,8 @@
 // variabili
 $background-color:var(--background-color);
 $color:var(--color);
- // loader
+
+// loader
 .dot-pulse {
   position: relative;
   left: -9999px;
@@ -14,6 +15,7 @@ $color:var(--color);
   animation: dotPulse 1.5s infinite linear;
   animation-delay: .25s;
 }
+
 .dot-pulse::before,
 .dot-pulse::after {
   content: '';
@@ -26,28 +28,34 @@ $color:var(--color);
   background-color: $background-color;
   color: $background-color;
 }
+
 .dot-pulse::before {
   box-shadow: 9984px 0 0 -5px $background-color;
   animation: dotPulseBefore 1.5s infinite linear;
   animation-delay: 0s;
 }
+
 .dot-pulse::after {
   box-shadow: 10014px 0 0 -5px $background-color;
   animation: dotPulseAfter 1.5s infinite linear;
   animation-delay: .5s;
 }
+
 @keyframes dotPulseBefore {
   0% {
     box-shadow: 9984px 0 0 -5px $background-color;
   }
+
   30% {
     box-shadow: 9984px 0 0 2px $background-color;
   }
+
   60%,
   100% {
     box-shadow: 9984px 0 0 -5px $background-color;
   }
 }
+
 @keyframes dotPulse {
   0% {
     box-shadow: 9999px 0 0 -5px $background-color;
@@ -62,6 +70,7 @@ $color:var(--color);
     box-shadow: 9999px 0 0 -5px $background-color;
   }
 }
+
 @keyframes dotPulseAfter {
   0% {
     box-shadow: 10014px 0 0 -5px $background-color;
@@ -76,6 +85,7 @@ $color:var(--color);
     box-shadow: 10014px 0 0 -5px $background-color;
   }
 }
+
 .prenotazione-clienti-navbar {
   top: 0;
   z-index: 999;
@@ -85,50 +95,60 @@ $color:var(--color);
   justify-content: space-between;
   color: $color;
   height: auto;
+
+  .navbar-left {
+    display: flex;
+    align-items: center;
+  }
+
+  h5 {
+    font-size: 15px;
+  }
 }
-.prenotazione-clienti-navbar .navbar-left {
-  display: flex;
-  align-items: center;
-}
-.prenotazione-clienti-navbar h5 {
-  font-size: 15px;
-}
+
 .prenotazione-clienti-salone {
   background: $color;
   margin-top: 4px;
   margin-bottom: 4px;
   color: $background-color;
+
+  .salone-left {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    $color-space: nowrap;
+    gap: 10px;
+  }
+
+  .gruppo {
+    text-transform: capitalize;
+    line-height: 18px;
+    font-size: 20px;
+
+    a {
+      text-decoration: none;
+      color: $background-color;
+    }
+  }
+
+  img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .gruppo-salone {
+    display: flex;
+    flex-direction: column;
+    line-height: 10px;
+    gap: 3px;
+  }
+
+  .salone {
+    font-size: 17px;
+    color: #000000;
+  }
 }
-.prenotazione-clienti-salone .salone-left {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  $color-space: nowrap;
-  gap: 10px;
-}
-.prenotazione-clienti-salone .gruppo {
-  text-transform: capitalize;
-  line-height: 18px;
-  font-size: 20px;
-}
-.prenotazione-clienti-salone .gruppo a {
-  text-decoration: none;
-  color: $background-color;
-}
-.prenotazione-clienti-salone img {
-  width: 50px;
-  height: 50px;
-}
-.prenotazione-clienti-salone .gruppo-salone {
-  display: flex;
-  flex-direction: column;
-  line-height: 10px;
-  gap: 3px;
-}
-.prenotazione-clienti-salone .salone {
-  font-size: 17px;
-  color: #000000;
-}
+
 .prenotazione-clienti-user-bar {
   width: 100%;
   background: $background-color;
@@ -139,6 +159,7 @@ $color:var(--color);
   font-size: 20px;
   padding: 2px;
 }
+
 .prenotazione-clienti-card {
   width: 100%;
   height: 100%;
@@ -147,291 +168,314 @@ $color:var(--color);
   border: 0;
   box-shadow: none !important;
   padding: 0 !important;
-}
-.prenotazione-clienti-card .servizi {
-  margin-top: 5px !important;
-  width: 100%;
-  color: $color;
-  padding: 5px;
-  display: flex;
-  justify-content: space-between;
-  cursor: pointer;
-}
-.prenotazione-clienti-card .mat-horizontal-stepper-header-container {
-  display: none;
-}
-.prenotazione-clienti-card .servizi-principali {
-  background-color: #3f3d3d !important;
 
-}
-.prenotazione-clienti-card .servizi-secondari {
-  background-color: #3f3d3d !important;
-}
-.prenotazione-clienti-card .servizio-selezionato {
-  background-color: #f44336 !important;
-}
-.prenotazione-clienti-card mat-stepper {
-  background: #50bcbb;
-}
-.prenotazione-clienti-body {
-  background: #50bcbb;
-}
-.prenotazione-clienti-footer {
-  flex: 0 1 38px;
-  background: $background-color;
-  display: flex;
-  justify-content: space-between;
-  color: $color;
-  min-height: 38px;
-}
-.prenotazione-clienti-card .mat-step-header {
-  padding-bottom: 10px !important;
-}
+  .servizi {
+    margin-top: 5px !important;
+    width: 100%;
+    color: $color;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+  }
 
-.prenotazione-clienti-card .mat-form-field {
-  margin-top: 6px;
-  font-size: 12px;
-  background: $color;
-  width: 100%;
-}
-.prenotazione-clienti-card .mat-form-field input {
-  font-size: 13px;
-  color: #000000 !important;
-}
-.prenotazione-clienti-card .mat-form-field-infix {
-  padding: 6px;
-}
-.prenotazione-clienti-card .mat-form-field-wrapper {
-  padding-bottom: 0;
-  margin-bottom: 0 !important;
-  margin-top: 0 !important;
-}
-.prenotazione-clienti-card .servizi-selezionati div.mat-chip-list-wrapper {
-  padding-bottom: 6px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  overflow-y: hidden;
-  overflow-x: auto;
-  width: 100%;
-  margin-top: 6px;
-}
-.prenotazione-clienti-card mat-chip.mat-chip {
-  background-color: #f44336;
-  color: #fff;
-  display: flex;
-  white-space: nowrap;
-}
-.prenotazione-clienti-card .servizi-selezionati {
-  background: aliceblue;
-  border-radius: 6px;
-  padding: 10px;
-}
+  .mat-horizontal-stepper-header-container {
+    display: none;
+  }
 
-.prenotazione-clienti-card .servizi-selezionati .mat-form-field-appearance-outline .mat-form-field-outline {
-  color: $background-color;
-}
+  .servizi-principali {
+    background-color: #3f3d3d !important;
+  }
 
-.prenotazione-clienti-card .servizi-selezionati mat-form-field {
-  .mat-hint,
-  input,
-  ::placeholder,
-  .mat-form-field-label {
+  .servizi-secondari {
+    background-color: #3f3d3d !important;
+  }
+
+  .servizio-selezionato {
+    background-color: #f44336 !important;
+  }
+
+  mat-stepper {
+    background: #50bcbb;
+  }
+
+  .mat-step-header {
+    padding-bottom: 10px !important;
+  }
+
+  .mat-form-field {
+    margin-top: 6px;
+    font-size: 12px;
+    background: $color;
+    width: 100%;
+  }
+
+  .mat-form-field input {
+    font-size: 13px;
+    color: #000000 !important;
+  }
+
+  .mat-form-field-infix {
+    padding: 6px;
+  }
+
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  .servizi-selezionati {
+    background: aliceblue;
+    border-radius: 6px;
+    padding: 10px;
+
+    mat-form-field {
+
+      .mat-hint,
+      input,
+      ::placeholder,
+      .mat-form-field-label {
+        color: $background-color;
+      }
+    }
+
+    .mat-form-field-appearance-outline .mat-form-field-outline {
+      color: $background-color;
+    }
+
+    div.mat-chip-list-wrapper {
+      padding-bottom: 6px;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      overflow-y: hidden;
+      overflow-x: auto;
+      width: 100%;
+      margin-top: 6px;
+    }
+  }
+
+  mat-chip.mat-chip {
+    background-color: #f44336;
+    color: #fff;
+    display: flex;
+    white-space: nowrap;
+  }
+
+  .seleziona-servizi {
+    overflow-y: auto;
+    margin-bottom: 20px;
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .seleziona-giorno {
+    justify-content: space-between;
+    display: flex;
+    padding-top: 4px;
+    padding-bottom: 6px;
+    width: 100%;
+  }
+
+  .selezione-giorno .mat-button-wrapper {
+    text-transform: capitalize;
+  }
+
+  .icon-cambia-giorno {
+    transform: scale(2);
+  }
+
+  .seleziona-data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 240px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+
+    div:first-child {
+      margin-left: 0 !important;
+    }
+
+    .cdk-program-focused {
+      display: none;
+    }
+  }
+
+  .settimana {
+    width: 240px;
+    display: flex;
+  }
+
+  .mat-card-actions {
+    padding: 0 !important;
+    margin: 10px 0 0 0;
+    justify-content: space-between;
+    display: flex !important;
+  }
+
+  .btn-avanti {
+    right: 0;
+    box-shadow: none;
+    bottom: 0px;
+    height: 38px;
     color: $background-color;
+    background: $color;
+    border: none;
+    outline: none !important;
+    border-radius: unset;
+  }
+
+  .selezione-giorno {
+    margin-left: 4px !important;
+    background-color: white;
+    padding: 6px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #000000;
+  }
+
+  .giornoSelezionato {
+    background-color: #ff4081;
+    color: white;
+  }
+
+  .orari-disponibili-errore {
+    margin-top: 10px;
+    padding: 22px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    border-radius: 6px;
+    background: aliceblue;
+
+    span {
+      line-height: initial;
+    }
+  }
+
+  .orari-table-wrapper {
+    background: aliceblue;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 6px;
+  }
+
+  .mat-horizontal-content-container {
+    padding-bottom: 0 !important;
+  }
+
+  .orari {
+    height: 296px;
+    overflow-y: auto;
+    border-left: 5px solid #d7d7d7;
+
+    div:nth-child(2) {
+      margin-top: 40px;
+    }
+
+    &>div {
+      display: flex;
+      justify-content: center;
+      margin: 0 6px 6px;
+    }
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .orari-header {
+    position: absolute;
+    z-index: 2;
+    width: 68px;
+    background-color: var(--background-color);
+    color: var(--color);
+    height: 35px;
+    border-radius: 6px;
+    align-items: center;
+  }
+
+  .orari-wrapper {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .card-riepilogo {
+    margin-top: 20px;
+  }
+
+  .riepilogo-data {
+    margin-top: 20px;
+    border-top: 1px solid $background-color;
+    border-bottom: 1px solid $background-color;
+  }
+
+  .btn-avanti-container {
+    z-index: 999999;
+    bottom: 0;
+    position: fixed;
+    width: 100%;
+    max-width: 450px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    background-color: var(--background-color);
+  }
+
+  .btn-navigation-container {
+    background-color: var(--background-color);
+    bottom: 0;
+    position: fixed;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    height: 38px;
+    max-width: 450px;
+    align-self: center;
+    margin: 0 auto;
+    left: 50%;
+    transform: translate(-50%, 0);
+
+    .second-step-btn-avanti,
+    .second-step-btn-indietro {
+      height: 38px;
+      color: $background-color;
+      background: $color;
+      border: none;
+      outline: none !important;
+      box-shadow: none;
+      border-radius: unset;
+      margin-right: 0;
+    }
   }
 }
 
-.prenotazione-clienti-card .seleziona-servizi {
-  overflow-y: auto;
-  margin-bottom: 20px;
+.prenotazione-clienti-body {
+  background: #50bcbb;
 }
 
-.prenotazione-clienti-card .seleziona-servizi::-webkit-scrollbar {
-  display: none;
-}
-
-.prenotazione-clienti-card .seleziona-giorno {
-  justify-content: space-between;
-  display: flex;
-  padding-top: 4px;
-  padding-bottom: 6px;
-  width: 100%;
-}
-
-.prenotazione-clienti-card .selezione-giorno .mat-button-wrapper {
-  text-transform: capitalize;
-}
-
-.prenotazione-clienti-card .icon-cambia-giorno {
-  transform: scale(2);
-}
-
-.prenotazione-clienti-card .seleziona-data {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 240px;
-  overflow-x: auto;
-  flex-wrap: nowrap;
-}
-
-.prenotazione-clienti-card .settimana{
-  width: 240px;
-  display: flex;
-}
-
-.prenotazione-clienti-card .seleziona-data div:first-child {
-  margin-left: 0!important;
-}
-
-.btn-giorno-avanti, .btn-giorno-indietro {
+.btn-giorno-avanti,
+.btn-giorno-indietro {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0;
 }
 
-.prenotazione-clienti-card .mat-card-actions {
-  padding: 0 !important;
-  margin: 10px 0 0 0;
-  justify-content: space-between;
-  display: flex !important;
-}
-
-.prenotazione-clienti-card .btn-avanti {
-  right: 0;
-  box-shadow: none;
-  bottom: 0px;
-  height: 38px;
-  color: $background-color;
-  background: $color;
-  border: none;
-  outline: none !important;
-  border-radius: unset;
-}
-.prenotazione-clienti-card .selezione-giorno {
-  margin-left: 4px !important;
-  background-color: white;
-  padding: 6px;
-  border-radius: 6px;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #000000;
-}
-.prenotazione-clienti-card .giornoSelezionato{
-  background-color: #ff4081;
-  color:white;
-}
-.prenotazione-clienti-card .seleziona-data .cdk-program-focused {
-  display: none;
-}
-.prenotazione-clienti-card .orari-disponibili-errore {
-  margin-top: 10px;
-  padding: 22px !important;
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  border-radius: 6px;
-  background: aliceblue;
-}
-.prenotazione-clienti-card .orari-table-wrapper{
-  background: aliceblue;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 6px;
-}
-
-.prenotazione-clienti-card .orari-disponibili-errore span {
-  line-height: initial;
-}
-.prenotazione-clienti-card .mat-horizontal-content-container {
-  padding-bottom: 0 !important;
-}
-.prenotazione-clienti-card .orari {
-  height: 296px;
-  overflow-y: auto;
-  border-left: 5px solid #d7d7d7;
-}
-.prenotazione-clienti-card .orari div:nth-child(2) {
-  margin-top: 40px;
-}
-.prenotazione-clienti-card .orari>div {
-  display: flex;
-  justify-content: center;
-  margin: 0 6px 6px;
-}
-.prenotazione-clienti-card .orari::-webkit-scrollbar {
-  display: none;
-}
-.prenotazione-clienti-card .orari-header {
-  position: absolute;
-  z-index: 2;
-  width: 68px;
-  background-color: var(--background-color);
-  color: var(--color);
-  height: 35px;
-  border-radius: 6px;
-  align-items: center;
-}
-
-.prenotazione-clienti-card .orari-wrapper {
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
-}
-
-.prenotazione-clienti-card .card-riepilogo {
-  margin-top: 20px;
-}
-.prenotazione-clienti-card .riepilogo-data {
-  margin-top: 20px;
-  border-top: 1px solid $background-color;
-  border-bottom: 1px solid $background-color;
-}
-
-.prenotazione-clienti-card .btn-avanti-container {
-  bottom: 0;
-  position: fixed;
-  width: 100%;
-  max-width: 450px;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-}
-
-.prenotazione-clienti-card .btn-navigation-container {
-  bottom: 0;
-  position: fixed;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  height: 38px;
-  max-width: 450px;
-  align-self: center;
-  margin: 0 auto;
-  left: 50%;
-  transform: translate(-50%, 0);
-}
-
-.riepilogo-btn-navigation-container{
+.riepilogo-btn-navigation-container {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
 
-.prenotazione-clienti-card .btn-navigation-container .second-step-btn-avanti,
-.prenotazione-clienti-card .btn-navigation-container .second-step-btn-indietro {
-  height: 38px;
-  color: $background-color;
-  background: $color;
-  border: none;
-  outline: none !important;
-  box-shadow: none;
-  border-radius: unset;
-  margin-right: 0;
-}
 .prenotazione-completata-card {
   margin-top: 20px;
   width: 90%;
@@ -441,44 +485,46 @@ $color:var(--color);
   border: 0;
   border: 3px solid $background-color;
   border-radius: 25px !important;
-}
-.prenotazione-completata-card mat-card-title {
-  display: flex;
-  justify-content: center;
-  color: $background-color;
-  align-items: center;
-  padding: 4px;
-}
-.prenotazione-completata-card .success-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100px;
-  padding: 20px;
-  margin-bottom: 20px;
-}
-.prenotazione-completata-card .success-icon mat-icon {
-  color: $background-color;
-  transform: scale(5);
-}
-.prenotazione-completata-card mat-card-title h5 {
-  margin: 0;
-}
-.prenotazione-completata-card .mat-card-actions {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 30px;
-  gap: 15px;
-}
-.prenotazione-completata-card .mat-card-actions button {
-  width: 230px;
-}
-.prenotazione-completata-card .mat-card-actions button .mat-icon {
-  transform: scale(1.5);
-}
-.prenotazione-completata-card .mat-button-wrapper {
-  display: flex;
-  justify-content: space-between;
+
+  .success-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    padding: 20px;
+    margin-bottom: 20px;
+    mat-icon {
+      color: $background-color;
+      transform: scale(5);
+    }
+    mat-card-title h5 {
+      margin: 0;
+    }
+  }
+
+  mat-card-title {
+    display: flex;
+    justify-content: center;
+    color: $background-color;
+    align-items: center;
+    padding: 4px;
+  }
+  .mat-card-actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    gap: 15px;
+    button {
+      width: 230px;
+      .mat-icon {
+        transform: scale(1.5);
+      }
+    }
+  }
+  .mat-button-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
 }

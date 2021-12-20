@@ -1,5 +1,5 @@
 <div class="login-container">
-  
+
   <mat-toolbar class="login-navbar">
     <img src="./assets/img1.png" width="40" height="40">
     <div style="color:#ffffff;">mySaloon server</div>
@@ -15,13 +15,14 @@
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <mat-form-field appearance="outline" style="width:100%;margin-top: 20px;" hideRequiredMarker>
           <mat-label>Username</mat-label>
-          <input matInput type="text" formControlName="username" [ngModel]="titolo" required>
+          <input name="username" matInput type="text" formControlName="username" [ngModel]="titolo" required
+            autocomplete="on">
           <mat-error *ngIf="f.username.errors?.required">Il nome utente è obbligatorio</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" style="width:100%;" hideRequiredMarker>
           <mat-label>Password</mat-label>
-          <input matInput type="password" formControlName="password" required>
+          <input name="current-password" matInput type="password" formControlName="password" required autocomplete="on">
           <mat-error *ngIf="f.password.errors?.required">La password è obbligatoria</mat-error>
         </mat-form-field>
 

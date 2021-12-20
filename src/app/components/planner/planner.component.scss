@@ -1,40 +1,52 @@
 .planner-container {
   height: 100vh;
   overflow-y: hidden;
+
+  .navbar {
+    top: 0;
+    z-index: 999;
+    background: #008b8b;
+    width: 100%;
+    position: sticky;
+    justify-content: space-between;
+    color: white;
+
+    .left {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      white-space: nowrap;
+      gap: 10px;
+
+      .logo img {
+        width: 45px;
+        height: 45px;
+      }
+    }
+
+    .gruppo-salone {
+      display: flex;
+      flex-direction: column;
+
+      .gruppo {
+        text-transform: capitalize;
+        line-height: 18px;
+      }
+
+      .salone {
+        line-height: 15px;
+        font-size: 20px;
+      }
+    }
+
+    .btn-back {
+      background-color: #fff;
+      color: darkcyan;
+    }
+  }
 }
 
-.navbar {
-  top: 0;
-  z-index: 999;
-  background: #008b8b;
-  width: 100%;
-  position: sticky;
-  justify-content: space-between;
-  color: white;
-}
 
-.navbar-left {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  white-space: nowrap;
-}
-
-.gruppo {
-  text-transform: capitalize;
-  line-height: 18px;
-}
-
-.logo img {
-  width: 45px;
-  height: 45px;
-  margin-right: 10px;
-}
-
-.btn-back {
-  background-color: #fff;
-  color: darkcyan;
-}
 
 .fc-view-harness {
   margin-top: -30px !important;
@@ -71,4 +83,38 @@ mat-button-toggle-group {
   padding-top: -10px !important;
   align-items: center;
   line-height: 10px !important;
+}
+
+.planner-seleziona-saloni {
+  position: absolute;
+  top: 104px;
+  right: 229px;
+  display: flex;
+  background: white;
+  z-index: 999999;
+  grid-gap: 10px;
+  gap: 10px;
+  padding: 10px;
+  border: 2px solid #e0e0e0;
+
+  .salone {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    gap: 6px;
+
+    .logo img {
+      margin: 0;
+      filter: grayscale(100%);
+    }
+
+    .titolo {
+      color: #000000;
+      font-size: 13px;
+      text-align: center;
+      line-height: 13px;
+    }
+  }
 }

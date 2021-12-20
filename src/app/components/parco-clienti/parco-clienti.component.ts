@@ -22,6 +22,7 @@ import { DettagliClienteComponent } from '../dettagli-cliente/dettagli-cliente.c
   templateUrl: './parco-clienti.component.html',
   styleUrls: ['./parco-clienti.component.scss']
 })
+
 export class ParcoClientiComponent implements OnInit {
   columnsToDisplay = ['classe', 'nome', 'cognome', 'cell', 'paese'];
   dataSource = new MatTableDataSource<Cliente>([]);
