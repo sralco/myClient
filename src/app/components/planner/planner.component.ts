@@ -65,7 +65,7 @@ export class InfoClick {
 })
 export class PlannerComponent implements OnInit, OnDestroy {
 
-  @ViewChild('fullcalendar') fullcalendar: FullCalendarComponent;
+   @ViewChild('fullcalendar') fullcalendar: FullCalendarComponent;
    @ViewChild('picker') picker: MatDatepicker<Date>;
    //@ViewChild('datePicker') datePicker: MatInput;
    @ViewChild('pop') add: ElementRef;
@@ -101,6 +101,9 @@ export class PlannerComponent implements OnInit, OnDestroy {
    salone: Salone;
    opzioni: OpzioniPlanner;
    user: User;
+   saloneSelezionato: Salone;
+   selezionandoSalone: boolean = false;
+   saloni: Salone[] = [];
 
    private updateSubscription: Subscription;
 
@@ -121,31 +124,31 @@ export class PlannerComponent implements OnInit, OnDestroy {
          this.dataCorrente = new Date(JSON.parse(localStorage.getItem('DataPlanner')));
       }
 
-      this.salone = this.saloneService.saloneCorrente;
-      if (!this.salone) {
+      this.saloneSelezionato = this.saloneService.saloneCorrente;
+      if (!this.saloneSelezionato) {
          const a: string[] = localStorage.getItem('PlannerCorrente').split(';');
-         this.salone = new Salone();
-         this.salone.gruppo = a[0];
-         this.salone.salone = a[1];
-         this.salone.destinazione = a[2];
-         this.salone.indirizzo = a[3];
-         this.salone.porta = a[4];
-         this.salone.posizionePlanner = a[5];
+         this.saloneSelezionato = new Salone();
+         this.saloneSelezionato.gruppo = a[0];
+         this.saloneSelezionato.salone = a[1];
+         this.saloneSelezionato.destinazione = a[2];
+         this.saloneSelezionato.indirizzo = a[3];
+         this.saloneSelezionato.porta = a[4];
+         this.saloneSelezionato.posizionePlanner = a[5];
 
       }
 
-      this.salone.opzioniPlanner = JSON.parse(localStorage.getItem('OpzioniPlanner'));
+      this.saloneSelezionato.opzioniPlanner = JSON.parse(localStorage.getItem('OpzioniPlanner'));
 
-      if (this.salone.opzioniPlanner.oraInizio === '') {
-         this.salone.opzioniPlanner.oraInizio = '08:00';
-         this.salone.opzioniPlanner.oraFine = '20:00';
-         this.salone.opzioniPlanner.lun = true;
-         this.salone.opzioniPlanner.mar = true;
-         this.salone.opzioniPlanner.mer = true;
-         this.salone.opzioniPlanner.gio = true;
-         this.salone.opzioniPlanner.ven = true;
-         this.salone.opzioniPlanner.sab = true;
-         this.salone.opzioniPlanner.dom = false;
+      if (this.saloneSelezionato.opzioniPlanner.oraInizio === '') {
+         this.saloneSelezionato.opzioniPlanner.oraInizio = '08:00';
+         this.saloneSelezionato.opzioniPlanner.oraFine = '20:00';
+         this.saloneSelezionato.opzioniPlanner.lun = true;
+         this.saloneSelezionato.opzioniPlanner.mar = true;
+         this.saloneSelezionato.opzioniPlanner.mer = true;
+         this.saloneSelezionato.opzioniPlanner.gio = true;
+         this.saloneSelezionato.opzioniPlanner.ven = true;
+         this.saloneSelezionato.opzioniPlanner.sab = true;
+         this.saloneSelezionato.opzioniPlanner.dom = false;
       }
 
       this.calendarOptions = {
@@ -196,14 +199,14 @@ export class PlannerComponent implements OnInit, OnDestroy {
          dragScroll: true,
          slotDuration: '00:05:00',
          //displayEventTime: false,
-         slotLabelInterval: {minutes: this.salone.opzioniPlanner.intervallo},
+         slotLabelInterval: { minutes: this.saloneSelezionato.opzioniPlanner.intervallo },
          locale: 'it-IT',
          nowIndicator: true,
          scrollTime: '00:00',
-         slotMinTime: this.salone.opzioniPlanner.oraInizio,
-         slotMaxTime: this.salone.opzioniPlanner.oraFine,
+         slotMinTime: this.saloneSelezionato.opzioniPlanner.oraInizio,
+         slotMaxTime: this.saloneSelezionato.opzioniPlanner.oraFine,
          height: '85%',
-         expandRows:true,
+         expandRows: true,
          //contentHeight: '400',
          //stickyFooterScrollbar: true,
          //stickyHeaderDates:true,
@@ -258,8 +261,8 @@ export class PlannerComponent implements OnInit, OnDestroy {
             info.el.style.backgroundImage = 'linear-gradient(to bottom, ' + info.el.style.backgroundColor + ', white)';
 
             let time = info.el.querySelector('.fc-event-time');
-             //let time = info.el.querySelector('.fc-event-main');
-          if (time) {
+            //let time = info.el.querySelector('.fc-event-main');
+            if (time) {
                /* var span = document.createElement('img');
                span.className = 'fullcalendar-event-close';
                span.style.position = 'absolute';
@@ -275,7 +278,7 @@ export class PlannerComponent implements OnInit, OnDestroy {
                   span2.className = 'fullcalendar-event-close';
                   span2.style.position = 'absolute';
                   span2.style.right = '0';
-                  span2.style.width='20px';
+                  span2.style.width = '20px';
                   span2.src = 'assets/Richiesto.png';
 
                   let node3 = document.createTextNode('x2');
@@ -340,26 +343,47 @@ export class PlannerComponent implements OnInit, OnDestroy {
    }
 
    ngOnInit() {
-     this.updateSubscription = interval(10000).subscribe(val => {
-      console.log('Sto prelevando \n ' + this.calendarApi.currentData.currentDate)
-      const ora:number=this.calendarApi.currentData.currentDate.getHours();
-      if (ora>21 ){
-        this.calendarApi.currentData.currentDate.setHours(20,0,0,0);
-      }
-/*       if (ora<3){
-        console.log(this.calendarApi.currentData.currentDate.getDate());
-        this.calendarApi.currentData.currentDate.setDate(this.calendarApi.currentData.currentDate.getDate()-1);
-      }
- */      //this.prelevaDati(new Date(this.calendarApi.currentData.currentDate.getTime() - (1000 * 60 * 60 * 24)),  this.calendarApi.currentData.currentDate);
-      this.prelevaDati(this.calendarApi.currentData.currentDate,  this.calendarApi.currentData.currentDate);
-    } );
-     }
 
-    ngOnDestroy() {
+      this.saloneService.getSaloni(this.saloneSelezionato.gruppo).subscribe(x => {
+         this.saloni = x;
+      }, (err => {
+         //this.notifier.notify('warning', 'Errore nella connessione al server');
+      })
+      );
+
+      this.updateSubscription = interval(10000).subscribe(val => {
+         console.log('Sto prelevando \n ' + this.calendarApi.currentData.currentDate)
+         const ora: number = this.calendarApi.currentData.currentDate.getHours();
+         if (ora > 21) {
+            this.calendarApi.currentData.currentDate.setHours(20, 0, 0, 0);
+         }
+         /*       if (ora<3){
+                 console.log(this.calendarApi.currentData.currentDate.getDate());
+                 this.calendarApi.currentData.currentDate.setDate(this.calendarApi.currentData.currentDate.getDate()-1);
+               }
+          */      //this.prelevaDati(new Date(this.calendarApi.currentData.currentDate.getTime() - (1000 * 60 * 60 * 24)),  this.calendarApi.currentData.currentDate);
+         this.prelevaDati(this.calendarApi.currentData.currentDate, this.calendarApi.currentData.currentDate);
+      });
+   }
+
+   ngOnDestroy() {
       this.updateSubscription.unsubscribe()
-  }
+   }
 
+   selezionandoSaloneFlag() {
+      this.selezionandoSalone = true;
+   }
 
+   selezionaSalone(salone) {
+      this.saloneSelezionato = salone;
+      this.selezionandoSalone = false;
+      this.loadEvents();
+      this.prelevaDati(this.calendarApi.currentData.currentDate,  this.calendarApi.currentData.currentDate);
+   }
+
+   selezSalone(){
+      this.selezionandoSalone = !this.selezionandoSalone;
+   }
 
    handleChangeCalendar(info) {
       this.prelevaDati(info.start, info.end);
@@ -377,11 +401,11 @@ export class PlannerComponent implements OnInit, OnDestroy {
       const dd1: Date = moment(dataFine, 'YYYY-MM-DD').toDate();
       let end: Date = new Date(dd1.getFullYear(), dd1.getMonth(), dd1.getDate());
 
-      this.plannerSer.getPlanner(this.salone, start.toLocaleDateString(), end.toLocaleDateString(), '').subscribe((data: Appuntamento[]) => {
+      this.plannerSer.getPlanner(this.saloneSelezionato, start.toLocaleDateString(), end.toLocaleDateString(), '').subscribe((data: Appuntamento[]) => {
          this.events = data;
-        console.log(this.events);
+         console.log(this.events);
          if (!this.events) {
-            this.plannerSer.getPlanner(this.salone, start.toLocaleDateString(), end.toLocaleDateString(), '').subscribe((data1: Appuntamento[]) => {
+            this.plannerSer.getPlanner(this.saloneSelezionato, start.toLocaleDateString(), end.toLocaleDateString(), '').subscribe((data1: Appuntamento[]) => {
                this.events = data1;
                this.assignResources();
                this.loadEvents();
@@ -408,22 +432,22 @@ export class PlannerComponent implements OnInit, OnDestroy {
             colore: e.backgroundColor,
             idServizio: e.idServizio,
             tempoDiPosa: e.tempoDiPosa,
-            gruppo: this.salone.gruppo,
-            salone: this.salone.salone,
+            gruppo: this.saloneSelezionato.gruppo,
+            salone: this.saloneSelezionato.salone,
             token: '',
-            posizione: this.salone.destinazione,
+            posizione: this.saloneSelezionato.destinazione,
             nomeCliente: e.nomeCliente,
             annullato: false,
             esterno: e.esterno,
             tsr: e.tsr,
             richiesto: e.richiesto,
-            errors:e.errors,
+            errors: e.errors,
          };
          let calendarevent: EventInput = {
             startEditable: e.editable === -1 ? true : false,
             id: e.id,
             resourceId: e.resourceId,
-            title: e.title.replace('Cliente Occasionale','Cliente occ.'),
+            title: e.title.replace('Cliente Occasionale', 'Cliente occ.'),
             start: new Date(e.start),
             end: new Date(e.endTime),
             allDay: e.allDay,
@@ -458,7 +482,7 @@ export class PlannerComponent implements OnInit, OnDestroy {
       e.end = info.event.endStr;
       e.extendedProps = info.event.extendedProps;
 
-      this.plannerSer.updateAppuntamento(this.salone, e).subscribe((x: Esito) => {
+      this.plannerSer.updateAppuntamento(this.saloneSelezionato, e).subscribe((x: Esito) => {
          if (x.esito === 'True') {
          } else {
             alert(x.messaggio);
@@ -517,7 +541,7 @@ export class PlannerComponent implements OnInit, OnDestroy {
       this.currentClick.resourceId = info.resource.id
       this.currentClick.startDate = info.dateStr;
       let endDate: Date = moment(info.dateStr, 'YYYY-MM-DD HH:mm').toDate();
-      endDate = new Date(endDate.getTime() + this.salone.opzioniPlanner.intervallo * 60000);
+      endDate = new Date(endDate.getTime() + this.saloneSelezionato.opzioniPlanner.intervallo * 60000);
 
       const a = {
          start: info.dateStr,
@@ -596,7 +620,7 @@ export class PlannerComponent implements OnInit, OnDestroy {
       e.end = info.event.endStr;
       e.extendedProps = info.event.extendedProps;
 
-      this.plannerSer.updateAppuntamento(this.salone, e).subscribe((x: Esito) => {
+      this.plannerSer.updateAppuntamento(this.saloneSelezionato, e).subscribe((x: Esito) => {
          if (x.esito === 'True') {
          } else {
             alert(x.messaggio);

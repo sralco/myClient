@@ -36,6 +36,8 @@ export class mysaloonComponent implements OnInit {
   constructor(private sanitizer: DomSanitizer, private dialog: MatDialog, private router: Router, private auth: AuthClientiService, aRoute: ActivatedRoute, private appuntamentiService: PlannerService, private service: SaloniService, private notifier: NotifierService) {
     this.userLoggedIn = auth.isUserLoggedIn();
     this.gruppo = aRoute.snapshot.paramMap.get('id');
+    console.log('gruppo')
+    console.log(this.gruppo)
     const app = localStorage.getItem('UserCliente');
     if (!app) {
       return;
@@ -49,24 +51,28 @@ export class mysaloonComponent implements OnInit {
 
   backgroundColor: string = '#008b8b';
   color: string = '#ffffff';
+  convertBgColor(color): string {
+    console.log(color)
+    console.log([color.slice(0, color?.lastIndexOf(")")), ',0.66', color.slice(color?.backgroundColor?.lastIndexOf(")"))].join(''))
+    return [color.slice(0, color?.lastIndexOf(")")), ',0.66', color.slice(color?.backgroundColor?.lastIndexOf(")"))].join('');
+
+    // [a.slice(0, a.lastIndexOf(")")), ',0.66', a.slice(a.lastIndexOf(")"))].join('');
+    //[prenotazioniAttive.backgroundColor.slice(0, prenotazioniAttive.backgroundColor.lastIndexOf() ")), ',0.66', prenotazioniAttive.backgroundColor.slice(prenotazioniAttive.backgroundColor.lastIndexOf(")"))].join('')"
+  }
 
   ngOnInit() {
-    if (!this.service.saloni) {
-      this.service.getSaloni(this.gruppo).subscribe(x => {
-        this.attesa = false;
-        this.saloni = x;
-        this.saloneSelezionato = this.saloni[0];
-        this.getPrenotazioni();
-      }, (err => {
-        this.attesa = false;
-        this.notifier.notify('warning', 'Errore nella connessione al server');
-      })
-      );
-
-    } else {
-      this.getPrenotazioni();
+    
+    this.service.getSaloni(this.gruppo).subscribe(x => {
       this.attesa = false;
-    }
+      this.saloni = x;
+      this.saloneSelezionato = this.saloni[0];
+      this.getPrenotazioni();
+    }, (err => {
+      this.attesa = false;
+      this.notifier.notify('warning', 'Errore nella connessione al server');
+    })
+    );
+
 
     this.selectedStyle = `
     --background-color: ${this.backgroundColor};
@@ -91,6 +97,9 @@ export class mysaloonComponent implements OnInit {
       this.saloni.forEach(x => {
         this.appuntamentiService.getEventsOfClient(this.user).subscribe((e: Appuntamento[]) => {
           if (e && e.length > 0) {
+            e.forEach(element => {
+              element.extendedProps.salone = x.salone;
+            });
             x.prenotazioniAttive = e;
             console.log(e);
           } else {
@@ -125,9 +134,17 @@ export class mysaloonComponent implements OnInit {
     window.location.href = '#/loginclienti/' + this.gruppo + '/' + localStorage.getItem('SaloneCliente');
   }
 
-  googleMap(t) {
-    window.location.href = 'https://www.google.com/maps/search/?api=1&query=' + t.indirizzo + ' ' + t.cap + ' ' + t.paese + ' ' + t.provincia + '&query_place_id=' + t.idGoogleMap;
-    console.log('https://www.google.com/maps/search/?api=1&query=' + t.indirizzo + ' ' + t.cap + ' ' + t.paese + ' ' + t.provincia + '&query_place_id=' + t.idGoogleMap)
+
+  googleMap(salone: Salone) {
+    let href: string = '';
+    console.log('idGoogleMap');
+    console.log(salone.idGoogleMap);
+    if (salone.idGoogleMap) {
+      href = 'https://www.google.com/maps/search/?api=1&query_place_id=' + salone.idGoogleMap;
+    } else {
+      href = 'https://www.google.com/maps/search/?api=1&query=' + salone.gruppo + ', ' + salone.indirizzo + ' ' + salone.cap + ' ' + salone.paese + ' ' + salone.provincia + '&query_place_id=' + salone.idGoogleMap;
+    }
+    window.location.href = href;
   }
 
   dettagliEvento(t: Salone, p: Appuntamento) {

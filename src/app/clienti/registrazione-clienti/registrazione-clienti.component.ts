@@ -5,6 +5,7 @@ import { Location } from '@angular/common';
 import { SaloniService } from 'src/app/Services/saloni.service';
 import { User } from 'src/app/Models/User';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 export function MustMatch(controlName: string, matchingControlName: string) {
   return (formGroup: FormGroup) => {
@@ -42,7 +43,7 @@ export class RegistrazioneClientiComponent implements OnInit {
   gruppo: string = '';
   salone: string = '';
 
-  constructor(private sanitizer: DomSanitizer, private loc: Location, private saloni: SaloniService, private formBuilder: FormBuilder, private route: Router,) {
+  constructor(private _snackBar: MatSnackBar, private sanitizer: DomSanitizer, private loc: Location, private saloni: SaloniService, private formBuilder: FormBuilder, private route: Router,) {
     this.gruppo = localStorage.getItem('GruppoCliente');
     this.salone = localStorage.getItem('SaloneCliente');
   }
@@ -68,6 +69,10 @@ export class RegistrazioneClientiComponent implements OnInit {
     this.style = this.sanitizer.bypassSecurityTrustStyle(this.selectedStyle);
   }
 
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
+  }
+
   // convenience getter for easy access to form fields
   get f() { return this.form.controls; }
 
@@ -79,10 +84,10 @@ export class RegistrazioneClientiComponent implements OnInit {
       return;
     }
 
-    if (this.f.pwd.value !== this.f.pwd2.value) {
-      alert('Le password non corrispondono');
-      return;
-    }
+    // if (this.f.pwd.value !== this.f.pwd2.value) {
+    //   alert('Le password non corrispondono');
+    //   return;
+    // }
     this.submitted = true;
 
     this.loading = true;
@@ -104,7 +109,9 @@ export class RegistrazioneClientiComponent implements OnInit {
         } else {
           console.log(data);
           //localStorage.setItem("UserCliente", JSON.stringify(data));
+          this.alert = true;
           alert('Controlla la tua email per confermare la registrazione')
+          //this.alertText = 'Controlla la tua email per confermare la registrazione';
           this.route.navigate(['/loginclienti/' + this.gruppo + '/' + this.salone]);
         }
       },
@@ -112,6 +119,7 @@ export class RegistrazioneClientiComponent implements OnInit {
         this.alert = true;
         this.alertText = "Impossibile raggiungere il server"
         this.loading = false;
+        //this.openSnackBar(this.alertText, 'X');
       });
   }
 

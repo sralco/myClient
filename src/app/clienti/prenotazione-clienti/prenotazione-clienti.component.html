@@ -105,7 +105,7 @@
                     <div style="display: flex;flex-direction: column;gap: 0px;line-height: 18px;">
                       <div style="text-transform: capitalize;">{{s.servizio}}</div>
                       <div *ngIf="salone.opzioniPlanner.nascondiPrezzi == 'False'">
-                        € {{s.prezzo.replace('0000','00')}}
+                        <small>€ {{s.prezzo.replace('0000','00')}}</small>
                       </div>
                     </div>
                     <div>
@@ -345,7 +345,4 @@
       </mat-card>
     </form>
   </div><!-- prenotazione clienti body -->
-  <div class="prenotazione-clienti-footer">
-
-  </div>
 </div><!-- prenotazione clienti -->

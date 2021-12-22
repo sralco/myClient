@@ -49,7 +49,6 @@ $color:var(--color);
   max-width: 450px;
   margin: 0 auto;
   height: 100vh;
-  overflow-y: clip;
 }
 
 .mysaloon-navbar {
@@ -339,14 +338,66 @@ $color:var(--color);
 }
 
 .mysaloon-card-prenotazioni-ticket {
-  padding: 18px;
-  width: 90%;
+  height:146px;
+  display: flex;
+  padding: 0;
+  width: 325px;
   max-width: 450px;
   margin: 0 auto;
   border-radius: 15px;
-  border: 3px solid $background-color;
-  background: repeating-linear-gradient(131deg, #ffffff, #ffffff 10px, #ffffffba 10px, #ffffff 20px);
+  //border: 3px solid var(--background-color);
+  /* background: repeating-linear-gradient(
+131deg, #ffffff, #ffffff 10px, #ffffffba 10px, #ffffff 20px); */
   position: relative;
+  .left{
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: white;
+    border-top-left-radius: 14px;
+    border-bottom-left-radius: 14px;
+    padding: 6px;
+  }
+  .right{
+    padding: 10px;
+    width: 60%;
+    background-color: antiquewhite;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    .servizi{
+      list-style: '-';
+      margin: 0;
+      padding: 0;
+      font-size: 13px;
+      max-height: 72px;
+      overflow-y: auto;
+      margin-left:8px;
+      li:last-child {
+        display:none;
+      }
+      li::first-letter{
+        text-transform: capitalize;
+      }
+      li::before {
+        content: "-";
+      }
+    }
+  }
+}
+
+.add{
+  border: 3px solid $background-color;
+}
+
+.add:before, .add:after {
+  border: 3px solid $background-color;
+}
+.add:before{
+  border-left: none;
+}
+.add:after{
+  border-right: none;
 }
 
 .mysaloon-card-prenotazioni-ticket:before,
@@ -356,18 +407,18 @@ $color:var(--color);
   top: 36%;
   height: 36px;
   width: 18px;
-  border: 3px solid $background-color;
+  //border: 3px solid $background-color;
 }
 .mysaloon-card-prenotazioni-ticket:before {
     left: -3px;
     border-radius: 0 1em 1em 0;
-    border-left:4px solid #50bcbb;
+    //border-left:4px solid #50bcbb;
     background-color: #50bcbb;
 }
 .mysaloon-card-prenotazioni-ticket:after {
     right: -3px;
     border-radius: 1em 0 0 1em;
-    border-right:4px solid #50bcbb;
+    //border-right:4px solid #50bcbb;
     background-color: #50bcbb;
 }
 

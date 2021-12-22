@@ -1,159 +1,164 @@
-.navbar {
-  top: 0;
-  z-index: 999;
-  background: #008b8b;
-  width: 100%;
-  position: sticky;
-  justify-content: space-between;
-  color: white;
-}
+.prenotazione-container {
+  .navbar {
+    top: 0;
+    z-index: 999;
+    background: #008b8b;
+    width: 100%;
+    position: sticky;
+    justify-content: space-between;
+    color: white;
 
-.navbar-left {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  white-space: nowrap;
-}
+    .navbar-left {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      white-space: nowrap;
+      gap: 10px;
+    }
 
+    .gruppo {
+      text-transform: capitalize;
+      line-height: 18px;
+    }
 
-.gruppo {
-  text-transform: capitalize;
-  line-height: 18px;
-}
+    .logo img {
+      width: 45px;
+      height: 45px;
+    }
 
-.logo img {
-  width: 45px;
-  height: 45px;
-  margin-right: 10px;
-}
+    .btn-back {
+      background-color: #fff;
+      color: darkcyan;
+    }
+  }
 
-.btn-back {
-  background-color: #fff;
-  color: darkcyan;
-}
+  .card {
+    width: 100%;
+    height: 100%;
+    max-width: 450px;
+    margin-top: 0;
+    margin-left: auto;
+    margin-right: auto;
+    border: 0;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
 
-.card {
-  width: 100%;
-  height: 100%;
-  max-width: 450px;
-  margin-top: 0;
-  margin-left: auto;
-  margin-right: auto;
-  border: 0;
-  box-shadow: none !important;
-  padding: 0 !important;
-}
+  .prenotazione-orari-table-wrapper {
+    display: flex;
+    justify-content: center;
+  }
 
-.prenotazione-orari-table-wrapper {
-  display: flex;
-  justify-content: center;
-}
+  .icon-cambia-giorno {
+    transform: scale(2);
+  }
 
-.icon-cambia-giorno{
-  transform: scale(2);
-}
+  .seleziona-giorno {
+    justify-content: space-between;
+    display: flex;
+    padding-top: 4px;
+    padding-bottom: 6px;
+    width: 100%;
+  }
 
-.seleziona-giorno {
-  justify-content: space-between;
-  display: flex;
-  padding-top: 4px;
-  padding-bottom: 6px;
-  width: 100%;
-}
+  .selezione-giorno {
+    margin-left: 4px !important;
+    background-color: white;
+    padding: 6px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #000000;
+  }
 
-.selezione-giorno {
-  margin-left: 4px !important;
-  background-color: white;
-  padding: 6px;
-  border-radius: 6px;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #000000;
-}
+  .btn-giorno-avanti,
+  .btn-giorno-indietro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+  }
 
-.btn-giorno-avanti, .btn-giorno-indietro {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-}
+  .giornoSelezionato {
+    background-color: #ff4081;
+    color: white;
+  }
 
-.giornoSelezionato{
-  background-color: #ff4081;
-  color:white;
-}
+  .settimana {
+    display: flex;
+  }
 
-.settimana{
-  display: flex;
-}
+  .orari-disponibili-errore {
+    margin-top: 10px;
+    padding: 22px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    background: aliceblue;
+    span {
+      line-height: initial;
+    }
+    mat-icon {
+      transform: scale(2)
+    }
+  
+  }
 
-.orari-disponibili-errore {
-  margin-top: 10px;
-  padding: 22px !important;
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  background: aliceblue;
-}
-.orari-table-wrapper{
-  background: aliceblue;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 6px;
-}
+  .orari-table-wrapper {
+    background: aliceblue;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 6px;
+  }
 
-.orari-disponibili-errore span {
-  line-height: initial;
-}
+  .mat-horizontal-content-container {
+    padding-bottom: 0 !important;
+  }
 
-.orari-disponibili-errore mat-icon {
-  transform: scale(2)
-}
+  .orari-wrapper {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
 
-.mat-horizontal-content-container {
-  padding-bottom: 0 !important;
-}
+  .orari {
+    height: 340px;
+    overflow-y: auto;
+    border-left: 5px solid #d7d7d7;
+  
+    div:nth-child(2) {
+      margin-top: 48px;
+    }
+  
+    >div {
+      display: flex;
+      justify-content: center;
+      margin: 6px;
+    }
+  
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  
+    .orari-header {
+      position: absolute;
+      z-index: 2;
+      width: 67px;
+      background-color: darkcyan;
+      color: #ffffff;
+      height: 35px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+    }
+  }
 
-.orari-wrapper {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-}
+  
 
-.orari {
-  height: 340px;
-  overflow-y: auto;
-  border-left: 5px solid #d7d7d7;
-}
+  .cerca .mat-form-field-wrapper {
+    margin: 0;
+    padding: 0;
+  }
 
-.orari div:nth-child(2) {
-  margin-top: 48px;
-}
-
-.orari>div {
-  display: flex;
-  justify-content: center;
-  margin: 6px;
-}
-
-.orari::-webkit-scrollbar {
-  display: none;
-}
-
-.orari-header {
-  position: absolute;
-  z-index: 2;
-  width: 67px;
-  background-color: darkcyan;
-  color: #ffffff;
-  height: 35px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-}
-
-.cerca .mat-form-field-wrapper{
-  margin: 0;
-  padding: 0;
 }
