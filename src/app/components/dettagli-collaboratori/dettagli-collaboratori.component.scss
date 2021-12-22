@@ -1,3 +1,20 @@
+.dettagli-collaboratori-navbar{
+  background-color: darkslategrey;
+  justify-content: space-between;
+  .left{
+    display: flex;
+    align-items: center;
+    color: white;
+    gap: 10px;
+  }
+}
+.mat-tab-header-pagination {
+  display: none !important;
+}
+mat-tab-header.mat-tab-header{
+align-self: center;
+}
+
 .freccia .fa {
   transition: .3s transform ease-in-out;
 }

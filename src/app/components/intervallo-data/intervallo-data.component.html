@@ -1,5 +1,5 @@
-<div style="text-align: center; margin-top: 5px;">
-    <mat-form-field style="width: 40%;" appearance="outline">
+<div class="intervallo-data">
+    <mat-form-field appearance="outline">
       <mat-label>Data inizio</mat-label>
       <input matInput placeholder="Data inizio" [matDatepicker]="datepickerRef" name="datepicker1" ngModel
         #dateCtrl1="ngModel" [(ngModel)]="dData1" required />
@@ -7,13 +7,13 @@
       <mat-datepicker #datepickerRef></mat-datepicker>
       <mat-error *ngIf="dateCtrl1.errors?.required && dateCtrl1.touched">Data non valida</mat-error>
     </mat-form-field>
-    <mat-form-field style="width: 40%; margin-left: 5px;" appearance="outline">
+    <mat-form-field appearance="outline">
       <mat-label>Data fine</mat-label>
       <input matInput placeholder="Data fine" [matDatepicker]="datepickerRef2" name="datepicker2" ngModel
         #dateCtrl2="ngModel" [(ngModel)]="dData2" required />
       <mat-datepicker-toggle [for]="datepickerRef2" matSuffix></mat-datepicker-toggle>
       <mat-datepicker #datepickerRef2></mat-datepicker>
       <mat-error *ngIf="dateCtrl2.errors?.required && dateCtrl2.touched">Data non valida</mat-error>
-    </mat-form-field>&nbsp;
-    <button (click)="sendMessage()" mat-fab color="Basic" style="width: 48px; height: 48px;">Ok</button>
+    </mat-form-field>
+    <button (click)="sendMessage()" mat-mini-fab>Ok</button>
 </div>

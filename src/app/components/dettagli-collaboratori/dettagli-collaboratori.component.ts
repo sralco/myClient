@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Salone } from 'src/app/Models/Salone';
 import { SaloniService } from 'src/app/Services/saloni.service';
-import { Router, NavigationStart } from '@angular/router';
+import { Router} from '@angular/router';
 import { Location } from '@angular/common';
 import { GruppoServizi } from 'src/app/Models/produzione';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,6 +10,7 @@ import { Intervallo } from 'src/app/Models/Intervallo';
 import { Collaboratore } from 'src/app/Models/Collaboratore';
 import { PopClientiComponent } from './pop-clienti/pop-clienti.component';
 import { Cliente } from 'src/app/Models/Cliente';
+import { viewClassName } from '@angular/compiler';
 
 export class appClass {
   c: Cliente[];
@@ -19,7 +20,8 @@ export class appClass {
 @Component({
   selector: 'app-dettagli-collaboratori',
   templateUrl: './dettagli-collaboratori.component.html',
-  styleUrls: ['./dettagli-collaboratori.component.scss']
+  styleUrls: ['./dettagli-collaboratori.component.scss'],
+  encapsulation:ViewEncapsulation.None
 })
 export class DettagliCollaboratoriComponent implements OnInit {
 
@@ -34,10 +36,16 @@ export class DettagliCollaboratoriComponent implements OnInit {
   prodotti: GruppoServizi[];
   totServizi: number = 0;
   totRivendita: number = 0;
+  totQta:number = 0;
+  totIncasso: number = 0;
+  totQtaProdotti: number = 0;
+  totIncassoProdotti: number = 0;
 
   attesa: boolean = true;
 
-  constructor(private router: Router, private saloneService: SaloniService, private loc: Location, private notifier: NotifierService, public dialog: MatDialog) { }
+  constructor(private router: Router, private saloneService: SaloniService, private loc: Location, private notifier: NotifierService, public dialog: MatDialog) {
+
+   }
 
   ngOnInit() {
     this.salone = this.saloneService.saloneCorrente;
@@ -51,8 +59,7 @@ export class DettagliCollaboratoriComponent implements OnInit {
     } else {
       this.salone = JSON.parse(localStorage.getItem("SaloneCorrente"));
     }
-
-    this.aggiornaDettagli();
+    this.aggiornaDettagli()
   }
 
   aggiornaDettagli() {
@@ -76,6 +83,7 @@ export class DettagliCollaboratoriComponent implements OnInit {
               if (s.tipo === 'Servizi') {
                 this.servizi.push(s);
                 this.totServizi = this.totServizi + s.totale;
+
               } else {
                 this.prodotti.push(s);
                 this.totRivendita = this.totRivendita + s.totale;
@@ -99,14 +107,17 @@ export class DettagliCollaboratoriComponent implements OnInit {
                 this.temps.forEach(s => {
                   if (s.tipo === 'Servizi') {
                     this.servizi.push(s);
-                    this.totServizi = this.totServizi + s.totale;
+                    this.totQta = this.totQta + s.numero;
+                    this.totIncasso = this.totIncasso + s.totale;
                   } else {
                     this.prodotti.push(s);
-                    this.totRivendita = this.totRivendita + s.totale;
+                    this.totQtaProdotti = this.totQtaProdotti + s.numero;
+                    this.totIncassoProdotti = this.totIncassoProdotti + s.totale;
                   }
                 })
               }
-              this.totRivendita = this.totRivendita
+              //this.totRivendita = this.totRivendita
+              console.log(this.totRivendita)
             }, (err => {
 
               this.attesa = false;
@@ -118,6 +129,7 @@ export class DettagliCollaboratoriComponent implements OnInit {
       );
 
     }
+    
   }
 
   receiveMessage($event) {
@@ -134,8 +146,8 @@ export class DettagliCollaboratoriComponent implements OnInit {
       app.Collaboratore = this.collaboratore.nome + ' ' + this.collaboratore.cognome;
       app.Servizio = c.gruppo;
       const dialogRef = this.dialog.open(PopClientiComponent, {
-        maxWidth: '100vw !important',
-        maxHeight: '100vw !important',
+        width:'95%',
+        maxWidth: '350px',
         data: app
       });
     }, (err => {

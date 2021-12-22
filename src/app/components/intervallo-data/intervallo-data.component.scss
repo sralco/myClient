@@ -1,0 +1,17 @@
+.intervallo-data {
+  padding-top: 6px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-around;
+  padding-bottom: 6px;
+
+  mat-form-field {
+    width: 40%;
+  }
+
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+}

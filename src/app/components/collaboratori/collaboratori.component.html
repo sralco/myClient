@@ -1,79 +1,63 @@
-<mat-toolbar style="background-color: darkslategrey;padding-left: 0;">
-  <mat-toolbar-row>
-    <h3 class="display-6 font-italic">
-      <img src="./assets/img1.png" alt="logo" width="40" height="40">
-      <span class="navbar-brand text-white" style="margin-left:20px;padding:0;">{{salone.salone}}</span></h3>
-
-    <span style="flex: 1 1 auto;"></span>
-
-    <button mat-icon-button (click)="back()" style="background-color:tan; font-size: 16px; font-size:small;font-weight: bolder;">
-      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+<mat-toolbar class="collaboratori-navbar">
+  <div class="left">
+    <img src="./assets/img1.png" alt="logo" width="40" height="40">
+    <h3 style="margin:0;">{{salone?.salone}}</h3>
+  </div>
+  <div class="right">
+    <button mat-icon-button (click)="back()"
+      style="background-color:tan; font-size: 16px; font-size:small;font-weight: bolder;">
+      <mat-icon>keyboard_double_arrow_left</mat-icon>
     </button>
-
-  </mat-toolbar-row>
+  </div>
 </mat-toolbar>
 
-<mat-sidenav-container style="background-image: url('./assets/penta.jpg');">
+<app-spinner1center *ngIf="attesa"></app-spinner1center>
 
-  <mat-sidenav-content>
-    <div style="height: 90vh;">
+<app-intervallo-data (messageEvent)="receiveMessage($event)" style="padding: 0; margin: 0;" [data1]="intervallo.data1"
+  [data2]="intervallo.data2"></app-intervallo-data>
 
-      <app-spinner1center *ngIf="attesa"></app-spinner1center>
+<div class="collaboratori-card-container">
+  <mat-card>
+    <!-- <mat-card-header>
+      <div class="coll-btn" style="background-color:tan; width: 100%;text-align: center;">Collaboratori
+        {{intervallo.name}}</div>
+    </mat-card-header> -->
+    <mat-card-content>
+          <table style="width:100%;">
+          <thead style="height: 50px;">
+            <th>Collaboratore</th>
+            <th style="text-align: right;">Produzione</th>
+            <th style="text-align: right;">Incentivi</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let c of temps" (click)="apriDettagli(c)" style="height: 50px;border-bottom: 1px solid #d7d7d7;border-top: 1px solid #d7d7d7;">
+              <td style="font-weight:500; text-transform: capitalize;">
+                {{c.codice+' '+c.nome+ ' '+c.cognome}}
+              </td>
 
-      <div class="card" style="width: 100%;">
-        <div class="card-header card-header-warning" style=" width: 100%; padding: 0;">
-          <div class="pull-right" style="width: 100%;padding:0;">
-            <button class="btn "
-              style="background-color:tan; width: 100%; padding-left: 0; padding-right: 0;">Collaboratori {{intervallo.name}}</button>
-              <app-intervallo-data (messageEvent)="receiveMessage($event)" style="padding: 0; margin: 0;" [data1]="intervallo.data1" [data2]="intervallo.data2"></app-intervallo-data>
-          </div>
+              <td class="testoadestra">
+                {{c.produzione | currency:'EUR'}}
+              </td>
+              <td class="testoadestra">
+                {{c.incentivi | currency:'EUR'}}
+              </td>
+            </tr>
+            <tr style="height: 50px;border-bottom: 1px solid #d7d7d7;">
+              <td>
+                <strong style="color: palevioletred;">Totale</strong>
+              </td>
+              <td style="font-weight: 500;text-align: right;">
+                {{totaleProduzione | currency:'EUR'}}
+              </td>
+              <td style="font-weight: 500;text-align: right;">
+                {{totaleIncentivi | currency:'EUR'}}
+              </td>
+             </tr>
+          </tbody>
+        </table>
+    </mat-card-content>
+  </mat-card>
 
-        </div>
-        <div class="card-body table-responsive" style="padding-top: 0;padding-bottom: 0;">
-          <table id="dettagli" style="width: 100%;" class="table table-hover">
-            <thead class="text-warning">
-              <th></th>
-              <th></th>
-              <th style="text-align: right;">Produzione</th>
-              <th style="text-align: right;">Incentivi</th>
-            </thead>
-            <tbody>
-              <tr *ngFor="let c of temps" (click)="apriDettagli(c)">
-                <td class="padding0">
-                </td>
-                <td>
-                  <strong>{{c.codice+' '+c.nome+ ' '+c.cognome}}</strong>
-                </td>
-
-                <td class="testoadestra">
-                  {{c.produzione | currency:'EUR'}}
-                </td>
-                <td class="testoadestra">
-                  {{c.incentivi | currency:'EUR'}}
-                </td>
-              </tr>
-              <tr>
-                <td class="padding0">
-                </td>
-                <td>
-                  <strong style="color: palevioletred;">Totale</strong>
-                </td>
-
-                <td class="testoadestra">
-
-                </td>
-                <td class="testoadestra">
-                  <strong>{{totaleIncentivi | currency:'EUR'}}</strong>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-      </div>
-    </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
-
+</div>
 
 <notifier-container></notifier-container>

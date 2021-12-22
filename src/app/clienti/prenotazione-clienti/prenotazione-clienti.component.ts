@@ -406,17 +406,19 @@ export class PrenotazioneClientiComponent implements OnInit {
     p.gruppo = this.salone.gruppo;
     p.salone = this.salone.salone;
     p.posizione = this.salone.destinazione;
+    this.isLoadingDisponibilita = true;
     this.plannerSer.getDisponibilita(this.salone, p).subscribe((x: DisponibilitaPrenotazione) => {
+      this.isLoadingDisponibilita = false;
       if (x.errore !== null && x.errore !== '') {
         console.log(x.errore);
         this.orariDisponibili = new DisponibilitaPrenotazione();
         this.orariDisponibili.errore = x.errore;
         this.orariDisponibili.orariDisponibili = [];
-
       } else {
         this.orariDisponibili = x;
+        
       }
-      this.isLoadingDisponibilita = false;
+
     }, err => {
       console.log(err);
       this.isLoadingDisponibilita = false;
@@ -424,6 +426,8 @@ export class PrenotazioneClientiComponent implements OnInit {
       this.orariDisponibili.orariDisponibili = [];
       this.notifier.notify('warning', 'Errore nella connessione al server');
     });
+    this.isLoadingDisponibilita = false;
+    //if (this.orariDisponibili.orariDisponibili == []) this.orariDisponibili.errore = 'Orario non disponibile';
   }
 
   cambiaGiorno(direzione: string) {
