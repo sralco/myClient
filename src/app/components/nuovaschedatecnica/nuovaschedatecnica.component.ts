@@ -28,7 +28,19 @@ export class NuovaschedatecnicaComponent implements OnInit {
   save(f: NgForm) {
     if (f.value.scheda) {
       const ris = this.service.addSchedaTecnica(this.fiche.idCliente, f.value.scheda).subscribe(
-        x => this.goBack()
+        x => {
+          if (x.esito === 'Ok') {
+            setTimeout(()=>{
+              this.goBack();
+          }, 500);
+                
+          } else {
+            alert('Scheda non memorizzata. ' + x.messaggio)
+          }
+     
+         
+        }
+
       );
     } else {
       alert('Nessun dato da memorizzare');

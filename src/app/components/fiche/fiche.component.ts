@@ -45,7 +45,11 @@ export class FicheComponent implements OnInit {
       this.fiche = x;
       this.getProposteAperte();
       if (localStorage.getItem('abilitaschedetecniche') === 'true') {
-        this.schede.getSchedeTecniche(x.idCliente).subscribe(ss => { this.schedeTecniche = ss; });
+        this.schede.getSchedeTecniche(x.idCliente).subscribe(ss => {
+           this.schedeTecniche = ss; 
+          
+          });
+      
       }
     });
 

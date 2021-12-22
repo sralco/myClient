@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 
 export class ConstantsService {
 
-  readonly posizione: string = 'produzione';
+  readonly posizione: string = 'debug';
   public baseAppUrl: string = '';
   public baseSqlUrl: string = '';
   public sitoWeb: string = 'https://www.gamainformatica.it/';
