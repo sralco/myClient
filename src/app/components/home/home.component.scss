@@ -5,6 +5,7 @@
   justify-content: space-between;
   color: #ffffff;
   background-color: #17a2b8;
+  opacity: 0.8;
   height:100px;
 }
 
@@ -15,11 +16,20 @@
 }
 
 .home-search-input {
-  font-size: 14px;
-  background: white;
-  width: 140px;
-  border: white;
-  outline: 0;
+  width: 126px;
+  display: block;
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  outline: none;
 }
 
 .bd-placeholder-img {

@@ -6,18 +6,18 @@
   </button>
 </div>
 
+<form novalidate id="bookForm" name="bookForm" #f="ngForm" (ngSubmit)="save(f)">
 <mat-card style="margin:20px;">
   <mat-card-title>
     <h5>Nuova scheda tecnica</h5>
   </mat-card-title>
   <mat-card-content>
-    <form novalidate id="bookForm" name="bookForm" #f="ngForm" (ngSubmit)="save(f)">
+    
       <mat-form-field style="width: 100%;" appearance="outline">
         <textarea matInput rows="5" type="text" name="scheda" id="scheda" placeholder="scheda"
         ngModel cdkFocusInitial autofocus></textarea>
       </mat-form-field>
          
-     </form>
   </mat-card-content>
   <mat-card-actions style="display:flex;justify-content: end;">
     <button mat-button color="primary" type="submit" [disabled]="!f.valid" style="background: cornflowerblue;
@@ -26,3 +26,4 @@
     </button>
   </mat-card-actions>
 </mat-card>
+</form>

@@ -3,11 +3,11 @@
     <img src="./assets/img1.png" width="45" height="45" routerLink="/setting/" />
     <h4>mySaloon</h4>
   </div>
-
-  <input class="home-search-input" matInput type="search" placeholder="Cerca" aria-label="Cerca" (keyup)="searchClienti($event.target.value)"
-    id="search">
-  <mat-icon (click)="reload()">sync</mat-icon>
-
+  <div style="display: flex;align-items: center;gap: 10px;">
+    <input class="home-search-input" matInput type="search" placeholder="Cerca" aria-label="Cerca"
+      (keyup)="searchClienti($event.target.value)" id="search">
+    <mat-icon (click)="reload()" style="transform: scale(1.5);font-weight: bold;">sync</mat-icon>
+  </div>
 </mat-toolbar>
 <!-- <app-datepicker></app-datepicker>-->
 
@@ -37,7 +37,7 @@
         </div>
         <div class="col p-2 d-flex flex-column position-static" (click)="verificaDisponibilitaApertura($event, t.id )">
           <strong class="d-inline-block mb-2 text-primary">{{ t.ingresso }}</strong>
-          <h5 class="mb-0" style="font-weight: bold">{{ t.nominativo?.split('-')[0] }}</h5>
+          <h5 class="mb-0" style="font-weight: bold;text-transform: capitalize;">{{ t.nominativo?.split('-')[0] }}</h5>
           <div class="mb-1 text-muted">{{ t.nominativo?.indexOf('-')>0 ? 'Responsabile: ' + t.nominativo?.split('-')[1]
             :
             '' }}</div>
