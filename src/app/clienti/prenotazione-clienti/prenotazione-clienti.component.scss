@@ -198,6 +198,10 @@ $color:var(--color);
   mat-stepper {
     background: #50bcbb;
   }
+  .mat-horizontal-content-container{
+    padding-left:10px;
+    padding-right:10px;
+  }
 
   .mat-step-header {
     padding-bottom: 10px !important;
@@ -359,14 +363,6 @@ $color:var(--color);
       line-height: initial;
     }
   }
-
-  .orari-table-wrapper {
-    background: aliceblue;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 6px;
-  }
-
   .mat-horizontal-content-container {
     padding-bottom: 0 !important;
   }

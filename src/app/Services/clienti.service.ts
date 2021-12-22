@@ -51,12 +51,7 @@ export class ClientiService {
 
   salvaClienteAccess(cliente: Cliente): Observable<Esito> {
    // console.log(this.api + 'postValue' + ' - ' + JSON.stringify(cliente));
-   let url :string=this.cc.baseLocalSqlUrl;
-   if (!url.endsWith('api/')){
-    url=this.cc.baseLocalSqlUrl + 'api/';
-   }
-   console.log(url + 'utenti/SalvaClienteAccess');
-    console.log(JSON.stringify(cliente));
+   let url :string = localStorage.getItem('BaseAppURL').toLowerCase().replace('mysapi','myIP');
    return this.http.post<Esito>(url + 'utenti/SalvaClienteAccess', cliente);
   }
 

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, Event, NavigationStart, NavigationEnd, NavigationError } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
+import { appendFile } from 'fs';
 
 @Component({
   selector: 'app-root',
@@ -37,7 +38,7 @@ export class AppComponent {
     if (this.swUpdate.isEnabled) {
 
       this.swUpdate.available.subscribe(() => {
-
+        console.log('Aggiornamento app...');
         window.location.reload();
 
       });

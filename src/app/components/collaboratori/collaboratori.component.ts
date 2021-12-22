@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Salone } from 'src/app/Models/Salone';
 import { SaloniService } from 'src/app/Services/saloni.service';
 import { CollaboratoriService } from 'src/app/Services/collaboratori.service';
@@ -13,7 +13,8 @@ import { Intervallo } from 'src/app/Models/Intervallo';
 @Component({
   selector: 'app-collaboratori',
   templateUrl: './collaboratori.component.html',
-  styleUrls: ['./collaboratori.component.scss']
+  styleUrls: ['./collaboratori.component.scss'],
+  encapsulation:ViewEncapsulation.None
 })
 export class CollaboratoriComponent implements OnInit {
   @ViewChild('sidenav') sidenav: MatSidenav;
@@ -28,7 +29,8 @@ export class CollaboratoriComponent implements OnInit {
 
   intervallo: Intervallo;
   temps: Collaboratore[];
-  totaleIncentivi: number;
+  totaleIncentivi: number = 0;
+  totaleProduzione:number = 0;
 
   constructor(private router: Router, private saloneService: SaloniService, private collService: CollaboratoriService, private loc: Location, private notifier: NotifierService) { }
 
@@ -51,8 +53,9 @@ export class CollaboratoriComponent implements OnInit {
       this.saloneService.getStatistiche(this.salone, this.intervallo.data1, this.intervallo.data2).subscribe(
         x => {
           this.temps = x;
-          this.totaleIncentivi = 0;
-          this.temps.forEach(t => this.totaleIncentivi = this.totaleIncentivi + t.incentivi);
+          this.temps.forEach(t => {
+            this.totaleIncentivi = this.totaleIncentivi + t.incentivi;
+            this.totaleProduzione = this.totaleProduzione + t.produzione});
           this.attesa = false;
           sessionStorage.setItem("Collaboratori", JSON.stringify(this.temps));
         }, (err => {

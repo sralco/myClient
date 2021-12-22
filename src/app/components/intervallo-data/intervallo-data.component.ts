@@ -1,16 +1,22 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation, LOCALE_ID } from '@angular/core';
 import { MatDatepicker } from '@angular/material/datepicker';
-import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/components/intervallo-data/format-datetimepicker';
 import { Intervallo } from 'src/app/Models/Intervallo';
+import { registerLocaleData } from '@angular/common';
+import localeItalian from '@angular/common/locales/it';
+import { CustomDateAdapter } from 'src/app/Services/custom-date-adapter';
+registerLocaleData(localeItalian, 'it');
 
 @Component({
   selector: 'app-intervallo-data',
   templateUrl: './intervallo-data.component.html',
   styleUrls: ['./intervallo-data.component.scss'],
+  encapsulation:ViewEncapsulation.None,
   providers: [
-    { provide: DateAdapter, useClass: AppDateAdapter },
-    { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS }
+    { provide: LOCALE_ID, useValue: "it" },
+    { provide: MAT_DATE_LOCALE, useValue: 'it-IT' },
+    { provide: DateAdapter, useClass: CustomDateAdapter },
   ]
 })
 export class IntervalloDataComponent implements OnInit {
