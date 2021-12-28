@@ -1,149 +1,274 @@
-<div class="card" style="background-color: transparent" style="width: 100%">
-  <div style="opacity: 0.8; position: sticky; top: 0;">
-    <nav class="navbar  navbar-dark bg-info shadow">
-      <div class="pull-left">
-        <h3 class="display-6 font-italic"><a class="navbar-brand text-white"><img style="height: 30px;"
-              src="./assets/img1.png" routerLink="/setting/">&nbsp;mySaloon</a></h3>
-      </div>
-
-      <div class="pull-right" *ngIf="proposte.length>0" style="padding-right: 0; margin-right: -40px;">
-        <button type="button" class="btn" style=" width: 80; height: 40px; background-color: aqua;"
-          (click)="openProposte()">
-          Proposte
-        </button>
-      </div>
-      <div class="pull-right">
-        <button type="button" class="btn btn-warning" style=" width: 80; height: 40px" (click)="goBack()">
-          <i class="fa fa-arrow-left" aria-hidden="true"></i>
-        </button>
-      </div>
-    </nav>
-  </div>
-
-  <div class="card-header pull-left bg-info " style="width: 100%; position: sticky; top: 0;">
-    <button class="btn btn-link text-white" type="button" style="padding: 0">
-      <h5 class="mb-0"><img src="{{ './assets/' + fiche.classe + '.png' }}" style="width: 30px"> {{
-        fiche.nominativo.split('-')[0] }}</h5>
+<mat-toolbar style="opacity: 0.8;background-color: #17a2b8;">
+  <mat-toolbar-row style="display:flex;justify-content: space-between;">
+    <div class="left" style="display:flex;align-items:center;gap:10px;color: #fff;">
+      <img style="width:40px;height: 40px;" src="./assets/img1.png" routerLink="/setting/">
+      <h3>mySaloon</h3>
+    </div>
+    <div class="right" style="display: flex;gap: 10px;">
+      <button type="button" class="btn" style=" width: 80; height: 40px; background-color: aqua;"
+        (click)="openProposte()">
+        Proposte
+      </button>
+      <button type="button" class="btn btn-warning" style=" width: 80; height: 40px" (click)="goBack()">
+        <mat-icon style="font-weight: 800;">keyboard_double_arrow_left</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar-row>
+  <mat-toolbar-row style="border-top: 1px solid #fff;height: 40px;">
+    <button class="btn btn-link text-white" type="button"
+      style="display: flex;padding: 0;align-items: center;gap: 10px;">
+      <img src="{{ './assets/' + fiche.classe + '.png' }}" style="width: 30px">
+      <h5 class="mb-0" style="text-transform: capitalize;">{{ fiche.nominativo.split('-')[0] }}</h5>
     </button>
-  </div>
+  </mat-toolbar-row>
+</mat-toolbar>
 
-  <div class="container-fluid" style="padding:0" style="background-color: transparent;width: 100%">
-    <div class="accordion" id="accordionExample" style="width: 100%">
-      <div class="card shadow p-0 mb-2 bg-white rounded" style="padding-left: 0" style="width: 100%">
-        <div class="card-header pull-left bg-info " id="headingOne" aria-controls="collapseOne" data-toggle="collapse"
-          style="width: 100%" data-target="#collapseOne" aria-expanded="false">
-
-          <button class="btn btn-link collapsed text-white" type="button" style="padding: 0">
-            <h5 class="mb-0"><i class="fa fa-cut" aria-hidden="true"></i> Servizi
-              {{ fiche.servizi ? '(' + fiche.servizi.length + ')' : '' }}</h5>
-          </button>
-          <div class="pull-right">
-            <button type="button" class="btn btn-primary" style=" width: 40px; height: 40px"
-              routerLink="/aggiungiServizi/{{ idFiche }}" (click)="nuovoServizio($event,false)">
-              <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
-          </div>
-          <div class="pull-right">
-            <button type="button" class="btn" style=" width: 40px; height: 39px; background-color: aqua; margin-right: 5px;"
-              routerLink="/aggiungiServizi/{{ idFiche }}" (click)="nuovoServizio($event,true)">
-              <i class="fab fa-product-hunt" style="color: white; font-size: 1em;"></i></button>
-          </div>
+<mat-accordion multi>
+  <!-- servizi -->
+  <mat-expansion-panel style="margin: 10px;" hideToggle [expanded]="fiche?.servizi?.length > 0">
+    <mat-expansion-panel-header style="background-color: #17a2b8;height: 60px;">
+      <mat-panel-title style="align-items: center;justify-content: space-between;margin-right:0;">
+        <div>
+          <h5 style="margin:0;color:#fff;">Servizi {{ fiche.servizi ? '(' + fiche.servizi.length + ')' : '' }}</h5>
         </div>
-
-        <div id="collapseOne" class="collapse multi-collapse show" aria-labelledby="headingOne"
-          data-parent="#accordionExample">
-          <div class="card-body" style="padding: 0">
-            <div class="card-body pull-left list list-group-item list-group-item-action active bg-light "
-              *ngFor="let s of fiche.servizi" style="margin:1px" style="padding: 0">
-              <div class="pull-left m-1" style="width: 45px">
-                <button (click)="delete($event, s,'Servizi')" type="button" class="btn btn-danger"><i
-                    class="fas fa-trash-alt" aria-hidden="true"></i></button>
-              </div>
-              <div class="pull-left ">
-                <strong class="card-title" style="color: slategrey">
-                  <i class="fa fa-cut" aria-hidden="true"></i> {{ s.descrizione }}
-                </strong>
-                <p class="card-text" style="color: slategrey"> Lavorante:&nbsp;{{
-                  getNomeCollaboratore(s.idcollaboratore) }}</p>
-              </div>
-            </div>
+        <div style="display: flex;grid-gap: 5px;">
+          <button mat-icon-button
+            style="width: 40px;height: 40px;border: none;border-radius: 10px;color: #fff;background-color: aqua;"
+            routerLink="/aggiungiServizi/{{ idFiche }}" (click)="nuovoServizio($event,true)">
+            <mat-icon>local_parking</mat-icon>
+          </button>
+          <button mat-icon-button
+            style="width: 40px;height: 40px;border: none;border-radius: 10px;color: #fff;background-color: #007bff;"
+            routerLink="/aggiungiServizi/{{ idFiche }}" (click)="nuovoServizio($event,false)">
+            <mat-icon>add_circle</mat-icon>
+          </button>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div style="margin-top:10px;">
+      <div *ngFor="let s of fiche.servizi"
+        style="display: flex;grid-gap: 8px;padding: 6px;border-bottom: 1px solid #d7d7d7;">
+        <div>
+          <button mat-icon-button (click)="delete($event, s,'Servizi')"
+            style="background: red;color: #fff;border-radius: 5px;">
+            <mat-icon style="transform: scale(1.1);">delete_forever</mat-icon>
+          </button>
+        </div>
+        <div style="display: flex;flex-direction: column;">
+          <div style="font-weight:800;">
+            {{ s.descrizione }}
+          </div>
+          <div>
+            Lavorante: {{ getNomeCollaboratore(s.idcollaboratore) }}
           </div>
         </div>
       </div>
+    </div>
 
+  </mat-expansion-panel>
 
-      <div class="card shadow p-0 mb-2 bg-white rounded">
-        <div class="card-header bg-info" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo"
-          aria-expanded="true" aria-controls="collapseTwo">
-
-          <button class="btn btn-link collapsed text-white" type="button" style="padding-left: 0">
-            <h5 class="mb-0"><i class="fas fa-wine-bottle" aria-hidden="true"></i> Prodotti
-              {{ fiche.prodotti ? '(' + fiche.prodotti.length + ')' : '' }}</h5>
-          </button>
-          <div class="pull-right">
-            <button type="button" class="btn btn-primary" style=" width: 40px; height: 40px"
-              routerLink="/aggiungiProdotti/{{ idFiche }}" (click)="nuovoProdotto($event,false)">
-              <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
-          </div>
-          <div class="pull-right">
-            <button type="button" class="btn" style=" width: 40px; height: 39px; background-color: aqua; margin-right: 5px;"
-              routerLink="/aggiungiServizi/{{ idFiche }}" (click)="nuovoServizio($event,true)">
-              <i class="fa fa-plus-circle" aria-hidden="true" style="color: white; font-size: 1em;"></i></button>
-          </div>
-
+  <!-- prodotti -->
+  <mat-expansion-panel style="margin: 10px;" hideToggle [expanded]="fiche?.prodotti?.length > 0">
+    <mat-expansion-panel-header style="background-color: #17a2b8;height: 60px;">
+      <mat-panel-title style="align-items: center;justify-content: space-between;margin-right:0;">
+        <div>
+          <h5 style="margin:0;color:#fff;">Prodotti {{ fiche.prodotti ? '(' + fiche.prodotti.length + ')' : '' }}</h5>
         </div>
-        <div id="collapseTwo" class="collapse multi-collapse show" aria-labelledby="headingTwo"
-          data-parent="#accordionExample" style="padding: 0">
-          <div class="card-body" style="padding: 0">
-            <div class="card-body pull-left list list-group-item list-group-item-action active bg-light"
-              *ngFor="let s of fiche.prodotti" style="margin:1px" style="padding: 0">
-              <div class="pull-left m-1" style="width: 45px">
-                <button (click)="delete($event, s,'Prodotti')" type="button" class="btn btn-danger"><i
-                    class="fas fa-trash-alt" aria-hidden="true"></i></button>
-              </div>
-              <div class="pull-left ">
-                <strong class="card-title" style="color: slategrey">
-                  <i class="fas fa-wine-bottle" aria-hidden="true"></i> {{ s.descrizione }}
-                </strong>
-                <p class="card-text" style="color: slategrey">Lavorante:&nbsp;{{
-                  getNomeCollaboratore(s.idcollaboratore) }}</p>
-              </div>
-            </div>
+        <div style="display: flex;grid-gap: 5px;">
+          <button mat-icon-button
+            style="width: 40px;height: 40px;border: none;border-radius: 10px;color: #fff;background-color: aqua;"
+            routerLink="/aggiungiServizi/{{ idFiche }}" (click)="nuovoServizio($event,true)">
+            <mat-icon>add_circle</mat-icon>
+          </button>
+          <button mat-icon-button
+            style="width: 40px;height: 40px;border: none;border-radius: 10px;color: #fff;background-color: #007bff;"
+            routerLink="/aggiungiProdotti/{{ idFiche }}" (click)="nuovoProdotto($event,false)">
+            <mat-icon>add_circle</mat-icon>
+          </button>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div style="margin-top:10px;">
+      <div *ngFor="let s of fiche.prodotti"
+        style="display: flex;grid-gap: 8px;padding: 6px;border-bottom: 1px solid #d7d7d7;">
+        <div>
+          <button mat-icon-button (click)="delete($event, s,'Prodotti')"
+            style="background: red;color: #fff;border-radius: 5px;">
+            <mat-icon style="transform: scale(1.1);">delete_forever</mat-icon>
+          </button>
+        </div>
+        <div style="display: flex;flex-direction: column;">
+          <div style="font-weight:800;">
+            {{ s.descrizione }}
+          </div>
+          <div>
+            Lavorante: {{ getNomeCollaboratore(s.idcollaboratore) }}
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="card shadow p-0 mb-2 bg-white rounded">
-        <div class="card-header bg-info" id="headingThree" data-toggle="collapse" data-target="#collapseThree"
-          aria-expanded="false" aria-controls="collapseThree">
+  </mat-expansion-panel>
 
-          <button class="btn btn-link collapsed text-white" type="button" style="padding-left: 0">
-            <h5 class="mb-0"><i class="fa fa-id-card" aria-hidden="true"></i>&nbsp;S. tecniche
-              {{ schedeTecniche ? '(' + schedeTecniche.length + ')' : '' }}</h5>
-          </button>
-          <div class="pull-right">
-            <button type="button" class="btn btn-primary " style=" width: 40px; height: 40px"
-              routerLink="/schedaTecnica/{{ fiche.id}}" (click)="nuovaSchedaTecnica($event)">
-              <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
-          </div>
-
+  <!-- schede tecniche -->
+  <mat-expansion-panel style="margin: 10px;" hideToggle [expanded]="schedeTecniche?.length > 0">
+    <mat-expansion-panel-header style="background-color: #17a2b8;height: 60px;">
+      <mat-panel-title style="align-items: center;justify-content: space-between;margin-right:0;">
+        <div>
+          <h5 style="margin:0;color:#fff;">S. tecniche {{ schedeTecniche ? '(' + schedeTecniche.length + ')' : '' }}
+          </h5>
         </div>
-        <div id="collapseThree" class="collapse multi-collapse show" aria-labelledby="headingThree"
-          data-parent="#accordionExample" style="padding: 0">
-          <div class="card-body" style="padding: 0">
-            <div class="card-body pull-left list list-group-item list-group-item-action active bg-light"
-              *ngFor="let sss of schedeTecniche" style="margin:1px" style="padding: 0,0,0,1px">
+        <div style="display: flex;grid-gap: 5px;">
+          <button mat-icon-button
+            style="width: 40px;height: 40px;border: none;border-radius: 10px;color: #fff;background-color: #007bff;"
+            routerLink="/schedaTecnica/{{fiche.id}}" (click)="nuovaSchedaTecnica($event)">
+            <mat-icon>add_circle</mat-icon>
+          </button>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div style="margin-top:10px;">
+      <div *ngFor="let sss of schedeTecniche"
+        style="display: flex;grid-gap: 8px;padding: 6px;border-bottom: 1px solid #d7d7d7;">
+        <div>
+          {{ sss.txt1 }}
+        </div>
+        <div style="font-weight: 800;">
+          {{ sss.data | date:'dd/MM/yyyy'}}
+        </div>
+      </div>
+    </div>
+
+  </mat-expansion-panel>
+
+</mat-accordion>
+
+<!-- <div class="card-header pull-left bg-info " style="width: 100%; position: sticky; top: 0;">
+  <button class="btn btn-link text-white" type="button" style="display: flex;padding: 0;align-items: center;gap: 10px;">
+    <img src="{{ './assets/' + fiche.classe + '.png' }}" style="width: 30px">
+    <h5 class="mb-0" style="text-transform: capitalize;">{{ fiche.nominativo.split('-')[0] }}</h5>
+  </button>
+</div> -->
+
+<!-- <div class="container-fluid" style="padding:0" style="background-color: transparent;width: 100%">
+  <div class="accordion" id="accordionExample" style="width: 100%">
+    <div class="card shadow p-0 mb-2 bg-white rounded" style="padding-left: 0" style="width: 100%">
+      <div class="card-header pull-left bg-info " id="headingOne" aria-controls="collapseOne" data-toggle="collapse"
+        style="width: 100%" data-target="#collapseOne" aria-expanded="false">
+
+        <button class="btn btn-link collapsed text-white" type="button" style="padding: 0">
+          <h5 class="mb-0"><i class="fa fa-cut" aria-hidden="true"></i> Servizi
+            {{ fiche.servizi ? '(' + fiche.servizi.length + ')' : '' }}</h5>
+        </button>
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" style=" width: 40px; height: 40px"
+            routerLink="/aggiungiServizi/{{ idFiche }}" (click)="nuovoServizio($event,false)">
+            <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+        </div>
+        <div class="pull-right">
+          <button type="button" class="btn"
+            style=" width: 40px; height: 39px; background-color: aqua; margin-right: 5px;"
+            routerLink="/aggiungiServizi/{{ idFiche }}" (click)="nuovoServizio($event,true)">
+            <i class="fab fa-product-hunt" style="color: white; font-size: 1em;"></i></button>
+        </div>
+      </div>
+
+      <div id="collapseOne" class="collapse multi-collapse show" aria-labelledby="headingOne"
+        data-parent="#accordionExample">
+        <div class="card-body" style="padding: 0">
+          <div class="card-body pull-left list list-group-item list-group-item-action active bg-light "
+            *ngFor="let s of fiche.servizi" style="margin:1px" style="padding: 0">
+            <div class="pull-left m-1" style="width: 45px">
+              <button (click)="delete($event, s,'Servizi')" type="button" class="btn btn-danger"><i
+                  class="fas fa-trash-alt" aria-hidden="true"></i></button>
+            </div>
+            <div class="pull-left ">
               <strong class="card-title" style="color: slategrey">
-                <i class="fa fa-id-card" aria-hidden="true"></i> {{ sss.txt1 }}
+                <i class="fa fa-cut" aria-hidden="true"></i> {{ s.descrizione }}
               </strong>
-              <p class="card-text" style="color: slategrey">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ sss.data | date:'dd/MM/yyyy'}}</p>
+              <p class="card-text" style="color: slategrey"> Lavorante:&nbsp;{{
+                  getNomeCollaboratore(s.idcollaboratore) }}</p>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+
+    <div class="card shadow p-0 mb-2 bg-white rounded">
+      <div class="card-header bg-info" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo"
+        aria-expanded="true" aria-controls="collapseTwo">
+
+        <button class="btn btn-link collapsed text-white" type="button" style="padding-left: 0">
+          <h5 class="mb-0"><i class="fas fa-wine-bottle" aria-hidden="true"></i> Prodotti
+            {{ fiche.prodotti ? '(' + fiche.prodotti.length + ')' : '' }}</h5>
+        </button>
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary" style=" width: 40px; height: 40px"
+            routerLink="/aggiungiProdotti/{{ idFiche }}" (click)="nuovoProdotto($event,false)">
+            <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+        </div>
+        <div class="pull-right">
+          <button type="button" class="btn"
+            style=" width: 40px; height: 39px; background-color: aqua; margin-right: 5px;"
+            routerLink="/aggiungiServizi/{{ idFiche }}" (click)="nuovoServizio($event,true)">
+            <i class="fa fa-plus-circle" aria-hidden="true" style="color: white; font-size: 1em;"></i></button>
+        </div>
+
+      </div>
+      <div id="collapseTwo" class="collapse multi-collapse show" aria-labelledby="headingTwo"
+        data-parent="#accordionExample" style="padding: 0">
+        <div class="card-body" style="padding: 0">
+          <div class="card-body pull-left list list-group-item list-group-item-action active bg-light"
+            *ngFor="let s of fiche.prodotti" style="margin:1px" style="padding: 0">
+            <div class="pull-left m-1" style="width: 45px">
+              <button (click)="delete($event, s,'Prodotti')" type="button" class="btn btn-danger"><i
+                  class="fas fa-trash-alt" aria-hidden="true"></i></button>
+            </div>
+            <div class="pull-left ">
+              <strong class="card-title" style="color: slategrey">
+                <i class="fas fa-wine-bottle" aria-hidden="true"></i> {{ s.descrizione }}
+              </strong>
+              <p class="card-text" style="color: slategrey">Lavorante:&nbsp;{{
+                  getNomeCollaboratore(s.idcollaboratore) }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card shadow p-0 mb-2 bg-white rounded">
+      <div class="card-header bg-info" id="headingThree" data-toggle="collapse" data-target="#collapseThree"
+        aria-expanded="false" aria-controls="collapseThree">
+
+        <button class="btn btn-link collapsed text-white" type="button" style="padding-left: 0">
+          <h5 class="mb-0"><i class="fa fa-id-card" aria-hidden="true"></i>&nbsp;S. tecniche
+            {{ schedeTecniche ? '(' + schedeTecniche.length + ')' : '' }}</h5>
+        </button>
+        <div class="pull-right">
+          <button type="button" class="btn btn-primary " style=" width: 40px; height: 40px"
+            routerLink="/schedaTecnica/{{ fiche.id}}" (click)="nuovaSchedaTecnica($event)">
+            <i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+        </div>
+
+      </div>
+      <div id="collapseThree" class="collapse multi-collapse show" aria-labelledby="headingThree"
+        data-parent="#accordionExample" style="padding: 0">
+        <div class="card-body" style="padding: 0">
+          <div class="card-body pull-left list list-group-item list-group-item-action active bg-light"
+            *ngFor="let sss of schedeTecniche" style="margin:1px" style="padding: 0,0,0,1px">
+            <strong class="card-title" style="color: slategrey">
+              <i class="fa fa-id-card" aria-hidden="true"></i> {{ sss.txt1 }}
+            </strong>
+            <p class="card-text" style="color: slategrey">
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ sss.data | date:'dd/MM/yyyy'}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+</div> -->
+
 <div class="bottomright" style="opacity: 0.7;">
   <button type="button" class="btn btn-success" style=" height: 40px" (click)="apriConsulenza()">
     Consulenza&nbsp;&nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i>

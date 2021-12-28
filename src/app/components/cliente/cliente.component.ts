@@ -20,7 +20,7 @@ export class ClienteComponent implements OnInit {
   sesso = 'Donna';
   cliente: Cliente;
   idCliente: string;
-  btnEnable = true;
+  btnEnable = false;
 
   constructor(private saloneService:SaloniService, private location: Location, private service: ClientiService, private route: Router, private aRoute: ActivatedRoute) {
     this.cliente = new Cliente();
@@ -51,9 +51,8 @@ export class ClienteComponent implements OnInit {
   }
 
   salvaCliente() {
-    this.btnEnable = false;
     this.cliente.sesso = this.sesso;
-    //console.log(JSON.stringify(this.cliente));
+    console.log(JSON.stringify(this.cliente));
     this.service.salvaClienteAccess(this.cliente).subscribe((x: Esito) => {
       if ((x.id !== '') && (x.esito === 'Ok')) {
         this.cliente.id = x.id;

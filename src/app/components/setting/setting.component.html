@@ -1,110 +1,101 @@
-  <div class="card" style="background-color: transparent">
-
-    <div class="card-header pull-left navbar-dark bg-dark ">
-      <button class="btn btn-link text-info" type="button" style="padding: 0">
-        <h5 class="mb-0" style="color: white !important;">Setting</h5>
-      </button>
-      <div class="pull-right">
-        <button type="button" class="btn btn-warning " style=" width: 80; height: 40px" (click)="goBack()">
-          <i class="fa fa-arrow-left" aria-hidden="true"></i>
-        </button>
-      </div>
-    </div>
-  </div><div class="container-fluid" style="opacity: 0.9;">
+<mat-toolbar style="display: flex;justify-content: space-between;background-color: #000;">
+  <button class="btn btn-link text-info" type="button" style="padding: 0">
+    <h5 class="mb-0" style="color: white !important;">Setting</h5>
+  </button>
+  <div class="right">
+    <button type="button" class="btn btn-warning " style=" width: 80; height: 40px" (click)="goBack()">
+      <mat-icon style="font-weight: 800;">keyboard_double_arrow_left</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
 
 
+<div style="display:grid;grid-gap: 10px;margin-top: 10px;grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+  <button mat-button style="background-color:#ffc107;color:#fff;margin: 0 auto;width: 90%;font-size: inherit;"
+    (click)="resetServizi()">Aggiorna
+    servizi</button>
+  <button mat-button style="background-color:#ffc107;color:#fff;margin: 0 auto;width: 90%;font-size: inherit;"
+    (click)="resetProdotti()">Aggiorna
+    prodotti</button>
+  <button mat-button style="background-color:#ffc107;color:#fff;margin: 0 auto;width: 90%;font-size: inherit;"
+    (click)="resetCollaboratori()">Aggiorna collaboratori</button>
+  <button mat-button id="coll" name="coll"
+    style="background-color:#ffc107;color:#fff;margin: 0 auto;width: 90%;font-size: inherit;"
+    routerLink="/aggiungiServizi/0">{{ coll.codice ? coll.codice : coll.nome }}</button>
 
-  <div>
-    <button type="button" class="btn bg-warning text-info m-3" style="width: 300px" (click)="resetServizi()">Aggiorna
-      servizi</button>
-    <button type="button" class="btn bg-warning text-info m-3" style="width: 300px" (click)="resetProdotti()">Aggiorna
-      prodotti</button>
-    <button type="button" class="btn bg-warning text-info m-3" style="width: 300px"
-      (click)="resetCollaboratori()">Aggiorna collaboratori</button>
+  <label
+    style="width: 90%;border: 1px solid #d7d7d7;margin: 0 auto;display: flex;align-items: center;justify-content: center;padding: 6px;">
+    <input type="checkbox" name="verificaAperturaFiche" [(ngModel)]="verificaAperturaFiche"
+      (click)="impostaVerificaApertura()" style="margin-right:10px;">Verifica apertura fiche
+  </label>
 
-    <div style="margin-top: 10px;">
-      <label class="ml-3 text-info" for="coll">Colaboratore predefinito</label><br />
-      <button type="button" id="coll" name="coll" class="btn bg-warning text-info ml-3"
-        style="width: 300px; margin-top:0"
-        routerLink="/aggiungiServizi/0">{{ coll.codice ? coll.codice : coll.nome }}</button>
-    </div>
-    <div style="height: 20px"></div>
-    <div class="form-group" style="margin-left: 15px;">
-      <div class="form-control">
-        <label class="checkbox-inline">
-          <input type="checkbox" name="verificaAperturaFiche" [(ngModel)]="verificaAperturaFiche"
-            (click)="impostaVerificaApertura()">Verifica apertura fiche
-        </label>
-      </div>
-    </div>
+</div>
 
-    <div style="margin-top:10px; margin-bottom:10px;">
-      <label class="ml-3 text-info" for="api">Url servizi esposti
-        <input class="form-control mr-sm-2" type="text" style="width:250px" [(ngModel)]="baseAppURL" id="api"
-          name="api">
-      </label>
-      <button type="button" class="btn btn-warning " style="margin-left:3px; margin-top:-4px; height:37px;"
-        name="btnApi" id="btnApi" (click)="setBaseAppURL()">
-        <i class="fa fa-floppy-o" aria-hidden="true"></i>
+<div
+  style="margin-top:10px; margin-bottom:10px;display:grid;grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));grid-gap:10px;">
+
+  <div style="width: 90%;margin: 0 auto;">
+    <label for="api" style="margin-bottom: 0;">Url servizi esposti</label>
+    <div style="display: flex;grid-gap: 5px;border: 1px solid #d7d7d7;padding: 2px;border-radius: 5px;">
+      <input matInput [(ngModel)]="baseAppURL" id="api" name="api" style="width:100%;border:0;">
+      <button mat-icon-button style="background-color: #ffc107;border-radius: 5px;" name="btnApi" id="btnApi"
+        (click)="setBaseAppURL()">
+        <mat-icon>save</mat-icon>
       </button>
     </div>
+  </div>
 
-    <div style="margin-top:10px; margin-bottom:10px;">
-      <label class="ml-3 text-info" for="gruppo">Gruppo saloni
-        <input class="form-control mr-sm-2" type="text" style="width:250px" [(ngModel)]="gruppoSaloni" id="gruppo"
-          name="gruppo">
-      </label>
-      <button type="button" class="btn btn-warning " style="margin-left:3px; margin-top:-4px; height:37px;"
-        name="btnApi" id="btnApi" (click)="setGruppoSaloni()">
-        <i class="fa fa-floppy-o" aria-hidden="true"></i>
+  <div style="width: 90%;margin: 0 auto;">
+    <label for="gruppo" style="margin-bottom: 0;">Gruppo saloni</label>
+    <div style="display: flex;grid-gap: 5px;border: 1px solid #d7d7d7;padding: 2px;border-radius: 5px;">
+      <input matInput [(ngModel)]="gruppoSaloni" id="gruppo" name="gruppo" style="width:100%;border:0;">
+      <button mat-icon-button style="background-color: #ffc107;border-radius: 5px;" name="btnGruppo" id="btnGruppo"
+        (click)="setGruppoSaloni()">
+        <mat-icon>save</mat-icon>
       </button>
     </div>
+  </div>
 
-    <div style="margin-top:10px; margin-bottom:10px;">
-      <label class="ml-3 text-info" for="timeout">Timeout connessione real time
-        <input class="form-control mr-sm-2" type="text" style="width:250px" [(ngModel)]="timeout" id="timeout"
-          name="timeout">
-      </label>
-      <button type="button" class="btn btn-warning " style="margin-left:3px; margin-top:-4px; height:37px;"
-        name="btnApi" id="btnApi" (click)="setTimeout()">
-        <i class="fa fa-floppy-o" aria-hidden="true"></i>
+  <div style="width: 90%;margin: 0 auto;">
+    <label for="timeout" style="margin-bottom: 0;">Timeout connessione real time</label>
+    <div style="display: flex;grid-gap: 5px;border: 1px solid #d7d7d7;padding: 2px;border-radius: 5px;">
+      <input matInput [(ngModel)]="timeout" id="timeout" name="timeout" style="width:100%;border:0;">
+      <button mat-icon-button style="background-color: #ffc107;border-radius: 5px;" name="btnTimeout" id="btnTimeout"
+        (click)="setTimeout()">
+        <mat-icon>save</mat-icon>
       </button>
     </div>
+  </div>
 
-    <div class="form-group" style="margin-left: 15px;">
-      <label class="ml-3 text-info" for="coll" style="display:block;">Sesso predefinito</label>
-      <div class="form-check form-check-inline custom-radio" style="margin-left: 43px;">
-        <input id="credit" name="sesso" type="radio" class="custom-control-input" value="Uomo" #sesso1="ngModel"
-          [(ngModel)]="sesso" required (click)="setGender('Uomo')">
-        <label class="custom-control-label text-info" for="credit">Uomo</label>
-      </div>
-      <div class="form-check form-check-inline custom-radio" style="margin-left: 43px;">
-        <input id="debit" name="sesso" type="radio" class="custom-control-input" value="Donna" #sesso1="ngModel"
-          [(ngModel)]="sesso" required (click)="setGender('Donna')">
-        <label class="custom-control-label text-info" for="debit">Donna</label>
-      </div>
+  <div style="width: 90%;margin: 0 auto;">
+    <div style="margin-bottom: 0;">Sesso predefinito</div>
+    <div style="display: flex;grid-gap: 5px;padding: 2px;">
+      <mat-radio-group aria-label="Seleziona sesso" #sesso1="ngModel" [(ngModel)]="sesso" style="display: flex; align-items: center;
+      grid-gap: 20px;">
+        <mat-radio-button name="sesso" value="Uomo" required (click)="setGender('Uomo')">Uomo</mat-radio-button>
+        <mat-radio-button name="sesso" value="Donna" required (click)="setGender('Donna')">Donna</mat-radio-button>
+      </mat-radio-group>
     </div>
-
-
-    <div style="margin-left: 15px;">
-      <div>
-        <button type="button" class="btn btn-primary" name="abilitaSchede"
-          (click)="mostraPassword()">{{testoSchedaTecnica}}</button>
-      </div>
-      <div class="form-group" *ngIf="mostraCampoPassword">
-        <form class="px-4 py-3">
-          <div class="form-group">
-            <label for="exampleDropdownFormPassword1">Inserisci la password dell'amministratore</label>
-            <input type="password" class="form-control" id="exampleDropdownFormPassword1" placeholder="Password"
-              (keyup)="setPassword($event.target.value)">
-          </div>
-
-          <button type="button" class="btn btn-primary" (click)="confermaPassword()">Conferma</button>
-          <button type="button" class="btn btn-secondary" (click)="mostraCampoPassword = false">Annulla</button>
-        </form>
-      </div>
-    </div>
-
   </div>
 
 </div>
+
+<div style="display: flex;justify-content: flex-end;padding-right: 20px;">
+  <button mat-button style="background-color: #007bff;color:#fff;" name="abilitaSchede"
+    (click)="mostraPassword()">{{testoSchedaTecnica}}</button>
+</div>
+
+  <div *ngIf="mostraCampoPassword" style="padding:20px;">
+    <form>
+      <div>
+        <label for="exampleDropdownFormPassword1">Inserisci la password dell'amministratore</label>
+        <input matInput type="password" id="exampleDropdownFormPassword1" placeholder="Password"
+          (keyup)="setPassword($event.target.value)" style="width:100%;max-width:350px;border:2px solid #d7d7d7;border-radius:5px;">
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:20px;">
+        <button mat-button (click)="mostraCampoPassword = false" style="background-color:#990000;color:#fff;">Annulla</button>
+        <button mat-button (click)="confermaPassword()" style="background-color: #009900;color:#fff;">Conferma</button>
+       
+      </div>
+    </form>
+  </div>

@@ -45,9 +45,9 @@ export class AggiungiserviziComponent implements OnInit {
 
   cercaServizi(txt: string) {
     if (txt === '') {
-      this.servizi = JSON.parse(localStorage.getItem('servizi')).filter(x => x.descrizione.indexOf('shampoo', 0) >= 0);
+      this.servizi = JSON.parse(localStorage.getItem('servizi'))?.filter(x => x.descrizione.indexOf('shampoo', 0) >= 0);
     } else {
-      this.servizi = JSON.parse(localStorage.getItem('servizi')).filter((x: Servizio) =>
+      this.servizi = JSON.parse(localStorage.getItem('servizi'))?.filter((x: Servizio) =>
         x.servizio.toLowerCase().indexOf(txt.toLowerCase(), 0) >= 0);
     }
     /*

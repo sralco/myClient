@@ -162,6 +162,8 @@ export class PlannerComponent implements OnInit, OnDestroy {
          resources: function (fetchInfo, successCallback, failureCallback) {
             /* let data=fetchInfo.startStr;*/
 
+            
+
             let salone = saloneService.saloneCorrente;
             if (!salone) {
                const a: string[] = localStorage.getItem('PlannerCorrente').split(';');
@@ -259,6 +261,14 @@ export class PlannerComponent implements OnInit, OnDestroy {
             info.el.style.padding = '5px';
             info.el.style.borderWidth = '2px';
             info.el.style.backgroundImage = 'linear-gradient(to bottom, ' + info.el.style.backgroundColor + ', white)';
+
+            let title = info.el.querySelector('.fc-event-title');
+            title.setAttribute("style", "text-transform:capitalize;");
+
+            //let div = info.el.querySelector('.fc-event-title');
+            //div.appendChild
+            //div.style.text-transform = 'capitalize';
+            //let div = getElementsByClassName.('.fc-event-title')
 
             let time = info.el.querySelector('.fc-event-time');
             //let time = info.el.querySelector('.fc-event-main');
@@ -377,8 +387,12 @@ export class PlannerComponent implements OnInit, OnDestroy {
    selezionaSalone(salone) {
       this.saloneSelezionato = salone;
       this.selezionandoSalone = false;
+      this.calendarApi.refetchResources();
       this.loadEvents();
       this.prelevaDati(this.calendarApi.currentData.currentDate,  this.calendarApi.currentData.currentDate);
+      localStorage.setItem('PlannerCorrente', this.saloneSelezionato.gruppo + ';' + this.saloneSelezionato.salone + ';' + this.saloneSelezionato.destinazione + ';' + this.saloneSelezionato.indirizzoIP + ';' + this.saloneSelezionato.porta + ';' + this.saloneSelezionato.posizionePlanner);
+      localStorage.setItem('OpzioniPlanner', JSON.stringify(this.saloneSelezionato.opzioniPlanner));
+      window.location.reload();
    }
 
    selezSalone(){
@@ -434,6 +448,8 @@ export class PlannerComponent implements OnInit, OnDestroy {
             tempoDiPosa: e.tempoDiPosa,
             gruppo: this.saloneSelezionato.gruppo,
             salone: this.saloneSelezionato.salone,
+            //titolo: e.title.replace('Cliente Occasionale', 'Cliente occ.'),
+            //servizi: e.
             token: '',
             posizione: this.saloneSelezionato.destinazione,
             nomeCliente: e.nomeCliente,

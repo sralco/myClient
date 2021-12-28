@@ -1,80 +1,77 @@
-<link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/checkout/">
-<div class="card-header pull-left bg-dark " style="width: 100%">
-  <button class="btn btn-link text-white" type="button" style="padding: 0">
-    <h5 class="mb-0" style="color: white;">{{titolo}}</h5>
-  </button>
-  <div class="pull-right">
+<mat-toolbar style="background-color: #000;display: flex;justify-content: space-between;align-content: center;">
+  <h5 style="margin:0;color: white;text-transform: capitalize;">{{titolo}}</h5>
+  <div class="right">
     <button type="button" class="btn btn-warning" style=" width: 80; height: 40px" (click)="goBack()">
-      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+      <mat-icon style="font-weight: 800;">keyboard_double_arrow_left</mat-icon>
     </button>
   </div>
-</div>
-<div class="row">
+</mat-toolbar>
 
-  <div class="col-md-8 order-md-1 mb-4" style="margin-left:10px; margin-right: 10px;background-color: white;">
+<mat-card style="margin: 10px;">
+  <mat-card-content>
+    <form novalidate name="frm">
 
-    <form class="needs-validation" novalidate name="frm" style="padding: 0px 0 20px 0; margin: 20px;">
-      <div class="mb-3">
-        <label for="firstName">Nome</label>
-        <input type="text" class="form-control" id="firstName" name="firstName" value="" required
-          style="margin-top: -10px;" #firstName1="ngModel" [(ngModel)]="cliente.nome">
-        <div class="invalid-feedback">
-          Campo obbligatorio.
+      <label for="firstName">Nome</label>
+      <mat-form-field appearance="outline" style="width:100%">
+        <input matInput placeholder="" id="firstName" name="firstName" #firstName="ngModel" [(ngModel)]="cliente.nome"
+          value="" required style="text-transform: capitalize;">
+        <mat-error *ngIf="!firstName.value">Campo obbligatorio</mat-error>
+      </mat-form-field>
+
+      <label for="lastName">Cognome</label>
+      <mat-form-field appearance="outline" style="width:100%">
+        <input matInput placeholder="" id="lastName" name="lastName" #lastName="ngModel" [(ngModel)]="cliente.cognome"
+          value="" required style="text-transform: capitalize;">
+        <mat-error *ngIf="!lastName.value">Campo obbligatorio</mat-error>
+      </mat-form-field>
+      <div style="display:flex;justify-content:space-between;">
+        <div style="display:flex;flex-direction:column;width:50%;">
+          <label for="dataNascita">Compleanno</label>
+          <mat-form-field appearance="fill" style="width: 95%;">
+            <input matInput placeholder="GG/MM" id="dataNascita" name="dataNascita" #dataNascita="ngModel"
+              [(ngModel)]="cliente.compleanno" value="" required>
+            <mat-error *ngIf="!dataNascita.value">Campo obbligatorio</mat-error>
+          </mat-form-field>
         </div>
-      </div>
-      <div class="mb-3">
-        <label for="lastName">Cognome</label>
-        <input type="text" class="form-control" id="lastName" name="lastName" placeholder="" value="" required
-          style="margin-top: -10px;" #lastName1="ngModel" [(ngModel)]="cliente.cognome">
-        <div class="invalid-feedback">
-          Campo obbligatorio.
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <div class="row">
-          <div class="col-6 col-sm-6">
-            <label for="dataNascita">Compleanno<span class="text-muted"></span></label>
-            <input type="text" maxlength="5" class="form-control" id="dataNascita" name="dataNascita"
-              placeholder="GG/MM" style="margin-top: -10px;" [(ngModel)]="cliente.compleanno" #dataNascita1="ngModel">
-          </div>
-          <div class="col-6 col-sm-6">
-            <label for="dataNascita">Anno nascita</label>
-            <input type="text" maxlength="4" class="form-control" id="anno" name="anno" placeholder="AAAA"
-              style="margin-top: -10px;" [(ngModel)]="cliente.anno" #anno1="ngModel">
-          </div>
-        </div>
-      </div>
-
-      <div class="mb-3" style="margin-top: 15px;">
-        <label for="email">Email<span class="text-muted">&nbsp;(Opzionale)</span></label>
-        <div class="input-group">
-          <div class="input-group-prepend" style="margin-top: -10px;">
-            <span class="input-group-text">@</span>
-          </div>
-          <input type="text" class="form-control" id="email" name="email" placeholder="" style="margin-top: -10px;"
-            [(ngModel)]="cliente.email" #email1="ngModel">
+        <div style="display:flex;flex-direction:column;width:50%;">
+          <label for="annoNascita">Anno nascita</label>
+          <mat-form-field appearance="fill" style="width: 95%;">
+            <input matInput placeholder="AAAA" id="annpoNascita" name="annoNascita" #annoNascita="ngModel"
+              [(ngModel)]="cliente.anno" value="" required>
+            <mat-error *ngIf="!annoNascita.value">Campo obbligatorio</mat-error>
+          </mat-form-field>
         </div>
       </div>
 
-      <div class="mb-3">
-        <label for="cell">Cellulare</label>
-        <div class="input-group">
-          <div class="input-group-prepend" style="margin-top: -10px;">
-            <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
-          </div>
-          <input type="text" class="form-control" id="cell" name="cell" style="margin-top: -10px;"
-            [(ngModel)]="cliente.cell" #cell1="ngModel">
-        </div>
-      </div>
+      <label for="email">Email <span style="color:#c3c3c3;">(opzionale)</span></label>
+      <mat-form-field appearance="outline" style="width:100%">
+        <mat-icon matPrefix>email</mat-icon>
+        <input matInput placeholder="" type="email" id="email" name="email" #email="ngModel" [(ngModel)]="cliente.email"
+          value="">
+        <mat-error *ngIf="!email.value">Campo obbligatorio</mat-error>
+      </mat-form-field>
 
-      <div class="md-3">
-        <label for="paese">Comune di provenienza</label>
-        <input type="text" class="form-control" id="paese" name="paese" placeholder="" style="margin-top: -10px;"
-          [(ngModel)]="cliente.paese" #paese1="ngModel">
-      </div>
+      <label for="cell">Cellulare</label>
+      <mat-form-field appearance="outline" style="width:100%">
+        <mat-icon matPrefix>phone_iphone</mat-icon>
+        <input matInput placeholder="" type="number" id="cell" name="cell" #cell="ngModel" [(ngModel)]="cliente.cell"
+          value="" required>
+        <mat-error *ngIf="!cell.value">Campo obbligatorio</mat-error>
+      </mat-form-field>
 
+      <label for="paese">Comune di provenienza</label>
+      <mat-form-field appearance="outline" style="width:100%">
+        <input matInput placeholder="" id="paese" name="paese" #paese="ngModel" [(ngModel)]="cliente.paese" value=""
+          required style="text-transform: capitalize;">
+        <mat-error *ngIf="!paese.value">Campo obbligatorio</mat-error>
+      </mat-form-field>
 
+      <mat-radio-group [(ngModel)]="sesso" aria-label="Select an option" required name="sessooption" #sessooption="ngModel">
+        <mat-radio-button value="uomo" style="margin-right: 20px;">Uomo</mat-radio-button>
+        <mat-radio-button value="donna">Donna</mat-radio-button>
+      </mat-radio-group>
+
+      <!-- 
       <div class="d-block my-3">
         <div class="form-check form-check-inline custom-radio" style="margin-left: 23px;">
           <input id="credit" name="sesso" type="radio" class="custom-control-input" #sesso1="ngModel"
@@ -86,11 +83,15 @@
             value="Donna" required>
           <label class="custom-control-label" for="debit">Donna</label>
         </div>
-      </div>
+      </div> -->
+      <mat-card-actions style="display: flex;justify-content: flex-end;">
+        <button mat-button name="btn" (click)="salvaCliente()" 
+        [disabled]="!(firstName.value && lastName.value && dataNascita.value && annoNascita.value && cell.value && paese.value && sessooption.value)" style="background: #000;
+        color: #fff;">Salva cliente</button>
+      </mat-card-actions>
 
-      <button class="btn btn-dark btn-lg btn-block" name="btn" (click)="salvaCliente()" [disabled]="!btnEnable">Salva
-        cliente</button>
+
     </form>
 
-  </div>
-</div>
+  </mat-card-content>
+</mat-card>

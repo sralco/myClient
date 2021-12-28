@@ -1,13 +1,15 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { Cliente } from './../../Models/Cliente';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ClientiService } from 'src/app/Services/clienti.service';
+import { viewClassName } from '@angular/compiler';
 
 @Component({
   selector: 'app-clienti',
   templateUrl: './clienti.component.html',
-  styleUrls: ['./clienti.component.scss']
+  styleUrls: ['./clienti.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ClientiComponent implements OnInit {
 
