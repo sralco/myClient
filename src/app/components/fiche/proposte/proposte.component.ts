@@ -27,10 +27,10 @@ export class ProposteComponent implements OnInit {
       this.menuTriggers.openMenu();
   }
 
-  rifiutaProposta(){
-    const p:Proposta=this.menuTriggers.menuData.data;
-    console.log(p);
-    this.service.rifiutaProposta(p).subscribe(x=>{
+  rifiutaProposta(proposta){
+    //const p:Proposta=this.menuTriggers.menuData.data;
+    console.log(proposta);
+    this.service.rifiutaProposta(proposta).subscribe(x=>{
       if (x.esito==='true'){
         this.dialogRef.close();
       }else{

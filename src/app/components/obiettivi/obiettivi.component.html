@@ -1,6 +1,6 @@
 <mat-toolbar style="background-color: darkslategrey;">
   <mat-toolbar-row>
-    <span style="flex: 1 1 auto; color: white;">Obiettivi ({{collaboratore.nome + ' ' + collaboratore.cognome}})</span>
+    <span style="flex: 1 1 auto; color: white;">Obiettivi ({{collaboratore?.nome + ' ' + collaboratore?.cognome}})</span>
     <button mat-icon-button (click)="back()"
       style="background-color:tan; font-size: 16px; font-size:small;font-weight: bolder;">
       <i class="fa fa-arrow-left" aria-hidden="true"></i>
