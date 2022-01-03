@@ -75,8 +75,8 @@ export class PassaggiComponent implements OnInit {
         x.nominativo = c.nome + ' ' + c.cognome;
         x.ingresso= c.dataUltimaFiche;
         const dialogRef = this.dialog.open(PopFicheComponent, {
-          maxWidth: '100vw !important',
-          maxHeight: '100vw !important',
+          width:'95%',
+          maxWidth: '350px',
           data: x
         });
       }, (err => {

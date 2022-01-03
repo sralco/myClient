@@ -439,6 +439,7 @@ export class PlannerComponent implements OnInit, OnDestroy {
 
    assignResources() {
       this.events.forEach((e) => {
+         console.log(e)
          let ext: ExtendProperties = {
             idCliente: e.idCliente,
             servizi: e.servizi,
@@ -605,8 +606,8 @@ export class PlannerComponent implements OnInit, OnDestroy {
 
    showEvento(info) {
       const dialogRef = this.dialog.open(DettagliEventoComponent, {
-         maxWidth: '100vw !important',
-         maxHeight: '100vw !important',
+         width: '95%',
+         maxWidth: '350px',
          data: info
       });
       dialogRef.afterClosed().subscribe(s => {

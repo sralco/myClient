@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Salone } from 'src/app/Models/Salone';
 import { SaloniService } from 'src/app/Services/saloni.service';
 import { CollaboratoriService } from 'src/app/Services/collaboratori.service';
@@ -8,11 +8,15 @@ import { Cliente } from 'src/app/Models/Cliente';
 import { MatSidenav } from '@angular/material/sidenav';
 import { NotifierService } from 'angular-notifier';
 import { Intervallo } from 'src/app/Models/Intervallo';
+import { ClientiService } from 'src/app/Services/clienti.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DettagliClienteComponent } from '../dettagli-cliente/dettagli-cliente.component';
 
 @Component({
   selector: 'app-nuovi-clienti',
   templateUrl: './nuovi-clienti.component.html',
-  styleUrls: ['./nuovi-clienti.component.scss']
+  styleUrls: ['./nuovi-clienti.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class NuoviClientiComponent implements OnInit {
   @ViewChild('sidenav') sidenav: MatSidenav;
@@ -34,7 +38,7 @@ export class NuoviClientiComponent implements OnInit {
   totaleNuoviClienti: number = 0;
   attesa: boolean = true;
 
-  constructor(private router: Router, private saloneService: SaloniService, private loc: Location, private notifier: NotifierService) { }
+  constructor(private router: Router, private saloneService: SaloniService, private loc: Location, private notifier: NotifierService, private service:ClientiService, public dialog:MatDialog) { }
 
   ngOnInit() {
     this.salone = this.saloneService.saloneCorrente;
@@ -98,4 +102,24 @@ receiveMessage($event) {
   this.aggiornaNuoviClienti();
 }
 
+apriDettagliCliente(element: Cliente) {
+  console.log(element);
+  console.log(this.salone);
+  this.service.getClienteDelSalone(this.salone, element.id).subscribe(x => {
+    let app = { s: this.salone, c: x };
+    console.log(x);
+    const dialogRef = this.dialog.open(DettagliClienteComponent, {
+      width: '95%',
+      maxWidth: '350px',
+      data: app
+    });
+  }, (err => {
+    this.attesa = false;
+    console.log(err);
+    this.notifier.notify('warning', 'Errore nella connessione al server');
+  }));
 }
+
+}
+
+

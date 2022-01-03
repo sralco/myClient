@@ -25,10 +25,16 @@ export class ClienteComponent implements OnInit {
   constructor(private saloneService:SaloniService, private location: Location, private service: ClientiService, private route: Router, private aRoute: ActivatedRoute) {
     this.cliente = new Cliente();
     this.salone = this.saloneService.saloneCorrente;
+    if (!this.salone) {
+      this.salone = JSON.parse(localStorage.getItem("SaloneCorrente"));
+    }
+    console.log(this.salone)
 
     this.idCliente = this.aRoute.snapshot.paramMap.get('id');
+    console.log(this.idCliente)
     if (this.idCliente) {
       this.service.getCliente(this.idCliente,this.salone).subscribe(x => {
+        console.log(x)
         this.cliente = x[0];
         this.sesso = this.cliente.sesso;
         console.log(JSON.stringify(this.cliente));

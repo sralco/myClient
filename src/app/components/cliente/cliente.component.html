@@ -13,8 +13,7 @@
 
       <label for="firstName">Nome</label>
       <mat-form-field appearance="outline" style="width:100%">
-        <input matInput placeholder="" id="firstName" name="firstName" #firstName="ngModel" [(ngModel)]="cliente.nome"
-          value="" required style="text-transform: capitalize;">
+        <input matInput placeholder="" id="firstName" name="firstName" #firstName="ngModel" [(ngModel)]="cliente.nome" value="" required style="text-transform: capitalize;">
         <mat-error *ngIf="!firstName.value">Campo obbligatorio</mat-error>
       </mat-form-field>
 
@@ -24,6 +23,7 @@
           value="" required style="text-transform: capitalize;">
         <mat-error *ngIf="!lastName.value">Campo obbligatorio</mat-error>
       </mat-form-field>
+      
       <div style="display:flex;justify-content:space-between;">
         <div style="display:flex;flex-direction:column;width:50%;">
           <label for="dataNascita">Compleanno</label>
