@@ -1,105 +1,129 @@
 <mat-toolbar style="background-color: darkslategrey;">
-  <mat-toolbar-row>
-    <h3 class="display-6">
+  <mat-toolbar-row style="justify-content: space-between;">
+    <div style="display:flex;align-items:center;color:#fff;grid-gap:10px;">
       <img src="./assets/img1.png" width="40" height="40" alt="logo">
-      <span class="navbar-brand text-white" style="margin-left: 20px;padding: 0;">{{salone.salone}}</span></h3>
-
-    <span style="flex: 1 1 auto;"></span>
+      <h3>{{salone.salone}}</h3>
+    </div>
     <button mat-icon-button (click)="back()"
       style="background-color:tan; font-size: 16px; font-size:small;font-weight: bolder;">
-      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+      <mat-icon>keyboard_double_arrow_left</mat-icon>
     </button>
+  </mat-toolbar-row>
+  <mat-toolbar-row style="height: 40px;background-color: tan;font-size: initial;display: flex;justify-content: center;">
+    Nuovi clienti {{intervallo.name}}
   </mat-toolbar-row>
 </mat-toolbar>
 
-<mat-sidenav-container style="background-image: url('./assets/penta.jpg');">
+<app-spinner1center *ngIf="attesa" style="z-index: 999; position: absolute; left: 0; right: 0; top:0; bottom: 0;">
+</app-spinner1center>
 
-  <mat-sidenav-content>
-    <div style="height: 90vh;">
+<div style="margin:20px;">
+  <mat-tab-group>
+    <mat-tab label="Clienti recuperati ({{totaleRecuperati}})">
+      <table style="width: 100%;">
+        <thead>
+          <tr style="height:50px;">
+            <th>Cliente</th>
+            <th style="text-align: right;">Ultima visita</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of pageOfItemsR" (click)="apriDettagliCliente(c)"
+            style="height:50px;border-top:1px solid #d7d7d7;">
+            <td style="display: flex;grid-gap: 10px;text-transform: capitalize;height: 50px;align-items: center;">
+              <mat-icon style="color: greenyellow;" *ngIf="c.dataUltimaFiche">check_circle</mat-icon>
+              {{c.nome + ' ' + c.cognome}}</td>
+            <td class="testoadestra">
+              {{c.dataUltimaFiche}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-      <app-spinner1center *ngIf="attesa" style="z-index: 999; position: absolute; left: 0; right: 0; top:0; bottom: 0;">
-      </app-spinner1center>
+      <jw-pagination [maxPages]="4" [pageSize]="8" [items]="recuperati" (changePage)="onChangePageR($event)">
+      </jw-pagination>
+    </mat-tab>
+    <mat-tab label="Nuovi clienti ({{totaleNuoviClienti}})">
+      <table style="width: 100%;">
+        <thead>
+          <tr style="height:50px;">
+            <th>Cliente</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of pageOfItemsNC" (click)="apriDettagliCliente(c)" style="height:50px;border-top:1px solid #d7d7d7;">
+            <td style="text-transform: capitalize;">{{c.nome + ' ' + c.cognome}}</td>
+          </tr>
+          </tbody>
+      </table>
+      <jw-pagination [maxPages]="4" [pageSize]="8" [items]="nuovi" (changePage)="onChangePageNC($event)">
+      </jw-pagination>
+    </mat-tab>
+  </mat-tab-group>
+
+  <!-- <ngb-tabset [destroyOnHide]="false">
+
+    <ngb-tab style="font-weight: bolder;" title="Clienti recuperati ({{totaleRecuperati}})">
+      <ng-template ngbTabContent>
+        <!-- <table style="width: 100%;">
+        <thead>
+          <tr style="height:50px;">
+            <th>Rec.</th>
+            <th>Cliente</th>
+            <th style="text-align: right;">Ultima visita</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of pageOfItemsR" (click)="mostraAnagrafica($event, c.id)" style="height:50px;border-top:1px solid #d7d7d7;">
+            <td>
+              <i class="fas fa-check-circle" style="color: greenyellow;" *ngIf="c.dataUltimaFiche"></i>
+            </td>
+            <td>
+              <strong>{{c.nome + ' ' + c.cognome}}</strong>
+            </td>
+
+            <td class="testoadestra">
+              {{c.dataUltimaFiche}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <jw-pagination [maxPages]="4" [pageSize]="8" [items]="recuperati" (changePage)="onChangePageR($event)">
+      </jw-pagination>
 
 
+      </ng-template>
+    </ngb-tab>
 
-      <div class="card" style="width: 100%;">
-        <div class="card-header card-header-warning" style=" width: 100%;">
-          <div class="pull-right" style="width: 100%;padding:0;">
-            <button class="btn "
-              style="background-color:tan; width: 100%; padding-left: 0; padding-right: 0; font-size:small;font-weight: bolder;">Nuovi clienti {{intervallo.name}}</button>
-          </div>
+    <ngb-tab>
+      <ng-template ngbTabTitle style="font-weight: bolder;">Nuovi clienti ({{totaleNuoviClienti}})</ng-template>
+      <ng-template ngbTabContent>
+        <div class="card-body table-responsive" style="padding-top: 0;padding-bottom: 0;">
+          <table id="dettagli" style="width: 100%;" class="table table-hover">
+            <thead class="text-warning">
+              <th>Cliente</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let c of pageOfItemsNC" (click)="mostraAnagrafica($event, c.id)">
+                <td>
+                  <strong>{{c.nome + ' ' + c.cognome}}</strong>
+                </td>
+              </tr>
+              <tr style="padding:0;">
+                <td style="padding:0;" colspan="2">
+                  <jw-pagination [maxPages]="4" [pageSize]="8" [items]="nuovi" (changePage)="onChangePageNC($event)">
+                  </jw-pagination>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
         </div>
+      </ng-template>
+    </ngb-tab>
+
+  </ngb-tabset> -->
 
 
-        <ngb-tabset [destroyOnHide]="false">
-
-          <ngb-tab style="font-weight: bolder;" title="Clienti recuperati ({{totaleRecuperati}})">
-            <ng-template ngbTabContent>
-
-              <div class="card-body table-responsive" style="padding-top: 0;padding-bottom: 0;">
-                <table id="dettagli" style="width: 100%; font-size:small;font-weight: bolder;"
-                  class="table table-hover">
-                  <thead class="text-warning">
-                    <th>Rec.</th>
-                    <th>Cliente</th>
-                    <th style="text-align: right;">Ultima visita</th>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let c of pageOfItemsR" (click)="mostraAnagrafica($event, c.id)">
-                      <td class="padding0">
-                        <i class="fas fa-check-circle" style="color: greenyellow;" *ngIf="c.dataUltimaFiche"></i>
-                      </td>
-                      <td>
-                        <strong>{{c.nome + ' ' + c.cognome}}</strong>
-                      </td>
-
-                      <td class="testoadestra">
-                        {{c.dataUltimaFiche}}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <jw-pagination [maxPages]="4" [pageSize]="8" [items]="recuperati" (changePage)="onChangePageR($event)">
-                </jw-pagination>
-              </div>
-
-            </ng-template>
-          </ngb-tab>
-
-          <ngb-tab>
-            <ng-template ngbTabTitle style="font-weight: bolder;">Nuovi clienti ({{totaleNuoviClienti}})</ng-template>
-            <ng-template ngbTabContent>
-              <div class="card-body table-responsive" style="padding-top: 0;padding-bottom: 0;">
-                <table id="dettagli" style="width: 100%;" class="table table-hover">
-                  <thead class="text-warning">
-                    <th>Cliente</th>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let c of pageOfItemsNC" (click)="mostraAnagrafica($event, c.id)">
-                      <td>
-                        <strong>{{c.nome + ' ' + c.cognome}}</strong>
-                      </td>
-                    </tr>
-                    <tr style="padding:0;">
-                      <td style="padding:0;" colspan="2">
-                        <jw-pagination [maxPages]="4" [pageSize]="8" [items]="nuovi"
-                          (changePage)="onChangePageNC($event)"></jw-pagination>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-
-              </div>
-            </ng-template>
-          </ngb-tab>
-
-        </ngb-tabset>
-
-      </div>
-    </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
-
-
-<notifier-container></notifier-container>
+  <notifier-container></notifier-container>

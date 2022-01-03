@@ -31,8 +31,16 @@ export class ClientiService {
 /*     if (s) {
       this.api = s.indirizzoIP + ':' + s.porta + '/api/clienti/';
     }
- */    console.log(this.api + 'lista?txt=&id=' + id)
-    return this.http.get<Cliente>(this.api + 'lista?txt=&id=' + id);
+ */  
+    console.log(location.href)
+    if (location.href.startsWith('https://www')){
+
+      return this.http.get<Cliente>(this.sqlApi.replace('myip', 'mySapi') + 'lista?txt=&id=' + id);
+  
+   } else {
+        return this.http.get<Cliente>(this.api + 'lista?txt=&id=' + id);
+ 
+   }
   }
 
   getClientiIniziali(): Observable<Cliente[]> {

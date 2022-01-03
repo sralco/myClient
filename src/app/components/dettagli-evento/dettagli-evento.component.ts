@@ -13,6 +13,7 @@ import { SaloniService } from 'src/app/Services/saloni.service';
 export class DettagliEventoComponent implements OnInit {
 
   evento: any;
+  salone:Salone;
 
   constructor(private saloneService: SaloniService, private plannerSer: PlannerService, public dialog: MatDialog, public dialogRef: MatDialogRef<DettagliEventoComponent>,
 
@@ -39,6 +40,7 @@ export class DettagliEventoComponent implements OnInit {
         salone.porta = a[4];
 
       }
+      this.salone = salone;
       console.log(this.evento);
       this.plannerSer.deleteEvent(salone, this.evento.event.id).subscribe((x: Esito) => {
         if (x.esito === 'True') {

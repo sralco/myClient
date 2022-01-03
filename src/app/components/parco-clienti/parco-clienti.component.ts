@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Salone } from 'src/app/Models/Salone';
 import { SaloniService } from 'src/app/Services/saloni.service';
 import { Router, NavigationStart } from '@angular/router';
@@ -24,6 +24,7 @@ import { DettagliClienteComponent } from '../dettagli-cliente/dettagli-cliente.c
 })
 
 export class ParcoClientiComponent implements OnInit {
+  @ViewChild("cercaForm") cercaForm: ElementRef;
   columnsToDisplay = ['classe', 'nome', 'cognome', 'cell', 'paese'];
   dataSource = new MatTableDataSource<Cliente>([]);
   clienti: Cliente[] = [];
@@ -178,10 +179,16 @@ export class ParcoClientiComponent implements OnInit {
   }
 
   setFlagCercaServizi() {
+    
     this.flagCercaServizi = !this.flagCercaServizi;
     if (!this.flagCercaServizi) {
       this.mostraTabella = false;
     }
+    // const ele = this.cercaForm.nativeElement['inputsrcCliente'];
+    // if (ele) {
+    //   ele.focus();
+    // }
+
   }
 
   searchClienti(txt: string) {
@@ -205,8 +212,8 @@ export class ParcoClientiComponent implements OnInit {
       let app = { s: this.salone, c: x };
       console.log(x);
       const dialogRef = this.dialog.open(DettagliClienteComponent, {
-        minWidth: '100vw !important',
-        minHeight: '100vw !important',
+        width: '95%',
+        maxWidth: '350px',
         data: app
       });
     }, (err => {

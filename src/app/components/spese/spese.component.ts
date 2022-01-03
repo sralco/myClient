@@ -148,7 +148,8 @@ export class SpeseComponent implements OnInit {
 
   nuovaSpesa() {
     const dialogRef = this.dialog.open(NuovaSpesaComponent, {
-      width: '650px',
+      width: '95%',
+      maxWidth: '350px',
       data: new Spesa(),
     });
 

@@ -1,131 +1,76 @@
 <mat-toolbar style="background-color: darkslategrey;">
-  <mat-toolbar-row>
-    <h3 class="display-6">
+  <mat-toolbar-row style="display: flex;justify-content: space-between;">
+    <div style="display: flex;align-items:center;color:#fff;grid-gap:10px;">
       <img src="./assets/img1.png" width="40" height="40" alt="logo">
-      <span class="navbar-brand text-white" style="margin-left: 20px; padding: 0;">{{salone.salone}}</span></h3>
-    <span style="flex: 1 1 auto;"></span>
+      <h3>{{salone.salone}}</h3>
+    </div>
     <button mat-icon-button (click)="back()"
       style="background-color:tan; font-size: 16px; font-size:small;font-weight: bolder;">
-      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+      <mat-icon>keyboard_double_arrow_left</mat-icon>
     </button>
+  </mat-toolbar-row>
+  <mat-toolbar-row style="height:40px;background-color:tan;font-size:initial;display:flex;justify-content:center;">
+    Incasso {{intervallo.name}}
   </mat-toolbar-row>
 </mat-toolbar>
 
-<mat-sidenav-container style="background-image: url('./assets/penta.jpg');">
-  <mat-sidenav #sidenav style="background-image: url('./assets/sidebar-1.jpg'); background-color: transparent;">
-    <mat-nav-list>
 
-    </mat-nav-list>
-  </mat-sidenav>
+<app-spinner1center *ngIf="attesa" style="z-index: 999; position: absolute; left: 0; right: 0; top:0; bottom: 0;">
+</app-spinner1center>
 
-  <mat-sidenav-content>
-    <div style="height: 90vh;">
+<div style="margin:20px;">
+  <table style="width: 100%;">
+    <thead>
+      <tr style="height:50px;">
+        <th>Cassa</th>
+        <th style="text-align: right;">Incasso</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="height:50px;border-top:1px solid #d7d7d7;">
+        <td>Contanti</td>
+        <td class="testoadestra">{{temps.contanti| currency:'EUR'}}</td>
+      </tr>
+      <tr style="height:50px;border-top:1px solid #d7d7d7;">
+        <td>Bancomat</td>
+        <td class="testoadestra">{{temps.bancomat| currency:'EUR'}}</td>
+      </tr>
+      <tr style="height:50px;border-top:1px solid #d7d7d7;">
+        <td>Carta</td>
+        <td class="testoadestra">{{temps.carta| currency:'EUR'}}</td>
+      </tr>
+      <tr style="height:50px;border-top:1px solid #d7d7d7;">
+        <td>Prepagate</td>
+        <td class="testoadestra">{{temps.prepagate| currency:'EUR'}}</td>
+      </tr>
+      <tr style="height:50px;border-top:1px solid #d7d7d7;">
+        <td>On-Line</td>
+        <td class="testoadestra">{{temps.onLine| currency:'EUR'}}</td>
+      </tr>
 
-      <app-spinner1center *ngIf="attesa" style="z-index: 999; position: absolute; left: 0; right: 0; top:0; bottom: 0;">
-      </app-spinner1center>
+      <tr style="height:50px;border-top:1px solid #d7d7d7;">
+        <td>Assegni</td>
+        <td class="testoadestra">{{temps.assegni| currency:'EUR'}}</td>
+      </tr>
+      <tr style="height:50px;border-top:1px solid #d7d7d7;">
+        <td>Altro</td>
+        <td class="testoadestra">{{temps.altro| currency:'EUR'}}</td>
+      </tr>
 
+      <tr style="height:50px;border-top:1px solid #d7d7d7;">
+        <td>Insoluti</td>
+        <td class="testoadestra">{{temps.insoluti| currency:'EUR'}}</td>
+      </tr>
 
-      <div class="card" style="width: 100%;">
-        <div class="card-header card-header-warning" style=" width: 100%;">
-          <div class="pull-right" style="width: 100%;padding:0;">
-            <button class="btn "
-              style="background-color:tan; width: 100%; padding-left: 0; padding-right: 0;font-size:small;font-weight: bolder;">Incasso {{intervallo.name}}</button>
-          </div>
+      <tr style="height:50px;border-top:1px solid #d7d7d7;color:#990000;font-weight: 800;">
+        <td>Totale</td>
+        <td class="testoadestra">
+          {{temps.contanti + temps.bancomat + temps.carta + temps.prepagate + temps.onLine + temps.assegni + temps.altro + temps.insoluti | currency:'EUR'}}
+        </td>
+      </tr>
 
-        </div>
-        <div class="card-body table-responsive" style="padding-top: 0;padding-bottom: 0;">
-          <table id="dettagli" style="width: 100%;" class="table table-hover">
-            <thead class="text-warning">
-              <th></th>
-              <th>Cassa</th>
-              <th style="text-align: right;">Incasso</th>
-            </thead>
-            <tbody>
-              <tr>
-                <td></td>
-                <td class="padding0">
-                  <strong>Contanti</strong>
-                </td>
-                <td class="testoadestra">
-                  {{temps.contanti| currency:'EUR'}}
-                </td>
-              </tr>
-              <tr>
-                <td></td>
-                <td class="padding0">
-                  <strong>Bancomat</strong>
-                </td>
-                <td class="testoadestra">
-                  {{temps.bancomat| currency:'EUR'}}
-                </td>
-              </tr>
-              <tr>
-                <td></td>
-                <td class="padding0">
-                  <strong>Carta</strong>
-                </td>
-                <td class="testoadestra">
-                  {{temps.carta| currency:'EUR'}}
-                </td>
-              </tr>
-
-              <tr>
-                <td></td>
-                <td class="padding0">
-                  <strong>Prepagate</strong>
-                </td>
-                <td class="testoadestra">
-                  {{temps.prepagate| currency:'EUR'}}
-                </td>
-              </tr>
-              <tr>
-                <td></td>
-                <td class="padding0">
-                  <strong>On-Line</strong>
-                </td>
-                <td class="testoadestra">
-                  {{temps.onLine| currency:'EUR'}}
-                </td>
-              </tr>
-
-              <tr>
-                <td></td>
-                <td class="padding0">
-                  <strong>Assegni</strong>
-                </td>
-                <td class="testoadestra">
-                  {{temps.assegni| currency:'EUR'}}
-                </td>
-              </tr>
-
-              <tr>
-                <td></td>
-                <td class="padding0">
-                  <strong>Altro</strong>
-                </td>
-                <td class="testoadestra">
-                  {{temps.altro| currency:'EUR'}}
-                </td>
-              </tr>
-
-              <tr>
-                <td></td>
-                <td class="padding0">
-                  <strong>Insoluti</strong>
-                </td>
-                <td class="testoadestra">
-                  {{temps.insoluti| currency:'EUR'}}
-                </td>
-              </tr>
-
-            </tbody>
-          </table>
-        </div>
-
-      </div>
-    </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
-
+    </tbody>
+  </table>
+</div>
 
 <notifier-container></notifier-container>

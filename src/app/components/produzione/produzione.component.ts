@@ -65,9 +65,19 @@ export class ProduzioneComponent implements OnInit {
       })
     );
   }
-
+  totServizi:number = 0;
+  totQta:number = 0;
   filtraArray(tipo: string): GruppoServizi[] {
-    return this.dettagli.filter(x => x.tipo === tipo);
+    let ts:number = 0;
+    let tq:number = 0;
+    this.dettagli.filter(x => x.tipo === tipo).forEach(cc =>{
+       ts = ts + cc.totale;
+       tq = tq + cc.numero;
+    });
+    this.totServizi = ts;
+    this.totQta = tq;
+
+    return this.dettagli.filter(x => x.tipo === tipo)
   }
 
   receiveMessage($event) {

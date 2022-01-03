@@ -1,112 +1,98 @@
-<h1 mat-dialog-title>Aggiungi nuova spesa</h1>
-<div mat-dialog-content>
+<mat-card>
+  <mat-card-title style="display: flex;align-items: center;justify-content: space-between;">
+    <h1 mat-dialog-title style="margin:0;">Aggiungi nuova spesa</h1>
+    <button mat-mini-fab mat-dialog-close tabindex="-1" cdkFocusInitial>
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-card-title>
 
-  <div id="search">
+  <mat-card-content mat-dialog-content>
+
     <form [formGroup]="searchForm" class="search__form">
-      <mat-form-field class="search__form_field" appearance="outline">
+      <mat-form-field style="width: 100%;" appearance="outline">
         <mat-label>Cerca spesa predefinita</mat-label>
         <input matInput (keyup)="getModelliSpesa($event)" formControlName="desc">
         <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="clearTxt('desc')">
           <mat-icon *ngIf="searchForm.get('desc').value!==''">close</mat-icon>
         </button>
-      </mat-form-field>&nbsp;
+      </mat-form-field>
     </form>
+
     <div *ngIf="modelli.length>0" style="margin-bottom: 20px;">
-      <table>
-        <tr *ngFor="let m of modelli" (click)="selezionaSpesa(m)" style="border-bottom: 1px solid black;">
+      <table style="width: 100%;">
+        <tr *ngFor="let m of modelli" (click)="selezionaSpesa(m)" style="height:50px;border-top: 1px solid #d7d7d7;">
           <td>{{m.categoria}}</td>
           <td>{{m.descrizione}}</td>
         </tr>
       </table>
     </div>
-  </div>
 
+    <form #speseForm="ngForm">
 
-  <form fxLayout="column" #speseForm="ngForm">
-    <div fxLayout="row wrap" fxLayoutGap="30px">
+      <mat-form-field style="width: 100%;">
+        <mat-label>Data</mat-label>
+        <input matInput placeholder="Data" name="Data" [(ngModel)]="spesaObj.dataStr" #Data="ngModel">
+      </mat-form-field>
 
-      <div fxLayout="row wrap" fxLayoutGap="30px">
-        <mat-form-field fxFlex>
-          <mat-label>Data</mat-label>
-          <input matInput placeholder="Data" name="Data" [(ngModel)]="spesaObj.dataStr" #Data="ngModel">
-        </mat-form-field>
-      </div>
+      <mat-form-field style="width: 100%;">
+        <mat-label>Categoria</mat-label>
+        <mat-select [(ngModel)]="spesaObj.categoria" (selectionChange)="getSottoCategorie($event)" name="Categoria"
+          #Categoria="ngModel">
+          <mat-option *ngFor="let _Categoria of  categorie" [value]="_Categoria">
+            {{_Categoria}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-      <div fxLayout="row wrap" fxLayoutGap="30px">
-        <mat-form-field fxFlex>
-          <mat-label>Categoria</mat-label>
-          <mat-select [(ngModel)]="spesaObj.categoria" (selectionChange)="getSottoCategorie($event)" name="Categoria"
-            #Categoria="ngModel">
-            <mat-option *ngFor="let _Categoria of  categorie" [value]="_Categoria">
-              {{_Categoria}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+      <mat-form-field style="width: 100%;">
+        <mat-label>Sotto-Categoria</mat-label>
+        <mat-select [(ngModel)]="spesaObj.sottoCategoria" (selectionChange)="getDescrizioni($event)"
+          name="SottoCategoria" #SottoCategoria="ngModel">
+          <mat-option *ngFor="let c of  sottoCategorie" [value]="c">
+            {{c}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-      <div fxLayout="row wrap" fxLayoutGap="30px">
-        <mat-form-field fxFlex>
-          <mat-label>Sotto-Categoria</mat-label>
-          <mat-select [(ngModel)]="spesaObj.sottoCategoria" (selectionChange)="getDescrizioni($event)"
-            name="SottoCategoria" #SottoCategoria="ngModel">
-            <mat-option *ngFor="let c of  sottoCategorie" [value]="c">
-              {{c}}
-            </mat-option>
-          </mat-select>
+      <mat-form-field style="width: 100%;">
+        <mat-label>Tipopagamento</mat-label>
+        <mat-select [(ngModel)]="spesaObj.tipoPagamento" name="TipoPagamento" #TipoPagamento="ngModel" value="Cassa FB">
+          <mat-option *ngFor="let _TipoPagamento of  tipoPagamentoList" [value]="_TipoPagamento.value">
+            {{_TipoPagamento.label}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-        </mat-form-field>
-      </div>
+      <mat-form-field style="width: 100%;">
+        <mat-label>Descrizione spesa</mat-label>
+        <input type="text" aria-label="Descrizione" matInput name="Descrizione" [(ngModel)]="spesaObj.descrizione"
+          #Descrizione="ngModel" [matAutocomplete]="auto" required>
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+          <mat-option *ngFor="let d of descrizioni" [value]="d">
+            {{d}}
+          </mat-option>
+        </mat-autocomplete>
 
-      <div fxLayout="row wrap" fxLayoutGap="30px">
-        <mat-form-field fxFlex>
-          <mat-label>Tipopagamento</mat-label>
-          <mat-select [(ngModel)]="spesaObj.tipoPagamento" name="TipoPagamento" #TipoPagamento="ngModel"
-            value="Cassa FB">
-            <mat-option *ngFor="let _TipoPagamento of  tipoPagamentoList" [value]="_TipoPagamento.value">
-              {{_TipoPagamento.label}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+        <mat-error *ngIf="Descrizione.hasError('required')">
+          Campo obbligatorio.
+        </mat-error>
+      </mat-form-field>
 
-      <div fxLayout="row wrap" fxLayoutGap="30px">
-        <mat-form-field fxFlex>
-          <mat-label>Descrizione spesa</mat-label>
-          <input type="text" aria-label="Descrizione" matInput name="Descrizione" [(ngModel)]="spesaObj.descrizione"
-            #Descrizione="ngModel" [matAutocomplete]="auto" required>
-          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-            <mat-option *ngFor="let d of descrizioni" [value]="d">
-              {{d}}
-            </mat-option>
-          </mat-autocomplete>
+      <mat-form-field style="width: 100%;">
+        <input matInput placeholder="Importo" type="number" name="Importo" [(ngModel)]="spesaObj.importo"
+          #Importo="ngModel" required>
+        <mat-error *ngIf="Importo.hasError('required')">
+          Campo obbligatorio.
+        </mat-error>
+      </mat-form-field>
 
+    </form>
+  </mat-card-content>
 
-          <mat-error *ngIf="Descrizione.hasError('required')">
-            Campo obbligatorio.
-          </mat-error>
-        </mat-form-field>
-
-      </div>
-      <div fxLayout="row wrap" fxLayoutGap="30px">
-        <mat-form-field fxFlex>
-          <input matInput placeholder="Importo" type="number" name="Importo" [(ngModel)]="spesaObj.importo"
-            #Importo="ngModel" required>
-          <mat-error *ngIf="Importo.hasError('required')">
-            Campo obbligatorio.
-          </mat-error>
-        </mat-form-field>
-
-      </div>
-
-    </div>
-  </form>
-</div>
-
-<div mat-dialog-actions>
-  <div fxLayout="row wrap" fxFlex fxLayoutGap="10px" fxLayoutAlign="end start">
-    <button mat-button mat-dialog-close tabindex="-1" cdkFocusInitial>Annulla</button>
+  <div mat-dialog-actions style="justify-content: flex-end;">
     <button mat-raised-button color="primary" [disabled]="!speseForm.valid || !speseForm.dirty" (click)="salvaSpese()">
       Salva spesa
     </button>
   </div>
-</div>
+
+</mat-card>

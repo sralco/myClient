@@ -1,9 +1,13 @@
-<table style="width: 100%;">
-  <tr>
-    <td><strong style="display:block; position:sticky">Dettagli appuntamento</strong></td>
-    <td style="text-align: right;"><button mat-fab mat-dialog-close color="warn">Chiudi</button></td>
-  </tr>
-</table>
+  
+  <div style="width: 100%;display: flex;align-items: center;justify-content: space-between;grid-gap: 10px;">
+    <div style="font-size:20px;">Dettagli appuntamento</div>
+    <button mat-mini-fab mat-dialog-close color="warn">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  
+      
+
 
 <div style="height: 20px;"></div>
 
@@ -28,8 +32,9 @@
         <div class="col p-2 d-flex flex-column position-static">
           <strong class="d-inline-block mb-2 text-primary">{{evento.event.startStr | date:'HH:mm'}} -
             {{evento.event.endStr | date:'HH:mm'}}</strong>
-          <h5 class="mb-0" style="font-weight: bold">Nome</h5>
+        <div style="display: flex;align-items:center;" [routerLink]="['/cliente/' + evento.event.extendedProps.idCliente]"><mat-icon>person</mat-icon> <h5 class="mb-0" style="font-weight: bold">Nome</h5></div>
           <div class="mb-1 text-muted">
+            
             {{evento.event.extendedProps.nomeCliente}}</div>
           <strong><i class="fa fa-cut" aria-hidden="true"></i> Servizi</strong>
           <div class="ml-3">
