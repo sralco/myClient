@@ -600,8 +600,8 @@ export class PrenotazioneClientiComponent implements OnInit {
 
   logout() {
     const dialogRef = this.dialog.open(MsgboxComponent, {
-      minWidth: '100vw !important',
-      minHeight: '100vw !important',
+      width: '95%',
+      maxWidth: '350px',
       data: 'Confermi il log-out?'
     });
     dialogRef.afterClosed().subscribe(s => {

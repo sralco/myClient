@@ -2,6 +2,26 @@
 $background-color:var(--background-color);
 $color:var(--color);
 
+.bleeper{
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width:100%;
+  height:100%;
+  position:absolute;
+  top:0;
+  bottom:100%;
+  z-index: 99999;
+  background-color: gray;
+  background-size: cover;
+}
+.bleeper .logo{
+  width:150px;
+  height:150px;
+  background-size: cover;
+}
+
 /**
  * ==============================================
  * Dot Pulse
@@ -309,7 +329,7 @@ $color:var(--color);
   padding-top: 10px;
   padding-bottom: 10px;
   background: #50bcbb;
-  height: 100%;
+  height: calc(100% - 184px);
   overflow: auto;
 }
 
@@ -451,7 +471,7 @@ $color:var(--color);
 
 .mysaloon-card-prenotazione-actions {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 }
 

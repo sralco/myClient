@@ -13,6 +13,8 @@ import { Location } from '@angular/common';
 })
 export class ScattaFotoComponent implements OnInit {
 
+  flagFoto:boolean = false;
+
   public showWebcam = true;
   public allowCameraSwitch = true;
   public multipleWebcamsAvailable = false;
@@ -31,11 +33,11 @@ export class ScattaFotoComponent implements OnInit {
   // switch to next / previous / specific webcam; true/false: forward/backwards, string: deviceId
   private nextWebcam: Subject<boolean | string> = new Subject<boolean | string>();
   private idCliente: string = '';
-public  cliente:Cliente;
+  public cliente: Cliente;
 
-  constructor(private router: Router, private clientiService: ClientiService, aRoute: ActivatedRoute, private location:Location) {
+  constructor(private router: Router, private clientiService: ClientiService, aRoute: ActivatedRoute, private location: Location) {
     this.idCliente = aRoute.snapshot.paramMap.get('id');
-    this.cliente=new Cliente();
+    this.cliente = new Cliente();
   }
 
   public ngOnInit(): void {
@@ -43,16 +45,16 @@ public  cliente:Cliente;
       .then((mediaDevices: MediaDeviceInfo[]) => {
         this.multipleWebcamsAvailable = mediaDevices && mediaDevices.length > 1;
       });
-      if (this.idCliente) {
-        this.clientiService.getCliente(this.idCliente,null).subscribe(x => {
-          this.cliente = x[0];
-        }, err => console.error(err));
-      }
+    if (this.idCliente) {
+      this.clientiService.getCliente(this.idCliente, null).subscribe(x => {
+        this.cliente = x[0];
+      }, err => console.error(err));
+    }
   }
 
   public salvaFoto() {
-    this.cliente.foto=this.webcamImage.imageAsBase64;
-    this.clientiService.salvaFoto(this.cliente ).subscribe(x => {
+    this.cliente.foto = this.webcamImage.imageAsBase64;
+    this.clientiService.salvaFoto(this.cliente).subscribe(x => {
       this.goBack();
     }, err => {
       alert(err);
@@ -61,7 +63,12 @@ public  cliente:Cliente;
 
   public triggerSnapshot(): void {
     this.trigger.next();
-    this.salvaFoto();
+    this.flagFoto = true;
+    //this.salvaFoto();
+  }
+
+  public scartaFoto(){
+    this.flagFoto = false;
   }
 
   public toggleWebcam(): void {

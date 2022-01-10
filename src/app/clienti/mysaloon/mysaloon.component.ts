@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, LOCALE_ID, HostBinding } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, LOCALE_ID, HostBinding, Pipe, PipeTransform } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { SaloniService } from 'src/app/Services/saloni.service';
@@ -22,6 +22,8 @@ import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 })
 
 export class mysaloonComponent implements OnInit {
+  total = 4;
+  counter = this.total;
   selectedStyle: string;
   @HostBinding('style') style: SafeStyle;
 
@@ -51,6 +53,9 @@ export class mysaloonComponent implements OnInit {
 
   backgroundColor: string = '#008b8b';
   color: string = '#ffffff';
+  backgroundUrl:string = '';
+  logoUrl:string = '';
+
   convertBgColor(color): string {
     console.log(color)
     console.log([color.slice(0, color?.lastIndexOf(")")), ',0.66', color.slice(color?.backgroundColor?.lastIndexOf(")"))].join(''))
@@ -65,7 +70,7 @@ export class mysaloonComponent implements OnInit {
     this.service.getSaloni(this.gruppo).subscribe(x => {
       this.attesa = false;
       this.saloni = x;
-      this.saloneSelezionato = this.saloni[0];
+      this.selezionaSalone(this.saloni[0]);
       this.getPrenotazioni();
     }, (err => {
       this.attesa = false;
@@ -73,22 +78,41 @@ export class mysaloonComponent implements OnInit {
     })
     );
 
-
-    this.selectedStyle = `
-    --background-color: ${this.backgroundColor};
-    --color: ${this.color};
-    `;
-    this.style = this.sanitizer.bypassSecurityTrustStyle(this.selectedStyle);
-
-    console.log(this.saloneSelezionato)
+    setInterval(()=> { this.contoRovescia() }, this.total * 300);
+    
+  }
+  contoRovescia(){
+    this.counter = this.counter - 1;
   }
 
   selezionandoSaloneFlag() {
     this.selezionandoSalone = true;
   }
 
-  selezionaSalone(salone) {
+  selezionaSalone(salone:Salone) {
     this.saloneSelezionato = salone;
+    this.appuntamentiService.GetOpzioniPlanner(salone).subscribe(x => {
+      if (x) {
+        console.log(x);
+        this.saloneSelezionato.opzioniPlanner = x;
+        localStorage.setItem('OpzioniPlanner', JSON.stringify(this.saloneSelezionato.opzioniPlanner));
+      }
+    });
+    if (this.saloneSelezionato.opzioniPlanner?.imgSfondo){
+      this.backgroundUrl = 'assets/' + this.saloneSelezionato.opzioniPlanner.imgSfondo;
+    }
+    if (this.saloneSelezionato.opzioniPlanner?.logo){
+      this.logoUrl = 'assets/' + this.saloneSelezionato.opzioniPlanner.logo;
+    }
+    this.selectedStyle = `
+    --background-color: ${this.backgroundColor};
+    --color: ${this.color};
+    --background-url: ${this.backgroundUrl};
+    --logo-url: ${this.logoUrl}
+    `;
+    this.style = this.sanitizer.bypassSecurityTrustStyle(this.selectedStyle);
+
+    console.log(this.saloneSelezionato)
     this.selezionandoSalone = false;
   }
 
