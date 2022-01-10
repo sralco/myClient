@@ -44,7 +44,6 @@ export class FuoriFrequenzaComponent implements OnInit {
     }
 
     this.aggiornaFuoriFrequenza();
-
  }
 
   aggiornaFuoriFrequenza() {

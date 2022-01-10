@@ -1,12 +1,15 @@
 <mat-toolbar style="background-color: darkslategrey;">
-  <mat-toolbar-row>
-    <h3 class="display-6"><img src="./assets/img1.png" alt="logo" width="40" height="40">
-      <span class="navbar-brand text-white" style="margin-left:20px;padding:0;">{{salone.salone}}</span></h3>
-
-    <span style="flex: 1 1 auto;"></span>
-    <button mat-icon-button (click)="back()" style="background-color:tan; font-size: 16px; font-size:small;font-weight: bolder;">
-      <i class="fa fa-arrow-left" aria-hidden="true"></i>
-    </button>
+  <mat-toolbar-row style="display:flex; justify-content:space-between;">
+    <div style="display: flex;align-items:center;grid-gap:10px;color:#fff;">
+      <img src="./assets/img1.png" alt="logo" width="40" height="40">
+      <h3 style="margin:0;">{{salone.salone}}</h3>
+    </div>
+    <div>
+      <button mat-icon-button (click)="back()"
+        style="background-color:tan; font-size: 16px; font-size:small;font-weight: bolder;">
+        <mat-icon>keyboard_double_arrow_left</mat-icon>
+      </button>
+    </div>
   </mat-toolbar-row>
 </mat-toolbar>
 
@@ -25,19 +28,18 @@
           <ngb-tab style="font-weight: bolder;" title="Fuori frequenza ({{totaleNonContattati}})">
             <ng-template ngbTabContent>
 
-              <div class="card-body table-responsive" style="padding-top: 0;padding-bottom: 0;">
-                <table id="dettagli" style="width: 100%; font-size:small;font-weight: bolder;"
-                  class="table table-hover">
-                  <thead class="text-warning">
-                    <th>Cliente</th>
-                    <th style="text-align: right;">Ultima visita</th>
-                    <th>Ritardo</th>
+              <div style="padding: 20px;">
+                <table style="width: 100%;">
+                  <thead>
+                    <tr style="height:40px;">
+                      <th>Cliente</th>
+                      <th>Ultima visita</th>
+                      <th>Ritardo</th>
+                    </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let c of pageOfItemsR" (click)="mostraAnagrafica($event, c.id)">
-                      <td>
-                        <strong>{{c.nome + ' ' + c.cognome}}</strong>
-                      </td>
+                    <tr *ngFor="let c of pageOfItemsR" (click)="mostraAnagrafica($event, c.id)" style="height:40px;border-top:1px solid #d7d7d7;cursor: pointer;">
+                      <td style="text-transform: capitalize;">{{c.nome + ' ' + c.cognome}}</td>
 
                       <td class="testoadestra">
                         {{c.dataUltimaFiche}}
@@ -48,7 +50,8 @@
                     </tr>
                   </tbody>
                 </table>
-                <jw-pagination [maxPages]="2" [pageSize]="8" [items]="nonContattati" (changePage)="onChangePageR($event)">
+                <jw-pagination [maxPages]="2" [pageSize]="8" [items]="nonContattati"
+                  (changePage)="onChangePageR($event)">
                 </jw-pagination>
               </div>
 

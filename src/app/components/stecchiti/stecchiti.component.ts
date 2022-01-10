@@ -59,8 +59,8 @@ export class StecchitiComponent implements OnInit {
       const ris: Cliente[] = x;
       //alert (JSON.stringify(ris));
       const dialogRef = this.dialog.open(PopListaComponent, {
-        maxWidth: '100vw !important',
-        maxHeight: '100vw !important',
+        width: '95%',
+        maxWidth: '350px',
         data: ris
       });
     }, (err => {

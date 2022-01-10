@@ -1,3 +1,11 @@
+
+  <div class="bleeper" *ngIf="saloneSelezionato.opzioniPlanner?.imgSfondo != '' && counter > 0" [style.backgroundImage]="'url(' + backgroundUrl + ')'">
+    <div class="logo" *ngIf="saloneSelezionato.opzioniPlanner?.logo != ''" [style.backgroundImage]="'url(' + logoUrl + ')'"></div>
+    <div style="margin-top: 20px;">
+      <button mat-button style="width: 150px;background: #343a40dd;color: #fff;border-radius: 6px;border:1px solid #fff;" (click)="counter = 0">Prenota <small>({{counter}})</small></button>
+    </div>
+  </div>
+
 <div class="mysaloon-container">
 
   <div>

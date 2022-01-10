@@ -1,83 +1,67 @@
-
 <mat-toolbar style="background-color: darkslategrey;">
   <mat-toolbar-row style="justify-content: space-between;">
-    <h3 class="display-6"><img src="./assets/img1.png" alt="logo" width="40" height="40">
-      <span class="navbar-brand text-white" style="margin-left:20px;padding:0;">{{salone.salone}}</span></h3>
-
-    <button mat-icon-button (click)="back()"
-      style="background-color:tan; font-size: 16px; font-size:small;font-weight: bolder;">
-      <i class="fa fa-arrow-left" aria-hidden="true"></i>
-    </button>
+    <div style="display:flex;align-items: center;grid-gap:10px;color:#fff;">
+      <img src="./assets/img1.png" alt="logo" width="40" height="40">
+      <h3 style="margin:0;">{{salone.salone}}</h3>
+    </div>
+    <div>
+      <button mat-icon-button (click)="back()"
+        style="background-color:tan; font-size: 16px; font-size:small;font-weight: bolder;">
+        <mat-icon>keyboard_double_arrow_left</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar-row>
+  <mat-toolbar-row style="background-color: tan;height: 40px;font-size: initial;display: flex;justify-content: center;">
+    Clienti stecchiti ultimo anno
   </mat-toolbar-row>
 </mat-toolbar>
 
-<mat-sidenav-container style="background-image: url('./assets/penta.jpg');">
-  <mat-sidenav #sidenav style="background-image: url('./assets/sidebar-1.jpg'); background-color: transparent;">
-    <mat-nav-list>
+<app-spinner1center *ngIf="attesa" style="z-index: 999; position: absolute; left: 0; right: 0; top:0; bottom: 0;">
+</app-spinner1center>
 
-    </mat-nav-list>
-  </mat-sidenav>
+<div style="background-image: url('./assets/penta.jpg');">
 
-  <mat-sidenav-content>
-    <div style="height: 90vh;">
+  <div *ngIf="dataSource.length>0" style="padding: 20px;max-width: 100vw;overflow: auto;background: #fff;">
+    <table style="width: 100%;">
+      <thead>
+        <tr style="height:40px;">
+          <th>Mese</th>
+          <th>Nuovi</th>
+          <th>Gen</th>
+          <th>Feb</th>
+          <th>Mar</th>
+          <th>Apr</th>
+          <th>Mag</th>
+          <th>Giu</th>
+          <th>Lug</th>
+          <th>Ago</th>
+          <th>Set</th>
+          <th>Ott</th>
+          <th>Nov</th>
+          <th>Dic</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of dataSource" style="height:40px;border-top:1px solid #d7d7d7;">
+          <th><strong>{{s.PrimoIngresso}}</strong></th>
+          <td><strong>{{s.ClientiNuovi}}</strong></td>
+          <td class="testoadestra"><span *ngIf="s.gen" (click)="dettagli(s.PrimoIngresso,'gen')" style="cursor:pointer;">{{s.gen}}</span></td>
+          <td class="testoadestra"><span *ngIf="s.feb" (click)="dettagli(s.PrimoIngresso,'feb')" style="cursor:pointer;">{{s.feb}}</span></td>
+          <td class="testoadestra"><span *ngIf="s.mar" (click)="dettagli(s.PrimoIngresso,'mar')" style="cursor:pointer;">{{s.mar}}</span></td>
+          <td class="testoadestra"><span *ngIf="s.apr" (click)="dettagli(s.PrimoIngresso,'apr')" style="cursor:pointer;">{{s.apr}}</span></td>
+          <td class="testoadestra"><span *ngIf="s.mag" (click)="dettagli(s.PrimoIngresso,'mag')" style="cursor:pointer;">{{s.mag}}</span></td>
+          <td class="testoadestra"><span *ngIf="s.giu" (click)="dettagli(s.PrimoIngresso,'giu')" style="cursor:pointer;">{{s.giu}}</span></td>
+          <td class="testoadestra"><span *ngIf="s.lug" (click)="dettagli(s.PrimoIngresso,'lug')" style="cursor:pointer;">{{s.lug}}</span></td>
+          <td class="testoadestra"><span *ngIf="s.ago" (click)="dettagli(s.PrimoIngresso,'ago')" style="cursor:pointer;">{{s.ago}}</span></td>
+          <td class="testoadestra"><span *ngIf="s.set" (click)="dettagli(s.PrimoIngresso,'set')" style="cursor:pointer;">{{s.set}}</span></td>
+          <td class="testoadestra"><span *ngIf="s.ott" (click)="dettagli(s.PrimoIngresso,'ott')" style="cursor:pointer;">{{s.ott}}</span></td>
+          <td class="testoadestra"><span *ngIf="s.nov" (click)="dettagli(s.PrimoIngresso,'nov')" style="cursor:pointer;">{{s.nov}}</span></td>
+          <td class="testoadestra"><span *ngIf="s.dic" (click)="dettagli(s.PrimoIngresso,'dic')" style="cursor:pointer;">{{s.dic}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-
-      <app-spinner1center *ngIf="attesa" style="z-index: 999; position: absolute; left: 0; right: 0; top:0; bottom: 0;">
-      </app-spinner1center>
-
-
-      <div class="card" style="width: 100%;">
-        <div class="card-header card-header-warning" style=" width: 100%;">
-          <div class="pull-right" style="width: 100%;padding:0;">
-            <button class="btn "
-              style="background-color:tan; width: 100%; padding-left: 0; padding-right: 0; font-size:small;font-weight: bolder;">
-              Clienti stecchiti ultimo anno</button>
-          </div>
-
-        </div>
-        <div class="card-body table-responsive mat-elevation-z8" style="padding-top: 0;padding-bottom: 0;margin: 5px;" *ngIf="dataSource.length>0">
-          <table id="dettagli" style="width: 100%;" class="table table-hover">
-            <thead class="text-warning">
-              <th>Mese</th>
-              <th>Nuovi</th>
-              <th>Gen</th>
-              <th>Feb</th>
-               <th>Mar</th>
-              <th>Apr</th>
-              <th>Mag</th>
-              <th>Giu</th>
-              <th>Lug</th>
-              <th>Ago</th>
-               <th>Set</th>
-              <th>Ott</th>
-              <th>Nov</th>
-              <th>Dic</th>
-           </thead>
-            <tbody>
-              <tr *ngFor="let s of dataSource">
-                 <th><strong>{{s.PrimoIngresso}}</strong></th>
-                 <td><strong>{{s.ClientiNuovi}}</strong></td>
-                 <td (click)="dettagli(s.PrimoIngresso,'gen')" class="testoadestra">{{s.gen}}</td>
-                 <td (click)="dettagli(s.PrimoIngresso,'feb')" class="testoadestra">{{s.feb}}</td>
-                 <td (click)="dettagli(s.PrimoIngresso,'marzo')" class="testoadestra">{{s.mar}}</td>
-                 <td (click)="dettagli(s.PrimoIngresso,'apr')" class="testoadestra">{{s.apr}}</td>
-                 <td (click)="dettagli(s.PrimoIngresso,'mag')" class="testoadestra">{{s.mag}}</td>
-                 <td (click)="dettagli(s.PrimoIngresso,'giu')" class="testoadestra">{{s.giu}}</td>
-                 <td (click)="dettagli(s.PrimoIngresso,'lug')" class="testoadestra">{{s.lug}}</td>
-                 <td (click)="dettagli(s.PrimoIngresso,'ago')" class="testoadestra">{{s.ago}}</td>
-                 <td (click)="dettagli(s.PrimoIngresso,'set')" class="testoadestra">{{s.set}}</td>
-                 <td (click)="dettagli(s.PrimoIngresso,'ott')" class="testoadestra">{{s.ott}}</td>
-                 <td (click)="dettagli(s.PrimoIngresso,'nov')" class="testoadestra">{{s.nov}}</td>
-                 <td (click)="dettagli(s.PrimoIngresso,'dic')" class="testoadestra">{{s.dic}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-      </div>
-    </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
-
+</div>
 
 <notifier-container></notifier-container>

@@ -1,4 +1,8 @@
 
+table th, table td{
+  min-width: 50px;
+  text-align: center;
+}
 
 .freccia .fa {
   transition: .3s transform ease-in-out;
