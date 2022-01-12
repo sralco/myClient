@@ -58,6 +58,9 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
   private createOptions(): ChartOptions {
     return {
       responsive: true,
+      maintainAspectRatio: false,
+      aspectRatio: 2,
+      //onResize:(newSize),
       //elements: { point: { radius: 0 } }, //Rimuove i punti dalle linee
       legend: { position: 'top' },
       hover: { animationDuration: 0 },
@@ -88,6 +91,28 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
       }
     };
   }
+
+//   handleResize() {
+//     var w = window.innerWidth-2; // -2 accounts for the border
+//     var h = window.innerHeight-2;
+//     stage.canvas.width = w;
+//     stage.canvas.height = h;
+//     //
+//     var ratio = 100/100; // 100 is the width and height of the circle content.
+//     var windowRatio = w/h;
+//     var scale = w/100;
+//     if (windowRatio > ratio) {
+//         scale = h/100;
+//     }
+//     // Scale up to fit width or height
+//     c.scaleX= c.scaleY = scale; 
+    
+//     // Center the shape
+//     c.x = w / 2;
+//     c.y = h / 2;
+        
+//     stage.update();
+// }
 
   constructor( private serviceRT: RealtimeService, private router: Router, private loc: Location, private route: ActivatedRoute, private service: SaloniService, private auth: AuthService, private notifier: NotifierService, public dialog: MatDialog,) {
     this.menu = new VociMenu;
@@ -655,8 +680,8 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
   showInSala(s: Salone) {
     this.serviceRT.getInSala(s).subscribe((x: TempFiche[]) => {
       const dialogRef = this.dialog.open(InAttesaComponent, {
-        maxWidth: '100vw !important',
-        maxHeight: '100vw !important',
+        width: '95%',
+        maxWidth: '350px',
         data: x
       });
       //this.router.navigate(['insalaoggi']);

@@ -1,7 +1,14 @@
-<div style="display:flex;align-items: center;grid-gap:10px;margin-bottom:16px;">
-  <img src="{{ './assets/' + appClass.c.classe + '.png' }}" width="30" height="30" style="width: 30px;height:30px;">
-  <h2 mat-dialog-title style="margin:0;text-transform: capitalize;">{{appClass.c.nome + ' ' + appClass.c.cognome}}</h2>
+<div style="display: flex; justify-content: space-between;">
+  <div style="display:flex;align-items: center;grid-gap:10px;margin-bottom:16px;">
+    <img src="{{ './assets/' + appClass.c.classe + '.png' }}" width="25" height="25" style="width: 25px;height:25px;">
+    <h2 mat-dialog-title style="margin:0;text-transform: capitalize;">{{appClass.c.nome + ' ' + appClass.c.cognome}}
+    </h2>
+  </div>
+  <div (click)="editClient()" style="cursor: pointer;">
+    <mat-icon>edit</mat-icon>
+  </div>
 </div>
+
 <mat-divider></mat-divider>
 
 <mat-dialog-content class="mat-typography">
@@ -45,5 +52,5 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Chiudi</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>Chiudi</button>
 </mat-dialog-actions>

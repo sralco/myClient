@@ -110,6 +110,8 @@ export class PrenotazioneClientiComponent implements OnInit {
   isLoadingDisponibilita: boolean = false;
   notificationEnabled: boolean = this.swPush.isEnabled;
 
+  logoUrl:string = '';
+
   currentTimestamp: any;
 
 
@@ -155,7 +157,6 @@ export class PrenotazioneClientiComponent implements OnInit {
 
     this.currentTimestamp = moment(new Date()).format('DD/MM/yyyy');
 
-
     this.calcolaSettimana(this.dataCorrente);
 
     console.log('notification')
@@ -170,6 +171,14 @@ export class PrenotazioneClientiComponent implements OnInit {
     --color: ${this.color};
     `;
     this.style = this.sanitizer.bypassSecurityTrustStyle(this.selectedStyle);
+
+    let opzioniPlanner: any;
+
+    opzioniPlanner = JSON.parse(localStorage.getItem('OpzioniPlanner'));
+
+    if (opzioniPlanner.logo && opzioniPlanner.logo != null && opzioniPlanner.logo != ''){
+      this.logoUrl = 'assets/' + opzioniPlanner.logo;
+    }
 
   }
 

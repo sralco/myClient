@@ -47,6 +47,10 @@ export class DettagliClienteComponent implements OnInit {
     }
   }
 
+  editClient(){
+    window.location.href = '/myclient/#/cliente/' + this.appClass.c.id;
+  }
+
   back() {
     this.loc.back();
   }

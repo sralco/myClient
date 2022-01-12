@@ -1,9 +1,7 @@
-<app-spinner1center *ngIf="!saloniCaricati"></app-spinner1center>
-
-<mat-toolbar class="navbar">
-  <div class="navbar-left">
+<mat-toolbar class="gruppo-saloni-navbar">
+  <div class="gruppo-saloni-navbar-left">
     <img src="assets/imgx32.png" alt="logo" width="32" heigth="32">
-    <h4 class="gruppo">{{title}}</h4>
+    <h4 class="gruppo-saloni-navbar-gruppo">{{title}}</h4>
   </div>
   <button mat-mini-fab color="Basic" style="margin-top: 5px; width: 35px; height: 35px;" (click)="back()"
     *ngIf="modalitaConsulente">
@@ -14,8 +12,10 @@
   </button>
 </mat-toolbar>
 
+<app-spinner1center *ngIf="!saloniCaricati"></app-spinner1center>
+
 <mat-sidenav-container style="background-image: url('./assets/penta.jpg');">
-  <mat-sidenav position="end" #sidenav style="background-image: url('./assets/sidebar-1.jpg'); background-color: transparent;width:100%;">
+  <mat-sidenav position="end" #sidenav style="background-image: url('./assets/sidebar-1.jpg'); background-color: transparent;max-width: 360px;">
     <mat-nav-list>
       <div class="predefiniti">
         <h1 matSubheader>Predefiniti</h1>
@@ -109,16 +109,14 @@
     </mat-nav-list>
   </mat-sidenav>
 
-  <mat-sidenav-content id="divToScroll">
-    <div style="height: 90vh;">
+  <app-spinner1center *ngIf="attesa"></app-spinner1center>
+
+  <mat-sidenav-content id="divToScroll" style="height: calc(100vh - 56px);">
       <div class="container-fluid">
 
-        <div style="height: 20px"></div>
+        <div class="row">
 
-        <app-spinner1center *ngIf="attesa"></app-spinner1center>
-
-        <div class="row mb-2">
-          <div style="position: relative; opacity: 0.8;" class="col-md-4 " id="temps" *ngFor="let t of temps">
+          <div style="position: relative; opacity: 0.8;margin-top:20px;min-width: 341px;" class="col-md-4 " *ngFor="let t of temps">
             <div class="row no-gutters border rounded-lg  flex-md-row mb-4 shadow-sm h-md-250 position-relative shadow"
               style="background-color:white;color:teal; width: 100%;">
               <button *ngIf="t.logEventi && t.logEventi.length>0" mat-mini-fab color="warn" (click)="mostraLogEventi(t)"
@@ -193,10 +191,15 @@
                   </tr>
                   <tr *ngIf="t.ChartData">
                     <td colspan="4">
-                      <canvas #myCanvas baseChart [datasets]="t.ChartData" [labels]="barChartLabels"
+                      <div style="display: flex;
+                      flex-direction: column;
+                      flex-grow: 1;
+                      min-width:80%;">
+                      <canvas height="120" style="width:100%;background-color: white;" #myCanvas baseChart [datasets]="t.ChartData" [labels]="barChartLabels"
                         [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
-                        [chartType]="barChartType" height="120" style="background-color: white;">
+                        [chartType]="barChartType">
                       </canvas>
+                      </div>
                     </td>
                   </tr>
                 </table>
@@ -402,11 +405,10 @@
               </div>
             </div>
           </div>
-        </div>
+          </div>
 
 
       </div>
-    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
 

@@ -1,12 +1,12 @@
 
-  <div class="bleeper" *ngIf="saloneSelezionato.opzioniPlanner?.imgSfondo != '' && counter > 0" [style.backgroundImage]="'url(' + backgroundUrl + ')'">
-    <div class="logo" *ngIf="saloneSelezionato.opzioniPlanner?.logo != ''" [style.backgroundImage]="'url(' + logoUrl + ')'"></div>
-    <div style="margin-top: 20px;">
+  <div class="bleeper" (click)="counter = 0" *ngIf="backgroundUrl != '' && counter > 0" [style.backgroundImage]="'url(' + backgroundUrl + ')'">
+    <div class="logo" *ngIf="logoUrl != ''" [style.backgroundImage]="'url(' + logoUrl + ')'"></div>
+    <!-- <div style="margin-top: 20px;">
       <button mat-button style="width: 150px;background: #343a40dd;color: #fff;border-radius: 6px;border:1px solid #fff;" (click)="counter = 0">Prenota <small>({{counter}})</small></button>
-    </div>
+    </div> -->
   </div>
 
-<div class="mysaloon-container">
+<div class="mysaloon-container" *ngIf="counter <= 0">
 
   <div>
 
@@ -24,14 +24,15 @@
   <div class="mysaloon-salone" *ngIf="!selezionandoSalone">
     <div style="display: flex;align-items: center;gap: 5px;">
       <div class="mysaloon-logo-salone">
-        <img src="./assets/imgx32.png" width="50" height="50" alt="logo">
+        <img *ngIf="logoUrl==''" src="assets/imgx32.png" width="50" height="50" alt="logo">
+        <img *ngIf="logoUrl!=''" src="{{logoUrl}}" width="50" height="50" alt="logo">
       </div>
       <div class="mysaloon-dettagli-salone">
         <div class="mysaloon-titolo-salone">
           <mat-icon>location_on</mat-icon>
           <a (click)="googleMap(saloneSelezionato)">{{ saloneSelezionato.salone }}</a>
         </div>
-        <div class="mysaloon-indirizzo-salone">
+        <div *ngIf="saloneSelezionato.indirizzo" class="mysaloon-indirizzo-salone">
           <span>{{ saloneSelezionato.indirizzo }}</span>
         </div>
       </div>
@@ -271,7 +272,7 @@
               <div style="display: flex;gap: 15px;align-items: center;flex-direction: column;justify-content: center;"
                 (click)="googleMap(salone)">
                 <mat-icon style="transform: scale(1.8);">place</mat-icon>
-                <div style="display: flex;flex-direction: column;line-height: initial;">
+                <div style="display: flex;flex-direction: column;line-height: initial;justify-content: center;text-align: center;">
                   <div style="font-weight: 900;display: flex;justify-content: center;">{{salone.salone}}
                   </div>
                   <!-- <div style="font-size: 12px;color: #ffffff;font-weight: 500;">{{saloneSelezionato.indirizzo}}</div> -->

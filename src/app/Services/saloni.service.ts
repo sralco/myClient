@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/Http';
 import { Observable, of } from 'rxjs';
 import { Salone } from '../Models/Salone';
-import { stringify } from 'querystring';
 import { Cliente } from '../Models/Cliente';
 import { GruppoServizi, Produzione } from '../Models/produzione';
 import { Incasso } from '../Models/incasso';
@@ -16,13 +15,12 @@ import { Intervallo } from '../Models/Intervallo';
 import { CoppiaDate } from '../Models/VociMenu';
 import { TempFiche } from '../Models/Temp-Fiche';
 import { Stecchiti } from '../Models/Stecchiti';
-import { Spesa } from '../Models/Spesa';
 import { Esito } from '../Models/Esito';
-
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class SaloniService {
 
   api = '';

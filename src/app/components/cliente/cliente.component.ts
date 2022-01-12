@@ -1,7 +1,7 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { ClientiService } from './../../Services/clienti.service';
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { Cliente } from 'src/app/Models/Cliente';
 import { Esito } from 'src/app/Models/Esito';
 import { Salone } from 'src/app/Models/Salone';
@@ -15,6 +15,9 @@ import { SaloniService } from 'src/app/Services/saloni.service';
 export class ClienteComponent implements OnInit {
 
   salone: Salone;
+  nomeSalone: string;
+  saloni: Salone[];
+  gruppo: string;
 
   titolo = 'Nuovo cliente';
   sesso = 'Donna';
@@ -22,26 +25,50 @@ export class ClienteComponent implements OnInit {
   idCliente: string;
   btnEnable = false;
 
-  constructor(private saloneService:SaloniService, private location: Location, private service: ClientiService, private route: Router, private aRoute: ActivatedRoute) {
-    this.cliente = new Cliente();
-    this.salone = this.saloneService.saloneCorrente;
-    if (!this.salone) {
-      this.salone = JSON.parse(localStorage.getItem("SaloneCorrente"));
-    }
-    console.log(this.salone)
+  constructor(private saloneService: SaloniService, private location: Location, private service: ClientiService, private route: Router, private aRoute: ActivatedRoute) {
 
     this.idCliente = this.aRoute.snapshot.paramMap.get('id');
-    console.log(this.idCliente)
-    if (this.idCliente) {
-      this.service.getCliente(this.idCliente,this.salone).subscribe(x => {
+
+    this.cliente = new Cliente();
+    //this.salone = this.saloneService.saloneCorrente;
+
+    this.gruppo = localStorage.getItem("Gruppo");
+    console.log('Gruppo')
+    console.log(this.gruppo)
+    this.nomeSalone = localStorage.getItem("Salone");
+    this.salone = JSON.parse(localStorage.getItem("SaloneCorrente"));
+    console.log('nomeSalone')
+    console.log(this.nomeSalone)
+
+    //if (!this.salone) {
+      this.saloneService.getSaloni(this.gruppo).subscribe(x => {
+        this.saloni = x;
         console.log(x)
-        this.cliente = x[0];
-        this.sesso = this.cliente.sesso;
-        console.log(JSON.stringify(this.cliente));
-        console.log(this.cliente.sesso);
-        this.titolo=this.cliente.nome + ' ' + this.cliente.cognome;
-      }, err => console.error(err));
-    }
+        this.saloni.forEach(salone => {
+          console.log(salone.salone)
+          console.log(this.nomeSalone)
+          if (salone.salone == this.nomeSalone) {
+            this.salone = salone;
+          }
+        })
+        if (this.idCliente) {
+          //this.service.getCliente(this.idCliente,this.salone).subscribe(x => {
+          console.log('salone')
+          console.log(this.salone)
+          this.service.getClienteDelSalone(this.salone, this.idCliente).subscribe(x => {
+            console.log(x)
+            this.cliente = x;
+            this.sesso = this.cliente.sesso;
+            console.log(JSON.stringify(this.cliente));
+            console.log(this.cliente.sesso);
+            this.titolo = this.cliente.nome + ' ' + this.cliente.cognome;
+          }, err => console.error(err));
+        }
+      }, err => {
+        console.log(err)
+      })
+    //}
+
   }
 
   ngOnInit() {
@@ -50,6 +77,8 @@ export class ClienteComponent implements OnInit {
       localStorage.setItem('Sesso', 'Donna');
       this.sesso = 'Donna';
     }
+    
+    
   }
 
   goBack() {
@@ -63,7 +92,7 @@ export class ClienteComponent implements OnInit {
       if ((x.id !== '') && (x.esito === 'Ok')) {
         this.cliente.id = x.id;
         console.log('IdCliente restituito: ' + this.cliente.id);
-        if (!this.idCliente) {
+        if (!this.cliente.id) {
           this.route.navigate(['/clienti/' + x.id]);
         } else {
           this.route.navigate(['/home/']);
@@ -72,7 +101,7 @@ export class ClienteComponent implements OnInit {
         alert(x.messaggio + ' - ' + x.tag);
         this.btnEnable = true;
       }
-    }, err=>{
+    }, err => {
       alert(err);
       console.log(err);
     });

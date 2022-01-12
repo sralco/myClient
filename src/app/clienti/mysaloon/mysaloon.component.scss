@@ -239,6 +239,11 @@ $color:var(--color);
 
 .mysaloon-seleziona-salone {
   color: $background-color;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
 }
 
 .mysaloon-dettagli.salone {
@@ -251,18 +256,22 @@ $color:var(--color);
   overflow-y: hidden;
   display: flex;
   gap: 5px;
-  height: 70px;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
+
 
 .mysaloon-seleziona-saloni-titolo {
   color: #000000;
   font-size: 13px;
   text-align: center;
   line-height: 13px;
-}
-
-.mysaloon-seleziona-salone {
-  padding: 6px;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .mysaloon-seleziona-logo-salone img {
@@ -320,16 +329,10 @@ $color:var(--color);
 }
 
 .mysaloon-card-prenotazioni {
-  /*
-  background: #50bcbb;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  */
   padding-top: 10px;
   padding-bottom: 10px;
   background: #50bcbb;
-  height: calc(100% - 184px);
+  height: 100%;
   overflow: auto;
 }
 

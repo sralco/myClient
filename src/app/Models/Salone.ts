@@ -1,4 +1,4 @@
-import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
+import { ChartDataSets } from 'chart.js';
 import { Appuntamento } from './Appuntamento';
 import { LogEvento } from './LogEvento';
 import { OpzioniPlanner } from './OpzioniPlanner';

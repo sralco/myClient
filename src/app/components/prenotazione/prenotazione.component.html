@@ -21,13 +21,13 @@
       <mat-card class="card">
         <mat-vertical-stepper [linear]="isLinear" #stepper labelPosition="bottom">
 
-          <mat-step [stepControl]="firstStepControl" label="Cliente: {{clienteObj?.nome + ' ' + clienteObj?.cognome}}"
+          <mat-step [stepControl]="firstStepControl" style="text-transform: capitalize;" label="Cliente: {{clienteObj?.nome + ' ' + clienteObj?.cognome}}"
             *ngIf="(token==='' || token===null || clienteObj != null)">
-            <div style="display: flex;align-items: center;gap: 10px;">
+            <div style="display: flex;align-items: center;gap: 10px;padding-top: 6px;">
               <mat-form-field class="cerca" style="width: 100%;" appearance="outline">
                 <mat-label>Cerca cliente</mat-label>
                 <input matInput placeholder="Cognome, nome o cell" formControlName="candidato" autocomplete="off"
-                  (keyup)="searchCliente($event.target.value)" id="candidato" #candidato>
+                  (keyup)="searchCliente($event.target.value)" id="candidato" #candidato style="text-transform: capitalize;">
                 <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="cleatTxt('candidato')">
                   <mat-icon *ngIf="searchForm.get('candidato').value!==''">close</mat-icon>
                 </button>
@@ -46,24 +46,18 @@
               </mat-chip-list>
             </div>
 
-            <div *ngIf="mostraTabella">
-              <table>
+            <div *ngIf="mostraTabella" style="max-height: 200px;z-index: 999999999;overflow-y: auto;">
+              <table style="width:100%;">
                 <thead>
-                  <tr>
+                  <tr style="height:40px;">
                     <th scope="col">Cliente</th>
                     <th scope="col">Cellulare</th>
-                    <th scope="col">OK</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let s of clienti">
-                    <td scope="row" style="widows: 70%;">{{s.cognome + ' ' + s.nome}}</td>
-                    <td scope="row" style="widows: 25%;">{{s.cell}}</td>
-                    <td style="widows: 5%;">
-                      <button type="button" class="btn btn-primary" style=" width: 100%; height: 100%"
-                        (click)="selezionaCandidato(s)">
-                        <i class="fa fa-check" aria-hidden="true"></i></button>
-                    </td>
+                  <tr *ngFor="let s of clienti" style="height:40px;border-top:1px solid #d7d7d7;cursor:pointer;" (click)="selezionaCandidato(s)">
+                    <td scope="row" style="text-transform: capitalize;">{{s.cognome + ' ' + s.nome}}</td>
+                    <td scope="row">{{s.cell}}</td>
                   </tr>
                 </tbody>
               </table>
@@ -122,13 +116,13 @@
             <div style="max-height: 320px;float: left;overflow: auto;overflow-x:hidden;margin-top: 10px;">
               <mat-card-subtitle style="margin:5px 0 0;">Servizi Principali</mat-card-subtitle>
               <button mat-raised-button color="accent" *ngFor="let s of serviziPrincipali()"
-                style="min-width: 280px; margin:5px; text-align: left;" (click)="selezionaServizio(s)">
+                style="min-width: 280px; margin:5px; text-align: left;text-transform: capitalize;" (click)="selezionaServizio(s)">
                 {{s.servizio}} - {{s.durata}} min.
               </button>
               <div style="max-height: 320px;float: left;overflow: auto;overflow-x:hidden;margin-top: 10px;">
                 <mat-card-subtitle style="margin:5px 0 0;">Altri Servizi</mat-card-subtitle>
                 <button mat-raised-button color="accent" *ngFor="let s of serviziSecondari()"
-                  style="min-width: 280px; margin:5px; text-align: left;" (click)="selezionaServizio(s)">
+                  style="min-width: 280px; margin:5px; text-align: left;text-transform: capitalize;" (click)="selezionaServizio(s)">
                   {{s.servizio}} - {{s.durata}} min.
                 </button>
               </div>

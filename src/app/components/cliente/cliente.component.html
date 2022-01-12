@@ -26,19 +26,19 @@
       
       <div style="display:flex;justify-content:space-between;">
         <div style="display:flex;flex-direction:column;width:50%;">
-          <label for="dataNascita">Compleanno</label>
+          <label for="dataNascita">Compleanno <span style="color:#c3c3c3;">(opzionale)</span></label>
           <mat-form-field appearance="fill" style="width: 95%;">
             <input matInput placeholder="GG/MM" id="dataNascita" name="dataNascita" #dataNascita="ngModel"
-              [(ngModel)]="cliente.compleanno" value="" required>
-            <mat-error *ngIf="!dataNascita.value">Campo obbligatorio</mat-error>
+              [(ngModel)]="cliente.compleanno" value="">
+            <!-- <mat-error *ngIf="!dataNascita.value">Campo obbligatorio</mat-error> -->
           </mat-form-field>
         </div>
         <div style="display:flex;flex-direction:column;width:50%;">
-          <label for="annoNascita">Anno nascita</label>
+          <label for="annoNascita">Anno nascita <span style="color:#c3c3c3;">(opzionale)</span></label>
           <mat-form-field appearance="fill" style="width: 95%;">
             <input matInput placeholder="AAAA" id="annpoNascita" name="annoNascita" #annoNascita="ngModel"
-              [(ngModel)]="cliente.anno" value="" required>
-            <mat-error *ngIf="!annoNascita.value">Campo obbligatorio</mat-error>
+              [(ngModel)]="cliente.anno" value="">
+            <!-- <mat-error *ngIf="!annoNascita.value">Campo obbligatorio</mat-error> -->
           </mat-form-field>
         </div>
       </div>
@@ -59,14 +59,14 @@
         <mat-error *ngIf="!cell.value">Campo obbligatorio</mat-error>
       </mat-form-field>
 
-      <label for="paese">Comune di provenienza</label>
+      <label for="paese">Comune di provenienza <span style="color:#c3c3c3;">(opzionale)</span></label>
       <mat-form-field appearance="outline" style="width:100%">
         <input matInput placeholder="" id="paese" name="paese" #paese="ngModel" [(ngModel)]="cliente.paese" value=""
-          required style="text-transform: capitalize;">
-        <mat-error *ngIf="!paese.value">Campo obbligatorio</mat-error>
+          style="text-transform: capitalize;">
+        <!-- <mat-error *ngIf="!paese.value">Campo obbligatorio</mat-error> -->
       </mat-form-field>
 
-      <mat-radio-group [(ngModel)]="sesso" aria-label="Select an option" required name="sessooption" #sessooption="ngModel">
+      <mat-radio-group [(ngModel)]="sesso" aria-label="Select an option" name="sessooption" #sessooption="ngModel">
         <mat-radio-button value="uomo" style="margin-right: 20px;">Uomo</mat-radio-button>
         <mat-radio-button value="donna">Donna</mat-radio-button>
       </mat-radio-group>
@@ -85,11 +85,9 @@
         </div>
       </div> -->
       <mat-card-actions style="display: flex;justify-content: flex-end;">
-        <button mat-button name="btn" (click)="salvaCliente()" 
-        [disabled]="!(firstName.value && lastName.value && dataNascita.value && annoNascita.value && cell.value && paese.value && sessooption.value)" style="background: #000;
-        color: #fff;">Salva cliente</button>
+        <button mat-raised-button name="btn" (click)="salvaCliente()" color="primary" 
+        [disabled]="!(firstName.value && lastName.value && cell.value)" >Salva cliente</button>
       </mat-card-actions>
-
 
     </form>
 
