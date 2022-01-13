@@ -22,7 +22,7 @@ import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 })
 
 export class mysaloonComponent implements OnInit {
-  total = 4;
+  total = 5;
   counter = this.total;
   selectedStyle: string;
   @HostBinding('style') style: SafeStyle;
@@ -78,7 +78,7 @@ export class mysaloonComponent implements OnInit {
     })
     );
 
-    setInterval(()=> { this.contoRovescia() }, this.total * 300);
+    setInterval(()=> { this.contoRovescia() }, this.total * 200);
     
   }
   contoRovescia(){
@@ -98,11 +98,13 @@ export class mysaloonComponent implements OnInit {
         localStorage.setItem('OpzioniPlanner', JSON.stringify(this.saloneSelezionato.opzioniPlanner));
       }
     });
-    if (this.saloneSelezionato.opzioniPlanner?.imgSfondo){
-      this.backgroundUrl = 'assets/' + this.saloneSelezionato.opzioniPlanner.imgSfondo;
+    if (this.saloneSelezionato.opzioniPlanner.imgSfondo && this.saloneSelezionato.opzioniPlanner.imgSfondo != null && this.saloneSelezionato.opzioniPlanner.imgSfondo != ''){
+      this.backgroundUrl = ('/images/' + this.saloneSelezionato.gruppo + '/' + this.saloneSelezionato.salone + '/' + this.saloneSelezionato.opzioniPlanner.imgSfondo).replace(/\s+/g, '-').toLowerCase();
+      console.log(this.backgroundUrl)
     }
-    if (this.saloneSelezionato.opzioniPlanner?.logo){
-      this.logoUrl = 'assets/' + this.saloneSelezionato.opzioniPlanner.logo;
+    if (this.saloneSelezionato.opzioniPlanner.logo && this.saloneSelezionato.opzioniPlanner.logo != null && this.saloneSelezionato.opzioniPlanner.logo != ''){
+      this.logoUrl = ('/images/' + this.saloneSelezionato.gruppo + '/' + this.saloneSelezionato.salone + '/' + this.saloneSelezionato.opzioniPlanner.logo).replace(/\s+/g, '-').toLowerCase();;
+      console.log(this.logoUrl)
     }
     this.selectedStyle = `
     --background-color: ${this.backgroundColor};

@@ -31,6 +31,10 @@ import { DettagliEventoComponent } from '../dettagli-evento/dettagli-evento.comp
 import { AuthService } from 'src/app/Services/auth.service';
 import { User } from 'src/app/Models/User';
 import { interval, Subscription } from 'rxjs';
+import localeItalian from '@angular/common/locales/it';
+import { CustomDateAdapter } from 'src/app/Services/custom-date-adapter';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeItalian, 'it');
 
 export class InfoClick {
    public resourceId: string;
@@ -48,9 +52,14 @@ export class InfoClick {
    templateUrl: './planner.component.html',
    styleUrls: ['./planner.component.scss'],
    providers: [
+      { provide: LOCALE_ID, useValue: "it" },
+      { provide: MAT_DATE_LOCALE, useValue: 'it-IT' },
+      { provide: DateAdapter, useClass: CustomDateAdapter },
+    ]
+   /* providers: [
       // The locale would typically be provided on the root module of your application. We do it at
       // the component level here, due to limitations of our example generation script.
-      { provide: MAT_DATE_LOCALE, useValue: 'it' },
+      //{ provide: MAT_DATE_LOCALE, useValue: 'it' },
 
       // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
       // `MatMomentDateModule` in your applications root module. We provide it at the component level
@@ -61,7 +70,7 @@ export class InfoClick {
          deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
       },
       { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
-   ],
+   ], */
 })
 export class PlannerComponent implements OnInit, OnDestroy {
 
@@ -161,8 +170,6 @@ export class PlannerComponent implements OnInit, OnDestroy {
          initialDate: this.dataCorrente,
          resources: function (fetchInfo, successCallback, failureCallback) {
             /* let data=fetchInfo.startStr;*/
-
-            
 
             let salone = saloneService.saloneCorrente;
             if (!salone) {

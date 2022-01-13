@@ -2,7 +2,7 @@
   height: 100vh;
   overflow-y: hidden;
 
-  .navbar {
+  .planner-navbar {
     top: 0;
     z-index: 999;
     background: #008b8b;
@@ -11,29 +11,29 @@
     justify-content: space-between;
     color: white;
 
-    .left {
+    .planner-navbar-left {
       display: inline-flex;
       justify-content: center;
       align-items: center;
       white-space: nowrap;
       gap: 10px;
 
-      .logo img {
+      .planner-navbar-logo img {
         width: 45px;
         height: 45px;
       }
     }
 
-    .gruppo-salone {
+    .planner-navbar-gruppo-salone {
       display: flex;
       flex-direction: column;
 
-      .gruppo {
+      .planner-navbar-gruppo {
         text-transform: capitalize;
         line-height: 18px;
       }
 
-      .salone {
+      .planner-navbar-salone {
         line-height: 15px;
         font-size: 20px;
       }

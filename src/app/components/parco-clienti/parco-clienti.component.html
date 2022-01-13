@@ -18,8 +18,7 @@
   <form [formGroup]="searchForm" id="cercaForm" #cercaForm class="search__form"
     style="background:#ffffff;text-align: center;padding-top:10px; " *ngIf="flagCercaServizi">
 
-    <mat-form-field style="width: 100%;" appearance="outline"
-      style="margin-left: 1px; margin-right: 1px;margin-bottom: 0;">
+    <mat-form-field style="width: 60%;" appearance="outline">
       <mat-label>Cerca cliente</mat-label>
       <input matInput placeholder="Nome o cellulare" (keyup)="searchClienti($event.target.value)" id="inputsrcCliente"
         name="inputsrcCliente" #inputsrcCliente formControlName="srcCliente">
@@ -29,40 +28,40 @@
     </mat-form-field>
   </form>
 
-  <div *ngIf="mostraTabella" style="margin-bottom: 15px;max-width:100vw;overflow-y: auto;">
+  <div *ngIf="mostraTabella" style="margin-bottom: 15px;overflow-y: auto;max-height: 300px;">
     <table mat-table matSort matSortActive="id" matSortDirection="desc" matSortDisableClear multiTemplateDataRows
       [dataSource]="dataSource" style="width: 100%;">
 
       <ng-container matColumnDef="classe">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Classe</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: center;">Classe</th>
         <td mat-cell *matCellDef="let element">
-          <img src="{{ './assets/' + element.classe + '.png' }}" style="width: 30px">
+          <img src="{{ './assets/' + element.classe + '.png' }}" width="25" height="25" style="width: 25px;height:25px;">
         </td>
       </ng-container>
 
       <ng-container matColumnDef="nome">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: center;">Nome</th>
         <td mat-cell *matCellDef="let element" style="text-transform: capitalize;">
           {{element['nome']}}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="cognome">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Cognome</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: center;">Cognome</th>
         <td mat-cell *matCellDef="let element" style="text-transform: capitalize;">
           {{element['cognome']}}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="cell">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Cellulare</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: center;">Cellulare</th>
         <td mat-cell *matCellDef="let element">
           {{element['cell']}}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="paese">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Paese</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: center;">Paese</th>
         <td mat-cell *matCellDef="let element">
           {{element['paese']}}
         </td>
@@ -73,7 +72,7 @@
         (click)="apriDettagliCliente(element)"></tr>
     </table>
 
-    <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+    <!-- <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator> -->
   </div>
 
 

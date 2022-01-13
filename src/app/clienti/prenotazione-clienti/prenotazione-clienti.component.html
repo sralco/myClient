@@ -20,7 +20,10 @@
 
     <mat-toolbar class="prenotazione-clienti-salone">
       <div class="salone-left">
-        <div class="logo"><img src="assets/imgx32.png" width="50" height="50" /></div>
+        <div class="logo">
+          <img *ngIf="logoUrl == ''" src="assets/imgx32.png" width="50" height="50" alt="logo">
+          <img *ngIf="logoUrl != ''" src="{{logoUrl}}" width="50" height="50" alt="logo">
+        </div>
         <div class="gruppo-salone">
           <h4 class="gruppo"><a
               href="https://www.google.com/maps/search/?api=1&query={{salone.gruppo}}%2c%20{{salone.salone}}">{{salone.gruppo}}</a>

@@ -26,6 +26,11 @@ export class DettagliEventoComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  goCliente(){
+    this.dialogRef.close();
+    window.location.href = '/myclient/#/cliente/' + this.evento.event.extendedProps.idCliente;
+  }
+
   elimina() {
     if (confirm('Eliminare questo appuntamento?')) {
 
