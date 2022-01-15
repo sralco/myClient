@@ -4,7 +4,7 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/Http';
-import { CommonModule } from '@angular/common';
+import { CommonModule, ViewportScroller } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { ChartsModule } from 'ng2-charts';
@@ -21,7 +21,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { DemoMaterialModule } from 'src/app/material-module';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
-
+import { Router, Scroll, Event} from '@angular/router';
+import { Position } from '@angular/compiler';
+import { filter } from 'rxjs/operators';
 import { QRCodeModule } from 'angularx-qrcode';
 import {WebcamModule} from 'ngx-webcam';
 import {NgxBarcodeScannerModule} from '@eisberg-labs/ngx-barcode-scanner';
@@ -305,4 +307,21 @@ const config = {
   entryComponents: [],
   exports: [NumberFormatPipe]
 })
-export class AppModule { }
+export class AppModule { 
+  constructor(router: Router, viewportScroller: ViewportScroller) {
+    router.events.pipe(
+      filter((e: Event): e is Scroll => e instanceof Scroll)
+    ).subscribe(e => {
+      if (e.position) {
+        // backward navigation
+        viewportScroller.scrollToPosition(e.position);
+      } else if (e.anchor) {
+        // anchor navigation
+        viewportScroller.scrollToAnchor(e.anchor);
+      } else {
+        // forward navigation
+        viewportScroller.scrollToPosition([0, 0]);
+      }
+    });
+  }
+}

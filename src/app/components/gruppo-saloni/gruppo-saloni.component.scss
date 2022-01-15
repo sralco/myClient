@@ -18,42 +18,56 @@
    
 }
 
-.temps{
-  margin: 20px auto;
-  width: 95%;
-  max-width: 350px;
+.gruppo-saloni-grid-panels{
+  display:grid;
+  grid-gap:20px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  margin-top: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 20px;
 }
 
-.freccia .fa {
-  transition: .3s transform ease-in-out;
-}
-.freccia .collapsed .fa {
-  transform: rotate(180deg);
-}
-.descrizione {
-  color: #7b7992;
-  font-weight: bolder;
-  font-size: 9pt;
-}
-.title {
-  font-size: 24px;
-  font-weight: 700;
-  color: #0d0925;
-}
-.colore {
-  color:slategrey;
+.gruppo-saloni-panel{
+  max-width: 450px;
+  background-color: #fff;
+  opacity:0.8;
+  padding: 10px;
+  height: fit-content;
+  border-radius: 6px;
+  box-shadow: 0px 0px 21px #9a9a9a;
+
 }
 
-.colore button {background-color: slategray;}
+.noexpand{
+  height:0;
+  overflow: hidden;
+}
 
-.testoadestra
-{text-align: right; font-size: 10pt;}
+.expand{
+  -moz-transition: height .5s;
+  -ms-transition: height .5s;
+  -o-transition: height .5s;
+  -webkit-transition: height .5s;
+  transition: height .5s;
+  overflow: hidden;
+}
 
-.padding0
-{ padding-left: 0;padding-right: 0;}
-
-#dettagli i
-{ font-size: 16pt; color: red;}
+.rigaCliccabile{
+  height:50px;
+  border-top:1px solid #d7d7d7;
+  cursor:pointer;
+  &:hover{
+    background-color:#d7d7d7;
+  }
+}
+.btnContainer{
+  width: 100%;
+  padding: 10px;
+  background: #f0eeee;
+  border: 1px solid #d7d7d7;
+  border-radius: 6px;
+}
 
 .giorno, .settimana, .mese, .anno {
   display: flex;

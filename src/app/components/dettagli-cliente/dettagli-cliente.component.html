@@ -1,6 +1,7 @@
 <div style="display: flex; justify-content: space-between;">
   <div style="display:flex;align-items: center;grid-gap:10px;margin-bottom:16px;">
-    <img src="{{ './assets/' + appClass.c.classe + '.png' }}" width="25" height="25" style="width: 25px;height:25px;">
+    <img *ngIf="appClass.c.classe" src="{{ '/assets/' + appClass.c.classe + '.png' }}" width="25" height="25" style="width: 25px;height:25px;">
+    <mat-icon *ngIf="!appClass.c.classe">account_circle</mat-icon>
     <h2 mat-dialog-title style="margin:0;text-transform: capitalize;">{{appClass.c.nome + ' ' + appClass.c.cognome}}
     </h2>
   </div>

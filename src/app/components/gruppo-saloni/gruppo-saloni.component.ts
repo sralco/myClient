@@ -2,7 +2,7 @@ import { Salone } from 'src/app/Models/Salone';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SaloniService } from '../../Services/saloni.service';
-import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
+import { ChartOptions, ChartType } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { AuthService } from 'src/app/Services/auth.service';
 import { MatSidenav } from '@angular/material/sidenav';
@@ -18,7 +18,7 @@ import { RealtimeService } from 'src/app/Services/realtime.service';
 import { TempFiche } from 'src/app/Models/Temp-Fiche';
 import { InAttesaComponent } from '../in-attesa/in-attesa.component';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
-
+import { trigger, state, style, animate, transition } from '@angular/animations';
 
 @Component({
   selector: 'app-gruppo-saloni',
@@ -26,12 +26,24 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
   styleUrls: ['./gruppo-saloni.component.scss'],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
+  ],
+  animations: [
+    trigger('openedState', [
+      state('closed', style({ transform: 'rotate(0)' })),
+      state('opened', style({ transform: 'rotate(-180deg)' })),
+      transition('closed <=> opened', animate('300ms ease-in')),
+    ]),
+    trigger('expandCollapse', [
+      state('opened', style({ height: '*' })),
+      state('closed', style({ height: '0px' })),
+      transition('closed <=> opened', animate(300))
+    ])
   ]
 })
 
 export class GruppoSaloniComponent implements OnInit, AfterViewInit {
-  @ViewChild('sidenav') sidenav: MatSidenav;
 
+  @ViewChild('sidenav') sidenav: MatSidenav;
   title = '';
   temps: Salone[];
   anno1: number;
@@ -42,7 +54,44 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
   menu: VociMenu;
   modalitaConsulente: boolean;
 
-  barChartOptions: ChartOptions = this.createOptions();
+  state: string[] = [];
+
+  public barChartOptions: ChartOptions = {
+    responsive: true,
+    //maintainAspectRatio: false,
+    //aspectRatio: 2,
+    //onResize: this.myCanvas, this.size,
+    //elements: { point: { radius: 0 } }, //Rimuove i punti dalle linee
+    legend: { position: 'top' },
+    hover: { animationDuration: 0 },
+    animation: { duration: 2 },
+    scales: {
+      yAxes: [{
+        ticks: {
+          fontColor: "rgba(0,0,0,0.5)",
+          fontStyle: "bold",
+          beginAtZero: true,
+          maxTicksLimit: 5,
+          padding: 20
+        },
+        gridLines: {
+          drawTicks: false,
+          display: false
+        }
+
+      }],
+      xAxes: [{
+        gridLines: { zeroLineColor: "transparent" },
+        ticks: {
+          padding: 20,
+          fontColor: "rgba(0,0,0,0.5)",
+          fontStyle: "bold"
+        }
+      }]
+    }
+  }
+
+
   barChartLabels: Label[] = ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'ott', 'Nov', 'Dic'];
   barChartLabelsClassi: Label[] = ['A', 'B', 'C', 'D', 'Inattivi'];
   barChartType: ChartType = 'line';
@@ -55,66 +104,7 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
     { data: [55, 20, 50, 80, 60, 50, 66, 45, 87, 23, 55, 43], label: 'Corrente' },
   ]; */
 
-  private createOptions(): ChartOptions {
-    return {
-      responsive: true,
-      maintainAspectRatio: false,
-      aspectRatio: 2,
-      //onResize:(newSize),
-      //elements: { point: { radius: 0 } }, //Rimuove i punti dalle linee
-      legend: { position: 'top' },
-      hover: { animationDuration: 0 },
-      animation: { duration: 2 },
-      scales: {
-        yAxes: [{
-          ticks: {
-            fontColor: "rgba(0,0,0,0.5)",
-            fontStyle: "bold",
-            beginAtZero: true,
-            maxTicksLimit: 5,
-            padding: 20
-          },
-          gridLines: {
-            drawTicks: false,
-            display: false
-          }
-
-        }],
-        xAxes: [{
-          gridLines: { zeroLineColor: "transparent" },
-          ticks: {
-            padding: 20,
-            fontColor: "rgba(0,0,0,0.5)",
-            fontStyle: "bold"
-          }
-        }]
-      }
-    };
-  }
-
-//   handleResize() {
-//     var w = window.innerWidth-2; // -2 accounts for the border
-//     var h = window.innerHeight-2;
-//     stage.canvas.width = w;
-//     stage.canvas.height = h;
-//     //
-//     var ratio = 100/100; // 100 is the width and height of the circle content.
-//     var windowRatio = w/h;
-//     var scale = w/100;
-//     if (windowRatio > ratio) {
-//         scale = h/100;
-//     }
-//     // Scale up to fit width or height
-//     c.scaleX= c.scaleY = scale; 
-    
-//     // Center the shape
-//     c.x = w / 2;
-//     c.y = h / 2;
-        
-//     stage.update();
-// }
-
-  constructor( private serviceRT: RealtimeService, private router: Router, private loc: Location, private route: ActivatedRoute, private service: SaloniService, private auth: AuthService, private notifier: NotifierService, public dialog: MatDialog,) {
+  constructor(private serviceRT: RealtimeService, private router: Router, private loc: Location, private route: ActivatedRoute, private service: SaloniService, private auth: AuthService, private notifier: NotifierService, public dialog: MatDialog) {
     this.menu = new VociMenu;
     this.intervallo = new Intervallo;
     this.modalitaConsulente = !!localStorage.getItem('ModalitaConsulente');
@@ -126,6 +116,11 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
       } else if (this.user.tipo === 'Collaboratore') {
         router.navigate(['dettagliCollaboratore']);
       }
+    }
+    if (localStorage.hasOwnProperty('state')) {
+      this.state = JSON.parse(localStorage.getItem('state'));
+      this.state[0] = 'opened';
+      console.log(this.state)
     }
   }
 
@@ -143,6 +138,17 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
       alert('data :' + data);
     })
   }*/
+  public hideRuleContent: boolean[] = [];
+  public buttonName: any = 'Expand';
+
+  toggle(salone, index) {
+    // toggle based on index
+    this.hideRuleContent[index] = !this.hideRuleContent[index];
+    this.state[index] = (this.state[index] === 'closed' ? 'opened' : 'closed');
+    //this.state[index] = (this.state[index] === 'opened' ? 'closed' : 'opened');
+    localStorage.setItem('state', JSON.stringify(this.state));
+    this.getSaloneCompleto(salone);
+  }
 
   ngOnInit() {
     let dataImpostazioneIntervallo: string = localStorage.getItem('DataImpostazioneIntervallo')
@@ -208,13 +214,26 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
           localStorage.setItem("Scroll", '0');
           this.saloniCaricati = true;
           this.temps = x;
-          this.temps.forEach(element => {
+          this.temps.forEach((element) => {
+
+
             element.posizione = 'In attesa...'
             element.attesa = true;
             element.classeAccordion = 'collapse multi-collapse';
             this.caricaSaloni(element);
             this.attesa = false;
           });
+          if (!localStorage.hasOwnProperty('state')) {
+            this.temps.forEach((element, index) => {
+              this.state[index] = 'closed';
+            })
+            localStorage.setItem('state', JSON.stringify(this.state))
+
+          } else {
+            this.state = JSON.parse(localStorage.getItem('state'));
+          }
+          console.log('this.state')
+          console.log(this.state)
         }, (err => {
           this.attesa = false;
           this.notifier.notify('warning', 'Errore nella connessione al server');
@@ -225,13 +244,25 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
       this.temps = this.service.saloni;
       this.saloniCaricati = true;
       this.attesa = false;
-      this.temps.forEach(x => {
-        //alert(x.aperto);
-        if (x.aperto === 'show') {
-          x.classeAccordion = '';
-        }
-      })
+      if (!localStorage.hasOwnProperty('state')) {
+        this.temps.forEach((element, index) => {
+          this.state[index] = 'closed';
+        })
+        localStorage.setItem('state', JSON.stringify(this.state))
+
+      } else {
+        this.state = JSON.parse(localStorage.getItem('state'));
+      }
+      console.log('this.state')
+      console.log(this.state)
+      // this.temps.forEach(x => {
+      //   //alert(x.aperto);
+      //   if (x.aperto === 'show') {
+      //     x.classeAccordion = '';
+      //   }
+      // })
     }
+
   }
 
   aggiorna(t: Salone) {
@@ -347,6 +378,8 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
             element.posizione = 'Backup (' + element.ultimaSincronizzazione + ')';
             element.incasso1 = x.incasso1;
             element.incasso2 = x.incasso2;
+            console.log(x.incasso1)
+            console.log(x.incasso2)
             element.media1 = x.media1;
             element.media2 = x.media2;
             element.passaggi1 = x.passaggi1;
@@ -403,17 +436,17 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/cliente/' + idCliente]);
   }
 
-  gestisciApertura(s: Salone) {
-    s.aperto = s.aperto === 'show' ? '' : 'show'
+  // gestisciApertura(s: Salone) {
+  //   s.aperto = s.aperto === 'show' ? '' : 'show'
 
-    if (s.aperto === 'show') {
-      s.classeAccordion = '';
-    }
-    if (s.aperto === 'show') {
+  //   if (s.aperto === 'show') {
+  //     s.classeAccordion = '';
+  //   }
+  //   if (s.aperto === 'show') {
 
-      this.getSaloneCompleto(s);
-    }
-  }
+  //     this.getSaloneCompleto(s);
+  //   }
+  // }
 
   getSaloneCompleto(s: Salone) {
     s.attesa = true;
@@ -690,8 +723,8 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
   }
   mostraLogEventi(s: Salone) {
     const dialogRef = this.dialog.open(LogEventiComponent, {
-      maxWidth: '100vw !important',
-      maxHeight: '100vw !important',
+      width: '95%',
+      maxWidth: '350px',
       data: s
     });
   }
