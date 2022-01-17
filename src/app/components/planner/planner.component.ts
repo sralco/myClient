@@ -55,7 +55,8 @@ export class InfoClick {
       { provide: LOCALE_ID, useValue: "it" },
       { provide: MAT_DATE_LOCALE, useValue: 'it-IT' },
       { provide: DateAdapter, useClass: CustomDateAdapter },
-    ]
+    ],
+    
    /* providers: [
       // The locale would typically be provided on the root module of your application. We do it at
       // the component level here, due to limitations of our example generation script.

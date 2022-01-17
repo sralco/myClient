@@ -42,14 +42,13 @@ export class AuthService {
   }
 
   logOut() {
-    localStorage.setItem('user', '');
-    localStorage.setItem('GruppoSaloni', '');
-    localStorage.removeItem('token');
+    localStorage.clear();
+    // localStorage.setItem('user', '');
+    // localStorage.setItem('GruppoSaloni', '');
+    // localStorage.removeItem('token');
     this.isUserLogged = false;
     this.router.navigate(['/login']);
-
     this.userlogout.emit();
-
   }
 
 }
