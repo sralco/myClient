@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, forwardRef, AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
-import { CalendarOptions, Calendar, EventInput } from '@fullcalendar/core';
+import { CalendarOptions, Calendar, EventInput, BusinessHoursInput } from '@fullcalendar/core';
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
 import resourceTimeGridWeek from '@fullcalendar/resource-timegrid';
 import interactionPlugin from '@fullcalendar/interaction'; // for dateClick
@@ -33,6 +33,7 @@ import { User } from 'src/app/Models/User';
 import { interval, Subscription } from 'rxjs';
 import localeItalian from '@angular/common/locales/it';
 import { CustomDateAdapter } from 'src/app/Services/custom-date-adapter';
+import { OpzioniDelGiorno } from 'src/app/Models/OpzioniDelGiorno';
 import { registerLocaleData } from '@angular/common';
 registerLocaleData(localeItalian, 'it');
 
@@ -55,8 +56,8 @@ export class InfoClick {
       { provide: LOCALE_ID, useValue: "it" },
       { provide: MAT_DATE_LOCALE, useValue: 'it-IT' },
       { provide: DateAdapter, useClass: CustomDateAdapter },
-    ],
-    
+   ],
+
    /* providers: [
       // The locale would typically be provided on the root module of your application. We do it at
       // the component level here, due to limitations of our example generation script.
@@ -70,7 +71,7 @@ export class InfoClick {
          useClass: MomentDateAdapter,
          deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
       },
-      { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+      { provide: MAT_DATE_FORMATSpi, useValue: MAT_MOMENT_DATE_FORMATS },
    ], */
 })
 export class PlannerComponent implements OnInit, OnDestroy {
@@ -115,6 +116,8 @@ export class PlannerComponent implements OnInit, OnDestroy {
    selezionandoSalone: boolean = false;
    saloni: Salone[] = [];
 
+   businessHours: OpzioniDelGiorno[];
+
    private updateSubscription: Subscription;
 
    constructor(private router: Router, private plannerSer: PlannerService, public dialog: MatDialog, private _snackBar: MatSnackBar, private saloneService: SaloniService, private loc: Location, private auth: AuthService) {
@@ -128,7 +131,6 @@ export class PlannerComponent implements OnInit, OnDestroy {
             router.navigate(['dettagliCollaboratore']);
          }
       }
-
 
       if (localStorage.getItem('DataPlanner') && localStorage.getItem('DataPlanner') !== '') {
          this.dataCorrente = new Date(JSON.parse(localStorage.getItem('DataPlanner')));
@@ -161,6 +163,8 @@ export class PlannerComponent implements OnInit, OnDestroy {
          this.saloneSelezionato.opzioniPlanner.dom = false;
       }
 
+      const giorno:OpzioniDelGiorno = new OpzioniDelGiorno(this.saloneSelezionato.opzioniPlanner);
+      
       this.calendarOptions = {
          schedulerLicenseKey: '0449068578-fcs-1612134483',
          plugins: [resourceTimeGridPlugin, interactionPlugin, resourceTimeGridWeek,],
@@ -204,6 +208,8 @@ export class PlannerComponent implements OnInit, OnDestroy {
             )
          },
          events: this.calendarEvents,
+
+         businessHours: giorno.getBusinessHours(),
          //selectMirror:true,
          initialView: 'resourceTimeGridDay',
          dragScroll: true,
@@ -291,7 +297,7 @@ export class PlannerComponent implements OnInit, OnDestroy {
                span.appendChild(node);
                time.appendChild(span);
  */
-               if (info.event.extendedProps.tsr.trim() === 'R') {
+               if (info.event.extendedProps.tsr?.trim() === 'R') {
                   var span2 = document.createElement('img');
                   span2.className = 'fullcalendar-event-close';
                   span2.style.position = 'absolute';
@@ -372,16 +378,18 @@ export class PlannerComponent implements OnInit, OnDestroy {
       this.updateSubscription = interval(10000).subscribe(val => {
          console.log('Sto prelevando \n ' + this.calendarApi.currentData.currentDate)
          const ora: number = this.calendarApi.currentData.currentDate.getHours();
-         if (ora > 21) {
-            this.calendarApi.currentData.currentDate.setHours(20, 0, 0, 0);
-         }
+         // if (ora > 21) {
+         //    this.calendarApi.currentData.currentDate.setHours(20, 0, 0, 0);
+         // }
          /*       if (ora<3){
                  console.log(this.calendarApi.currentData.currentDate.getDate());
                  this.calendarApi.currentData.currentDate.setDate(this.calendarApi.currentData.currentDate.getDate()-1);
                }
           */      //this.prelevaDati(new Date(this.calendarApi.currentData.currentDate.getTime() - (1000 * 60 * 60 * 24)),  this.calendarApi.currentData.currentDate);
-         this.prelevaDati(this.calendarApi.currentData.currentDate, this.calendarApi.currentData.currentDate);
+         this.prelevaDati(this.calendarApi.view.currentStart, this.calendarApi.view.currentEnd);
+         this.weeklyEndDate = moment(this.calendarApi.view.currentEnd).subtract(1, 'days').toDate();
       });
+
    }
 
    ngOnDestroy() {
@@ -397,13 +405,13 @@ export class PlannerComponent implements OnInit, OnDestroy {
       this.selezionandoSalone = false;
       this.calendarApi.refetchResources();
       this.loadEvents();
-      this.prelevaDati(this.calendarApi.currentData.currentDate,  this.calendarApi.currentData.currentDate);
+      this.prelevaDati(this.calendarApi.view.currentStart, this.calendarApi.view.currentEnd);
       localStorage.setItem('PlannerCorrente', this.saloneSelezionato.gruppo + ';' + this.saloneSelezionato.salone + ';' + this.saloneSelezionato.destinazione + ';' + this.saloneSelezionato.indirizzoIP + ';' + this.saloneSelezionato.porta + ';' + this.saloneSelezionato.posizionePlanner);
       localStorage.setItem('OpzioniPlanner', JSON.stringify(this.saloneSelezionato.opzioniPlanner));
       window.location.reload();
    }
 
-   selezSalone(){
+   selezSalone() {
       this.selezionandoSalone = !this.selezionandoSalone;
    }
 
@@ -423,26 +431,40 @@ export class PlannerComponent implements OnInit, OnDestroy {
       const dd1: Date = moment(dataFine, 'YYYY-MM-DD').toDate();
       let end: Date = new Date(dd1.getFullYear(), dd1.getMonth(), dd1.getDate());
 
+      console.log(start.toLocaleDateString())
+      console.log(end.toLocaleDateString())
+
       this.plannerSer.getPlanner(this.saloneSelezionato, start.toLocaleDateString(), end.toLocaleDateString(), '').subscribe((data: Appuntamento[]) => {
          this.events = data;
-         console.log(this.events);
-         if (!this.events) {
-            this.plannerSer.getPlanner(this.saloneSelezionato, start.toLocaleDateString(), end.toLocaleDateString(), '').subscribe((data1: Appuntamento[]) => {
-               this.events = data1;
-               this.assignResources();
-               this.loadEvents();
-            });
-         } else {
-            this.assignResources();
-            this.loadEvents();//calling the loadEvents Function as soon as the data are stored
-         }
-
-         /* if (this.scroll >= 0) {
-            document.querySelector('.fc-scrollgrid-section-liquid .fc-scroller').scrollTop = this.scroll;
-         } */
+         this.assignResources();
+         this.loadEvents();
       }, err => {
          this.openSnackBar('Errore nella connessione al server');
       });
+      // if (this.scroll >= 0) {
+      //    document.querySelector('.fc-scrollgrid-section-liquid .fc-scroller').scrollTop = this.scroll;
+      // }
+
+      // this.plannerSer.getPlanner(this.saloneSelezionato, start.toLocaleDateString(), end.toLocaleDateString(), '').subscribe((data: Appuntamento[]) => {
+      //    this.events = data;
+      //    console.log(this.events);
+      //    if (!this.events) {
+      //       this.plannerSer.getPlanner(this.saloneSelezionato, start.toLocaleDateString(), end.toLocaleDateString(), '').subscribe((data1: Appuntamento[]) => {
+      //          this.events = data1;
+      //          this.assignResources();
+      //          this.loadEvents();
+      //       });
+      //    } else {
+      //       this.assignResources();
+      //       this.loadEvents();//calling the loadEvents Function as soon as the data are stored
+      //    }
+
+      /* if (this.scroll >= 0) {
+         document.querySelector('.fc-scrollgrid-section-liquid .fc-scroller').scrollTop = this.scroll;
+      } */
+      // }, err => {
+      //    this.openSnackBar('Errore nella connessione al server');
+      // });
    }
 
    assignResources() {
@@ -472,7 +494,7 @@ export class PlannerComponent implements OnInit, OnDestroy {
             startEditable: e.editable === -1 ? true : false,
             id: e.id,
             resourceId: e.resourceId,
-            title: e.title.replace('Cliente Occasionale', 'Cliente occ.'),
+            title: decodeURIComponent(e.title).replace('Cliente Occasionale', 'Cliente occ.'),
             start: new Date(e.start),
             end: new Date(e.endTime),
             allDay: e.allDay,
@@ -483,11 +505,12 @@ export class PlannerComponent implements OnInit, OnDestroy {
             extendedProps: ext,
             editable: true,
             textColor: e.textColor
-         };
+         }
          //calendarevent.extendedProps.servizi=e.servizi;
          this.eventsCalendar.push(calendarevent);
       });
    }
+
 
    cambiaView(testo) {
       this.calendarOptions.initialView = testo;
@@ -748,6 +771,41 @@ export class PlannerComponent implements OnInit, OnDestroy {
          this.dataCorrente = new Date();
       }
       this.gotoDate(this.dataCorrente);
+   }
+
+   weeklyEndDate:Date;
+
+   cambiaSettimana(direzione: string) {
+      const element = document.querySelector('.fc-scrollgrid-section-liquid .fc-scroller');
+      if (element) {
+         this.scroll = element.scrollTop;
+      }
+      if (direzione === 'avanti') {
+         const start = moment(this.calendarApi.view.currentStart).add(7, 'days').toDate();
+         const end = moment(this.calendarApi.view.currentEnd).add(7, 'days').toDate();
+         this.calendarApi.setOption('visibleRange', {
+            start: start,
+            end: end
+          });
+          console.log('avanti')
+          this.gotoDate(start);
+         
+      } else if (direzione === 'indietro') {
+         const start = moment(this.calendarApi.view.currentStart).subtract(7, 'days').toDate();
+         const end = moment(this.calendarApi.view.currentEnd).subtract(7, 'days').toDate();
+         this.calendarApi.setOption('visibleRange', {
+            start: start,
+            end: end
+          });
+          this.gotoDate(start);
+      } else if (direzione === '') {
+         this.dataCorrente = new Date();
+         this.gotoDate(this.dataCorrente);
+      }
+      this.calendarApi.render();
+      this.weeklyEndDate = moment(this.calendarApi.view.currentEnd).subtract(1, 'days').toDate();
+      
+ 
    }
 
    openDialog() {

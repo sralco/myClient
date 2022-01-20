@@ -1,5 +1,5 @@
 <div class="planner-container">
-  
+
   <div #pop id="pop" style="display:none; top: 150; left: 150; position: absolute;">
     <button mat-raised-button color="primary" style="width:190px; margin-left: 5px; margin-right:5px">
       {{dataCorrente.toLocaleDateString()}}
@@ -64,24 +64,47 @@
       <mat-icon>navigate_next</mat-icon>
     </button> -->
 
-    <input matInput [matDatepicker]="picker" style="display: none;" #datePicker (dateChange)="updateDate($event)">
-    <mat-datepicker #picker touchUi="true"></mat-datepicker>
-    <mat-button-toggle-group name="fontStyle" aria-label="Font Style" style="display: flex;justify-content: center;">
-      <mat-button-toggle (click)="selezSalone()" *ngIf="saloni.length > 1">
-        <mat-icon>where_to_vote</mat-icon>
-      </mat-button-toggle>
-      <mat-button-toggle value="bold" (click)="cambiaGiorno('')">Oggi</mat-button-toggle>
-      <mat-button-toggle value="italic" (click)="openDatePicker()" style="padding-right: 0;">
-        {{dataCorrente.toLocaleDateString('it-IT',{'weekday': 'long', 'month': '2-digit', 'day': '2-digit'})}} <mat-icon
-          style="color:#343a40;">event_note</mat-icon>
-      </mat-button-toggle>
-      <mat-button-toggle value="bold" (click)="cambiaGiorno('indietro')">
-        <mat-icon>navigate_before</mat-icon>
-      </mat-button-toggle>
-      <mat-button-toggle value="underline" (click)="cambiaGiorno('avanti')">
-        <mat-icon>navigate_next</mat-icon>
-      </mat-button-toggle>
-    </mat-button-toggle-group>
+    <div *ngIf="calendarApi?.view.type=='resourceTimeGridDay' ">
+      <input matInput [matDatepicker]="picker" style="display: none;" #datePicker (dateChange)="updateDate($event)">
+      <mat-datepicker #picker touchUi="true"></mat-datepicker>
+      <mat-button-toggle-group name="fontStyle" aria-label="Font Style" style="display: flex;justify-content: center;">
+        <mat-button-toggle (click)="selezSalone()" *ngIf="saloni.length > 1">
+          <mat-icon>where_to_vote</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle value="bold" (click)="cambiaGiorno('')">Oggi</mat-button-toggle>
+        <mat-button-toggle value="italic" (click)="openDatePicker()" style="padding-right: 0;">
+          {{dataCorrente.toLocaleDateString('it-IT',{'weekday': 'long', 'month': '2-digit', 'day': '2-digit'})}}
+          <mat-icon style="color:#343a40;">event_note</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle value="bold" (click)="cambiaGiorno('indietro')">
+          <mat-icon>navigate_before</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle value="underline" (click)="cambiaGiorno('avanti')">
+          <mat-icon>navigate_next</mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+
+    <div *ngIf="calendarApi?.view.type=='resourceTimeGrid6Day' ">
+      <input matInput [matDatepicker]="picker" style="display: none;" #datePicker (dateChange)="updateDate($event)">
+      <mat-datepicker #picker touchUi="true"></mat-datepicker>
+      <mat-button-toggle-group name="fontStyle" aria-label="Font Style" style="display: flex;justify-content: center;">
+        <mat-button-toggle (click)="selezSalone()" *ngIf="saloni.length > 1">
+          <mat-icon>where_to_vote</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle value="bold" (click)="cambiaSettimana('')">Oggi</mat-button-toggle>
+        <mat-button-toggle value="italic" (click)="openDatePicker()" style="padding-right: 0;">
+          {{calendarApi.view.currentStart.toLocaleDateString('it-IT',{'weekday': 'short', 'month': '2-digit', 'day': '2-digit'})}} - {{weeklyEndDate?.toLocaleDateString('it-IT',{'weekday': 'short', 'month': '2-digit', 'day': '2-digit'})}}
+          <mat-icon style="color:#343a40;">event_note</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle value="bold" (click)="cambiaSettimana('indietro')">
+          <mat-icon>navigate_before</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle value="underline" (click)="cambiaSettimana('avanti')">
+          <mat-icon>navigate_next</mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
   </div>
 
   <div class="planner-seleziona-saloni" *ngIf="selezionandoSalone">
@@ -100,7 +123,7 @@
     <!-- <div class="spinner-container" *ngIf="dataSource.loading$ | async">
         <mat-spinner></mat-spinner>
       </div> -->
-    <full-calendar #fullcalendar [options]="calendarOptions">
+    <full-calendar #fullcalendar id="fullcalendar" [options]="calendarOptions">
       <!-- (click)="onClick($event)"> -->
     </full-calendar>
 

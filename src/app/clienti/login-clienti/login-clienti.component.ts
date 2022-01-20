@@ -32,6 +32,11 @@ export class LoginClientiComponent implements OnInit {
   alert: boolean = false;
   alertText: string = '';
 
+  backgroundColor: string = '#000000';
+  color: string = '#ffffff';
+  backgroundUrl:string = '';
+  logoUrl:string = '';
+
   constructor(
     private loc: Location,
     private formBuilder: FormBuilder,
@@ -75,12 +80,15 @@ export class LoginClientiComponent implements OnInit {
           this.notifier.notify('warning', 'Salone non trovato');
         })
       );
+      if (this.service.saloneCorrente.opzioniPlanner.logo && this.service.saloneCorrente.opzioniPlanner.logo != null && this.service.saloneCorrente.opzioniPlanner.logo != ''){
+        this.logoUrl = '/images/PersonalizzazioniApp/' + (this.service.saloneCorrente.gruppo + '/' + this.service.saloneCorrente.salone + '/Skin/' + this.service.saloneCorrente.opzioniPlanner.logo).replace(/\s+/g, '_').toLowerCase();;
+        console.log(this.logoUrl)
+      }
     }
 
 
   }
-  backgroundColor: string = '#008b8b';
-  color: string = '#ffffff';
+
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],

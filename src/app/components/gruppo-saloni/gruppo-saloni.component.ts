@@ -1,5 +1,5 @@
 import { Salone } from 'src/app/Models/Salone';
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SaloniService } from '../../Services/saloni.service';
 import { ChartOptions, ChartType } from 'chart.js';
@@ -19,13 +19,14 @@ import { TempFiche } from 'src/app/Models/Temp-Fiche';
 import { InAttesaComponent } from '../in-attesa/in-attesa.component';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { NONE_TYPE } from '@angular/compiler';
 
 @Component({
   selector: 'app-gruppo-saloni',
   templateUrl: './gruppo-saloni.component.html',
   styleUrls: ['./gruppo-saloni.component.scss'],
   providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
+    { provide: MAT_DATE_LOCALE, useValue: 'it-IT' },
   ],
   animations: [
     trigger('openedState', [
@@ -57,9 +58,9 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
   state: string[] = [];
 
   public barChartOptions: ChartOptions = {
-    responsive: true,
-    //maintainAspectRatio: false,
-    //aspectRatio: 2,
+    responsive: false,
+    maintainAspectRatio: true,
+    aspectRatio: 2,
     //onResize: this.myCanvas, this.size,
     //elements: { point: { radius: 0 } }, //Rimuove i punti dalle linee
     legend: { position: 'top' },
@@ -119,8 +120,6 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
     }
     if (localStorage.hasOwnProperty('state')) {
       this.state = JSON.parse(localStorage.getItem('state'));
-      this.state[0] = 'opened';
-      console.log(this.state)
     }
   }
 
@@ -138,16 +137,14 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
       alert('data :' + data);
     })
   }*/
-  public hideRuleContent: boolean[] = [];
   public buttonName: any = 'Expand';
 
   toggle(salone, index) {
     // toggle based on index
-    this.hideRuleContent[index] = !this.hideRuleContent[index];
     this.state[index] = (this.state[index] === 'closed' ? 'opened' : 'closed');
-    //this.state[index] = (this.state[index] === 'opened' ? 'closed' : 'opened');
+    if (this.state[index] == 'opened') { this.getSaloneCompleto(salone); }
     localStorage.setItem('state', JSON.stringify(this.state));
-    this.getSaloneCompleto(salone);
+
   }
 
   ngOnInit() {
@@ -232,8 +229,6 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
           } else {
             this.state = JSON.parse(localStorage.getItem('state'));
           }
-          console.log('this.state')
-          console.log(this.state)
         }, (err => {
           this.attesa = false;
           this.notifier.notify('warning', 'Errore nella connessione al server');
@@ -253,14 +248,6 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
       } else {
         this.state = JSON.parse(localStorage.getItem('state'));
       }
-      console.log('this.state')
-      console.log(this.state)
-      // this.temps.forEach(x => {
-      //   //alert(x.aperto);
-      //   if (x.aperto === 'show') {
-      //     x.classeAccordion = '';
-      //   }
-      // })
     }
 
   }
@@ -274,11 +261,9 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     const y = Number(sessionStorage.getItem("Scroll"));
-    //alert(y);
     if (+y > 0) {
       var el = document.querySelector('#divToScroll');
       el.scrollTo(0, y);
-      //alert(el.scrollTop);
     }
     sessionStorage.setItem("Scroll", '0');
   }
@@ -378,8 +363,6 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
             element.posizione = 'Backup (' + element.ultimaSincronizzazione + ')';
             element.incasso1 = x.incasso1;
             element.incasso2 = x.incasso2;
-            console.log(x.incasso1)
-            console.log(x.incasso2)
             element.media1 = x.media1;
             element.media2 = x.media2;
             element.passaggi1 = x.passaggi1;
@@ -704,8 +687,6 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
     } else if (Statistica === 'Stecchiti') {
       this.router.navigate(['stecchiti']);
     } else if (Statistica === 'Appuntamenti') {
-      console.log('salone')
-      console.log(s)
       this.router.navigateByUrl('planner');
     }
   }

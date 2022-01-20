@@ -150,7 +150,7 @@ export class PrenotazioneClientiComponent implements OnInit {
     this.caricaServizi();
   }
 
-  backgroundColor: string = '#008b8b';
+  backgroundColor: string = '#000000';
   color: string = '#ffffff';
 
   ngOnInit(): void {

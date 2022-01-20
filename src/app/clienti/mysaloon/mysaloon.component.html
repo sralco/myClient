@@ -1,12 +1,9 @@
 
-  <div class="bleeper" (click)="counter = 0" *ngIf="backgroundUrl != '' && counter > 0" [style.backgroundImage]="'url(' + backgroundUrl + ')'">
+<!--   <div class="bleeper" (click)="counter = 0" *ngIf="backgroundUrl != '' && counter > 0" [style.backgroundImage]="'url(' + backgroundUrl + ')'">
     <div class="logo" *ngIf="logoUrl != ''" [style.backgroundImage]="'url(' + logoUrl + ')'"></div>
-    <!-- <div style="margin-top: 20px;">
-      <button mat-button style="width: 150px;background: #343a40dd;color: #fff;border-radius: 6px;border:1px solid #fff;" (click)="counter = 0">Prenota <small>({{counter}})</small></button>
-    </div> -->
-  </div>
+  </div> -->
 
-<div class="mysaloon-container" *ngIf="counter <= 0">
+<div class="mysaloon-container">
 
   <div>
 
@@ -245,8 +242,14 @@
     <div class="mysaloon-card-prenotazioni-ticket add"
       style="height: 146.4px;color: white;background: #50bcbb;margin-bottom: 10px;display: grid;"
       [ngStyle]="((saloneSelezionato.prenotazioniAttive ?.length > 0) && userLoggedIn) && {'margin-bottom':'10px'}">
-      <div class="mysaloon-card-button" (click)="prenota(saloneSelezionato)">
-        <button mat-fab style="border: 3px solid darkcyan;">
+      <div class="mysaloon-card-button" (click)="prenota(saloneSelezionato)" *ngIf="backgroundUrl != ''"  [style.backgroundImage]="'url(' + backgroundUrl + ')'">
+        <button mat-fab>
+          <mat-icon inline="true" style="transform: scale(2);">add</mat-icon>
+        </button>
+        <div class="mysaloon-card-prenotaora">Prenota ora</div>
+      </div>
+      <div class="mysaloon-card-button" (click)="prenota(saloneSelezionato)" *ngIf="backgroundUrl == ''">
+        <button mat-fab>
           <mat-icon inline="true" style="transform: scale(2);">add</mat-icon>
         </button>
         <div class="mysaloon-card-prenotaora">Prenota ora</div>

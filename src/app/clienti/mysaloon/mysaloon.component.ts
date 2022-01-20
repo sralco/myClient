@@ -51,7 +51,7 @@ export class mysaloonComponent implements OnInit {
   }
 
 
-  backgroundColor: string = '#008b8b';
+  backgroundColor: string = '#000000';
   color: string = '#ffffff';
   backgroundUrl:string = '';
   logoUrl:string = '';
@@ -78,12 +78,12 @@ export class mysaloonComponent implements OnInit {
     })
     );
 
-    setInterval(()=> { this.contoRovescia() }, this.total * 200);
+    //setInterval(()=> { this.contoRovescia() }, this.total * 200);
     
   }
-  contoRovescia(){
+ /*  contoRovescia(){
     this.counter = this.counter - 1;
-  }
+  } */
 
   selezionandoSaloneFlag() {
     this.selezionandoSalone = true;
@@ -99,11 +99,11 @@ export class mysaloonComponent implements OnInit {
       }
     });
     if (this.saloneSelezionato.opzioniPlanner.imgSfondo && this.saloneSelezionato.opzioniPlanner.imgSfondo != null && this.saloneSelezionato.opzioniPlanner.imgSfondo != ''){
-      this.backgroundUrl = ('/images/' + this.saloneSelezionato.gruppo + '/' + this.saloneSelezionato.salone + '/' + this.saloneSelezionato.opzioniPlanner.imgSfondo).replace(/\s+/g, '-').toLowerCase();
+      this.backgroundUrl = '/images/PersonalizzazioniApp/' + (this.saloneSelezionato.gruppo + '/' + this.saloneSelezionato.salone + '/Skin/' + this.saloneSelezionato.opzioniPlanner.imgSfondo).replace(/\s+/g, '_').toLowerCase();
       console.log(this.backgroundUrl)
     }
     if (this.saloneSelezionato.opzioniPlanner.logo && this.saloneSelezionato.opzioniPlanner.logo != null && this.saloneSelezionato.opzioniPlanner.logo != ''){
-      this.logoUrl = ('/images/' + this.saloneSelezionato.gruppo + '/' + this.saloneSelezionato.salone + '/' + this.saloneSelezionato.opzioniPlanner.logo).replace(/\s+/g, '-').toLowerCase();;
+      this.logoUrl = '/images/PersonalizzazioniApp/' + (this.saloneSelezionato.gruppo + '/' + this.saloneSelezionato.salone + '/Skin/' + this.saloneSelezionato.opzioniPlanner.logo).replace(/\s+/g, '_').toLowerCase();;
       console.log(this.logoUrl)
     }
     this.selectedStyle = `

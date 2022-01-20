@@ -13,7 +13,7 @@ $color:var(--color);
   top:0;
   bottom:100%;
   z-index: 99999;
-  background-color: gray;
+  background-color: $background-color;
   background-size: cover;
 }
 .bleeper .logo{
@@ -296,7 +296,7 @@ $color:var(--color);
 
 .mysaloon-nouser-bar {
   height: 4px;
-  background-color: darkcyan;
+  background-color: $background-color;
 }
 
 .mysaloon-bottoni-azione {
@@ -331,7 +331,7 @@ $color:var(--color);
 .mysaloon-card-prenotazioni {
   padding-top: 10px;
   padding-bottom: 10px;
-  background: #50bcbb;
+  background: #ffffff;
   height: 100%;
   overflow: auto;
 }
@@ -411,6 +411,7 @@ $color:var(--color);
 
 .add{
   border: 3px solid $background-color;
+  background-color: $background-color!important;
 }
 
 .add:before, .add:after {
@@ -436,18 +437,21 @@ $color:var(--color);
     left: -3px;
     border-radius: 0 1em 1em 0;
     //border-left:4px solid #50bcbb;
-    background-color: #50bcbb;
+    background-color: #ffffff;
 }
 .mysaloon-card-prenotazioni-ticket:after {
     right: -3px;
     border-radius: 1em 0 0 1em;
     //border-right:4px solid #50bcbb;
-    background-color: #50bcbb;
+    background-color: #ffffff;
 }
 
 .mysaloon-card-prenotaora {
   color: $color;
   font-weight: 500;
+  background: #303030aa;
+  padding: 2px 6px 2px 6px;
+  border-radius: 10px;
 }
 
 .mysaloon-card-button {
@@ -458,6 +462,7 @@ $color:var(--color);
 }
 
 .mysaloon-card-button button {
+  border:3px solid $background-color;
   background-color: $color !important;
   color: $background-color !important;
   box-shadow: none !important;
