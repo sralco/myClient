@@ -26,6 +26,9 @@
         ]
       }
     }
-  ]
+  ],
+      "navigationUrls": [
+        "!generate-manifest.js"
+      ]
 }
   

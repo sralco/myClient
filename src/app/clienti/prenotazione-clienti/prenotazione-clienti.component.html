@@ -1,360 +1,383 @@
-<div class="prenotazione-clienti" style="display: flex;flex-flow: column;height: 100vh;margin:0 auto;">
+ <!-- css loader -->
+ <div *ngIf="attesa" class="mysaloon-loader" data-title=".dot-pulse">
+   <div class="stage" style="height: 20px;display: flex;align-items: center;">
+     <div class="dot-pulse"></div>
+   </div>
+ </div>
 
-  <div class="prenotazione-clienti-header">
+ <div @fade *ngIf="!attesa" class="prenotazione-clienti"
+   style="display: flex;flex-flow: column;height: 100vh;margin:0 auto;">
 
-    <!-- navbar -->
-    <mat-toolbar class="prenotazione-clienti-navbar">
-      <div class="navbar-left">
-        <mat-icon (click)="back()" style="cursor: pointer;">navigate_before</mat-icon>
+   <div class="prenotazione-clienti-header">
+
+     <!-- navbar -->
+     <mat-toolbar class="prenotazione-clienti-navbar">
+       <div class="navbar-left">
+         <mat-icon (click)="back()" style="cursor: pointer;">navigate_before</mat-icon>
+       </div>
+       <div class="navbar-center">
+         <h5 *ngIf="stepper.selectedIndex == 0">selezione servizi</h5>
+         <h5 *ngIf="stepper.selectedIndex == 1">selezione data</h5>
+         <h5 *ngIf="stepper.selectedIndex == 2">conferma prenotazione</h5>
+         <h5 *ngIf="stepper.selectedIndex == 3">prenotazione confermata</h5>
+       </div>
+       <div class="navbar-right" style="width:24px;">
+         &nbsp;
+       </div>
+     </mat-toolbar>
+
+     <mat-toolbar class="prenotazione-clienti-salone">
+       <div class="salone-left">
+         <div class="logo">
+           <img *ngIf="logoUrl == ''" src="assets/imgx32.png" width="50" height="50" alt="logo">
+           <img *ngIf="logoUrl != ''" src="{{logoUrl}}" width="50" height="50" alt="logo">
+         </div>
+         <div class="gruppo-salone">
+           <h4 class="gruppo"><a
+               href="https://www.google.com/maps/search/?api=1&query={{salone.gruppo}}%2c%20{{salone.salone}}">{{salone.gruppo}}</a>
+           </h4>
+           <div class="salone"><small>{{salone.salone}}</small></div>
+         </div>
+       </div>
+     </mat-toolbar>
+
+     <div class="prenotazione-clienti-user-bar">
+      <div style="width: 20px;" class="ng-tns-c274-4">&nbsp;</div>
+       <h5 style="margin:0;">{{user?.nome}} {{user?.cognome}}</h5>
+       <div>
+        <button mat-icon-button [matMenuTriggerFor]="menu"
+          style="font-size: 20px;width: 20px;height: 20px;line-height: 20px;margin-right: 10px;">
+          <mat-icon inline="true">menu</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button (click)="logout()" mat-menu-item>
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
       </div>
-      <div class="navbar-center">
-        <h5 *ngIf="stepper.selectedIndex == 0">selezione servizi</h5>
-        <h5 *ngIf="stepper.selectedIndex == 1">selezione data</h5>
-        <h5 *ngIf="stepper.selectedIndex == 2">conferma prenotazione</h5>
-        <h5 *ngIf="stepper.selectedIndex == 3">prenotazione confermata</h5>
-      </div>
-      <div class="navbar-right" style="width:24px;">
-        &nbsp;
-      </div>
-    </mat-toolbar>
+     </div>
 
-    <mat-toolbar class="prenotazione-clienti-salone">
-      <div class="salone-left">
-        <div class="logo">
-          <img *ngIf="logoUrl == ''" src="assets/imgx32.png" width="50" height="50" alt="logo">
-          <img *ngIf="logoUrl != ''" src="{{logoUrl}}" width="50" height="50" alt="logo">
-        </div>
-        <div class="gruppo-salone">
-          <h4 class="gruppo"><a
-              href="https://www.google.com/maps/search/?api=1&query={{salone.gruppo}}%2c%20{{salone.salone}}">{{salone.gruppo}}</a>
-          </h4>
-          <div class="salone"><small>{{salone.salone}}</small></div>
-        </div>
-      </div>
-    </mat-toolbar>
+   </div><!-- prenotazione clienti header -->
+   <div class="prenotazione-clienti-body" [ngStyle]="backgroundUrl && {'background-image': 'url(' + backgroundUrl + ')'}">
 
-    <div class="prenotazione-clienti-user-bar">
-      <h6 style="margin:0;">{{user?.nome}} {{user?.cognome}}</h6>
-    </div>
+     <form [formGroup]="searchForm" class="search__form" autocomplete="off" #cercaForm>
+       <mat-card class="prenotazione-clienti-card">
 
-  </div><!-- prenotazione clienti header -->
-  <div class="prenotazione-clienti-body" style="overflow-y: auto;flex: 1 1 auto;">
+         <mat-stepper [linear]="true" #stepper labelPosition="bottom">
 
-    <form [formGroup]="searchForm" class="search__form" autocomplete="off" #cercaForm>
-      <mat-card class="prenotazione-clienti-card">
+           <mat-step [stepControl]="valid1" label="Servizi">
+             <!-- <mat-icon (click)="setFlagCercaServizi()">search</mat-icon> -->
 
-        <mat-stepper [linear]="true" #stepper labelPosition="bottom">
+             <div *ngIf="mostraFuoriFrequenza && clienteObj.serviziFuoriFrequenza?.length>0">
+               <mat-card-subtitle>Servizi fuori frequenza</mat-card-subtitle>
+               <mat-chip-list aria-label="Fish selection">
+                 <mat-chip color="accent" selected *ngFor="let s of clienteObj.serviziFuoriFrequenza">{{s}}</mat-chip>
+               </mat-chip-list>
+             </div>
 
-          <mat-step [stepControl]="valid1" label="Servizi">
-            <!-- <mat-icon (click)="setFlagCercaServizi()">search</mat-icon> -->
-
-            <div *ngIf="mostraFuoriFrequenza && clienteObj.serviziFuoriFrequenza?.length>0">
-              <mat-card-subtitle>Servizi fuori frequenza</mat-card-subtitle>
-              <mat-chip-list aria-label="Fish selection">
-                <mat-chip color="accent" selected *ngFor="let s of clienteObj.serviziFuoriFrequenza">{{s}}</mat-chip>
-              </mat-chip-list>
-            </div>
-
-            <div class="servizi-selezionati">
-              <div style="display: flex;align-items: center;justify-content: space-between;color:darkcyan;">
-                <div style="display:flex;align-items: center;">
-                  <div *ngIf="serviziSelezionati.length == 0">Seleziona servizi</div>
-                  <div *ngIf="serviziSelezionati.length > 0">Servizi selezionati</div>
-                  <mat-icon *ngIf="serviziSelezionati.length > 0" inline="true">keyboard_double_arrow_right
-                  </mat-icon>
-                  <mat-icon *ngIf="serviziSelezionati.length == 0" inline="true">keyboard_double_arrow_down
-                  </mat-icon>
-                </div>
-                <label class="label" for="servizio" style="display: flex;align-items: center;margin: 0;">
-                  <mat-icon (click)="setFlagCercaServizi()" style="margin-right:6px;cursor: pointer;">search</mat-icon>
-                </label>
-              </div>
-              <mat-form-field *ngIf="flagCercaServizi" appearance="outline">
-                <mat-label>Cerca servizio</mat-label>
-                <input name="servizio" matInput placeholder="servizio" (keyup)="searchServizi($event.target.value)"
-                  id="servizio" #servizio formControlName="servizio">
-                <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="cleatTxt('servizio')">
-                  <mat-icon *ngIf="searchForm.get('servizio').value!==''">close</mat-icon>
-                </button>
-              </mat-form-field>
-              <mat-chip-list aria-label="Servizi selezionati" *ngIf="serviziSelezionati.length > 0">
-                <mat-chip color="warn" selected *ngFor="let s of serviziSelezionati" [removable]="true"
-                  (removed)="removeService(s)" style="text-transform: capitalize;">{{s.servizio + ' - ' + s.nomeCollaboratore.replace(' i
+             <div class="servizi-selezionati">
+               <div style="display: flex;align-items: center;justify-content: space-between;color:darkcyan;">
+                 <div style="display:flex;align-items: center;">
+                   <div *ngIf="serviziSelezionati.length == 0">Seleziona servizi</div>
+                   <div *ngIf="serviziSelezionati.length > 0">Servizi selezionati</div>
+                   <mat-icon *ngIf="serviziSelezionati.length > 0" inline="true">keyboard_double_arrow_right
+                   </mat-icon>
+                   <mat-icon *ngIf="serviziSelezionati.length == 0" inline="true">keyboard_double_arrow_down
+                   </mat-icon>
+                 </div>
+                 <label class="label" for="servizio" style="display: flex;align-items: center;margin: 0;">
+                   <mat-icon (click)="setFlagCercaServizi()" style="margin-right:6px;cursor: pointer;">search</mat-icon>
+                 </label>
+               </div>
+               <div [@expandCollapse]='state'>
+                 <mat-form-field appearance="outline">
+                   <mat-label>Cerca servizio</mat-label>
+                   <input name="servizio" matInput (keyup)="searchServizi($event.target.value)"
+                     id="servizio" #servizio formControlName="servizio" style="border: darkcyan;">
+                   <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="cleatTxt('servizio')">
+                     <mat-icon style="color: darkcyan;font-weight: 800;" *ngIf="searchForm.get('servizio').value!==''">close</mat-icon>
+                   </button>
+                 </mat-form-field>
+               </div>
+               <mat-chip-list aria-label="Servizi selezionati" *ngIf="serviziSelezionati.length > 0">
+                 <mat-chip color="warn" selected *ngFor="let s of serviziSelezionati" [removable]="true"
+                   (removed)="removeService(s)" style="text-transform: capitalize;">{{s.servizio + ' - ' + s.nomeCollaboratore.replace(' i
               collaboratori','')}}
-                  <mat-icon matChipRemove>cancel</mat-icon>
-                </mat-chip>
-              </mat-chip-list>
-            </div>
+                   <mat-icon matChipRemove>cancel</mat-icon>
+                 </mat-chip>
+               </mat-chip-list>
+             </div>
 
-            <!-- css loader -->
-            <div class="snippet" data-title=".dot-pulse"
-              style="display: flex;justify-content: center;align-items: center;width: 100%;height: 40vh;"
-              *ngIf="!serviziCaricati">
-              <div class="stage" style="height: 20px;display: flex;align-items: center;">
-                <div class="dot-pulse"></div>
-              </div>
-            </div>
+             <!-- css loader -->
+             <div class="snippet" data-title=".dot-pulse"
+               style="display: flex;justify-content: center;align-items: center;width: 100%;height: 40vh;"
+               *ngIf="!serviziCaricati">
+               <div class="stage" style="height: 20px;display: flex;align-items: center;">
+                 <div class="dot-pulse"></div>
+               </div>
+             </div>
 
-            <div class="seleziona-servizi">
+             <div class="seleziona-servizi">
 
-              <div *ngIf="serviziPrincipali().length > 0"
-                style="background: aliceblue;padding: 10px;border-radius: 6px;margin-top:10px;">
-                <div>Servizi principali</div>
-                <div *ngFor="let s of serviziPrincipali()" class="servizi servizi-principali"
-                  (click)="selezionaServizio(s)"
-                  [ngClass]="{'servizio-selezionato' : serviziSelezionati.indexOf(s) > -1}">
-                  <div
-                    style="flex-direction: row;display: flex;justify-content: space-between;width: 100%;align-items: center;">
-                    <div style="display: flex;flex-direction: column;gap: 0px;line-height: 18px;">
-                      <div style="text-transform: capitalize;">{{s.servizio}}</div>
-                      <div *ngIf="salone.opzioniPlanner.nascondiPrezzi == 'False'">
-                        <small>€ {{s.prezzo.replace('0000','00')}}</small>
-                      </div>
-                    </div>
-                    <div>
-                      <mat-icon inline="true" *ngIf="serviziSelezionati.indexOf(s) > -1">done_outline</mat-icon>
-                    </div>
-                  </div>
-                </div>
-              </div>
+               <div *ngIf="serviziPrincipali().length > 0" class="container-servizi">
+                 <div>Servizi principali</div>
+                 <div *ngFor="let s of serviziPrincipali()" class="servizi servizi-principali"
+                   (click)="selezionaServizio(s)"
+                   [ngClass]="{'servizio-selezionato' : serviziSelezionati.indexOf(s) > -1}">
+                   <div
+                     style="flex-direction: row;display: flex;justify-content: space-between;width: 100%;align-items: center;">
+                     <div style="display: flex;flex-direction: column;gap: 0px;line-height: 18px;">
+                       <div style="text-transform: capitalize;">{{s.servizio}}</div>
+                       <div *ngIf="salone.opzioniPlanner.nascondiPrezzi == 'False'">
+                         <small>€ {{s.prezzo.replace('0000','00')}}</small>
+                       </div>
+                     </div>
+                     <div>
+                       <mat-icon inline="true" *ngIf="serviziSelezionati.indexOf(s) > -1">done_outline</mat-icon>
+                     </div>
+                   </div>
+                 </div>
+               </div>
 
-              <div *ngIf="serviziSecondari().length > 0"
-                style="background: aliceblue;padding: 10px;border-radius: 6px;margin-top:10px;">
-                <div>Servizi secondari</div>
-                <div *ngFor="let s of serviziSecondari()" class="servizi servizi-secondari"
-                  (click)="selezionaServizio(s)"
-                  [ngClass]="{'servizio-selezionato' : serviziSelezionati.indexOf(s) > -1}">
-                  <div
-                    style="flex-direction: row;display: flex;justify-content: space-between;width: 100%;align-items: center;">
-                    <div style="display: flex;flex-direction: column;gap: 0px;line-height: 18px;">
-                      <div style="text-transform: capitalize;">{{s.servizio}}</div>
-                      <div *ngIf="salone.opzioniPlanner.nascondiPrezzi == 'False'">
-                        <small>€ {{s.prezzo.replace('0000','00')}}</small>
-                      </div>
-                    </div>
-                    <div>
-                      <mat-icon inline="true" *ngIf="serviziSelezionati.indexOf(s) > -1">done_outline</mat-icon>
-                    </div>
-                  </div>
-                </div>
+               <div *ngIf="serviziSecondari().length > 0" class="container-servizi">
+                 <div>Servizi secondari</div>
+                 <div *ngFor="let s of serviziSecondari()" class="servizi servizi-secondari"
+                   (click)="selezionaServizio(s)"
+                   [ngClass]="{'servizio-selezionato' : serviziSelezionati.indexOf(s) > -1}">
+                   <div
+                     style="flex-direction: row;display: flex;justify-content: space-between;width: 100%;align-items: center;">
+                     <div style="display: flex;flex-direction: column;gap: 0px;line-height: 18px;">
+                       <div style="text-transform: capitalize;">{{s.servizio}}</div>
+                       <div *ngIf="salone.opzioniPlanner.nascondiPrezzi == 'False'">
+                         <small>€ {{s.prezzo.replace('0000','00')}}</small>
+                       </div>
+                     </div>
+                     <div>
+                       <mat-icon inline="true" *ngIf="serviziSelezionati.indexOf(s) > -1">done_outline</mat-icon>
+                     </div>
+                   </div>
+                 </div>
 
-              </div>
-            </div>
+               </div>
+             </div>
 
-            <div class="btn-avanti-container">
-              <button class="btn-avanti" style="float: right;" mat-raised-button color="primary" matStepperNext
-                (click)="verificaDisponibilita()" *ngIf="!flagNextServizi">Avanti <mat-icon inline="true" matListAvatar>
-                  keyboard_double_arrow_right
-                </mat-icon>
-              </button>
-            </div>
+             <div class="btn-avanti-container">
+               <button class="btn-avanti" style="float: right;" mat-raised-button color="primary" matStepperNext
+                 (click)="verificaDisponibilita()" *ngIf="!flagNextServizi">Avanti <mat-icon inline="true"
+                   matListAvatar>
+                   keyboard_double_arrow_right
+                 </mat-icon>
+               </button>
+             </div>
 
-          </mat-step>
+           </mat-step>
 
 
-          <mat-step [stepControl]="valid2">
+           <mat-step [stepControl]="valid2">
 
-            <div style="background: aliceblue;border-radius: 6px;padding: 10px;">
+             <div style="background: aliceblue;border-radius: 6px;padding: 10px;">
 
-              <div style="width: 100%;display: flex;justify-content: space-between;color: #000000;align-items: center;">
-                <div>Seleziona data</div>
-                <div style="text-transform: capitalize;color: #ff4081;">{{settimanaCorrente[4] | date: 'MMMM y' }}
-                </div>
-              </div>
+               <div
+                 style="width: 100%;display: flex;justify-content: space-between;color: #000000;align-items: center;">
+                 <div>Seleziona data</div>
+                 <div style="text-transform: capitalize;color: #ff4081;">{{settimanaCorrente[4] | date: 'MMMM y' }}
+                 </div>
+               </div>
 
-              <div class="seleziona-giorno">
+               <div class="seleziona-giorno">
 
-                <div *ngIf="fineScroll()" style="width:16px;"></div>
+                 <div *ngIf="fineScroll()" style="width:16px;"></div>
 
-                <div *ngIf="!fineScroll()" class="btn-giorno-indietro" (click)="settimanaIndietro()">
-                  <mat-icon style="transform: scale(3);color: #000000;" inline="true">
-                    navigate_before</mat-icon>
-                </div>
+                 <div *ngIf="!fineScroll()" class="btn-giorno-indietro" (click)="settimanaIndietro()">
+                   <mat-icon style="transform: scale(3);color: #000000;" inline="true">
+                     navigate_before</mat-icon>
+                 </div>
 
-                <div class="seleziona-data">
+                 <div class="seleziona-data">
 
-                  <div class="settimana settimana-corrente">
-                    <div *ngFor="let data of settimanaCorrente" class="selezione-giorno"
-                      [ngClass]="{'giornoSelezionato' : ifDataSelezionata(data)}" (click)="selezionaGiorno(data)">
-                      <div
-                        style="text-transform: uppercase;font-size: 10px;width: 100%;display: flex;justify-content: center;">
-                        {{data | date:'EEE'}}</div>
-                      <div style="font-size: 20px;line-height: 20px;">{{data | date:'dd'}}</div>
-                    </div>
-                  </div>
+                   <div class="settimana settimana-corrente">
+                     <div *ngFor="let data of settimanaCorrente" class="selezione-giorno"
+                       [ngClass]="{'giornoSelezionato' : ifDataSelezionata(data)}" (click)="selezionaGiorno(data)">
+                       <div
+                         style="text-transform: uppercase;font-size: 10px;width: 100%;display: flex;justify-content: center;">
+                         {{data | date:'EEE'}}</div>
+                       <div style="font-size: 20px;line-height: 20px;">{{data | date:'dd'}}</div>
+                     </div>
+                   </div>
 
-                </div>
+                 </div>
 
-                <div class="btn-giorno-avanti" (click)="settimanaAvanti()">
-                  <mat-icon style="transform: scale(3);color: #000000" inline="true" class="icon-cambia-giorno">
-                    navigate_next</mat-icon>
-                </div>
+                 <div class="btn-giorno-avanti" (click)="settimanaAvanti()">
+                   <mat-icon style="transform: scale(3);color: #000000" inline="true" class="icon-cambia-giorno">
+                     navigate_next</mat-icon>
+                 </div>
 
-              </div>
+               </div>
 
-            </div>
+             </div>
 
-            <mat-card class="orari-disponibili-errore" mat-subheader *ngIf="orariDisponibili.errore">
-              <mat-icon style="transform: scale(2);color: red;">error</mat-icon>
-              <span>{{orariDisponibili.errore}}</span>
-            </mat-card>
+             <mat-card class="orari-disponibili-errore" mat-subheader *ngIf="orariDisponibili.errore">
+               <mat-icon style="transform: scale(2);color: red;">error</mat-icon>
+               <span>{{orariDisponibili.errore}}</span>
+             </mat-card>
 
-            <mat-card class="orari-disponibili-errore" mat-subheader
-              *ngIf="!orariDisponibili.errore && orariDisponibili.orariDisponibili.length == 0">
-              <mat-icon style="transform: scale(2);color: red;">error</mat-icon>
-              <span>Orari non disponibili</span>
-            </mat-card>
+             <mat-card class="orari-disponibili-errore" mat-subheader
+               *ngIf="!orariDisponibili.errore && orariDisponibili.orariDisponibili.length == 0">
+               <mat-icon style="transform: scale(2);color: red;">error</mat-icon>
+               <span>Orari non disponibili</span>
+             </mat-card>
 
-            <!-- css loader -->
-            <div class="snippet" data-title=".dot-pulse"
-              style="display: flex;justify-content: center;align-items: center;width: 100%;height: 40vh;"
-              *ngIf="isLoadingDisponibilita">
-              <div class="stage" style="height: 20px;display: flex;align-items: center;">
-                <div class="dot-pulse"></div>
-              </div>
-            </div>
+             <!-- css loader -->
+             <div class="snippet" data-title=".dot-pulse"
+               style="display: flex;justify-content: center;align-items: center;width: 100%;height: 40vh;"
+               *ngIf="isLoadingDisponibilita">
+               <div class="stage" style="height: 20px;display: flex;align-items: center;">
+                 <div class="dot-pulse"></div>
+               </div>
+             </div>
 
-            <div class="orari-table-wrapper" *ngIf="orariDisponibili.orariDisponibili.length > 0" style="background: aliceblue;
+             <div class="orari-table-wrapper" *ngIf="orariDisponibili.orariDisponibili.length > 0" style="background: aliceblue;
               padding: 10px;
               margin-top: 10px;
               border-radius: 6px;">
 
-              <div style="display: flex;justify-content: space-between;">
-                <div>Orari disponibili</div>
-                <div>{{dataSelezionata | date: 'dd/MM/yy'}}</div>
-              </div>
+               <div style="display: flex;justify-content: space-between;">
+                 <div>Orari disponibili</div>
+                 <div>{{dataSelezionata | date: 'dd/MM/yy'}}</div>
+               </div>
 
-              <div class="orari-wrapper">
+               <div class="orari-wrapper">
 
-                <div class="orari" *ngIf="getMattino()?.length > 0">
+                 <div class="orari" *ngIf="getMattino()?.length > 0">
 
-                  <div class="orari-header">
-                    Mattino
-                  </div>
+                   <div class="orari-header">
+                     Mattino
+                   </div>
 
-                  <div *ngFor="let ora of getMattino()">
+                   <div *ngFor="let ora of getMattino()">
 
-                    <button mat-raised-button color="{{getColor(ora)}}" (click)="selezionaOra(ora)" style="width:100%">
-                      {{ora | date: 'HH:mm'}}
-                    </button>
-                  </div>
-                </div>
+                     <button mat-raised-button color="{{getColor(ora)}}" (click)="selezionaOra(ora)" style="width:100%">
+                       {{ora | date: 'HH:mm'}}
+                     </button>
+                   </div>
+                 </div>
 
-                <div class="orari" *ngIf="getPomeriggio()?.length > 0">
-                  <div class="orari-header" style="font-size: 12px;">
-                    Pomeriggio
-                  </div>
-                  <div *ngFor="let ora of getPomeriggio()">
-                    <button mat-raised-button color="{{getColor(ora)}}" (click)="selezionaOra(ora)" style="width:100%">
-                      {{ora | date: 'HH:mm'}}
-                    </button>
-                  </div>
-                </div>
+                 <div class="orari" *ngIf="getPomeriggio()?.length > 0">
+                   <div class="orari-header" style="font-size: 12px;">
+                     Pomeriggio
+                   </div>
+                   <div *ngFor="let ora of getPomeriggio()">
+                     <button mat-raised-button color="{{getColor(ora)}}" (click)="selezionaOra(ora)" style="width:100%">
+                       {{ora | date: 'HH:mm'}}
+                     </button>
+                   </div>
+                 </div>
 
-                <div class="orari" *ngIf="getSera()?.length > 0" style="border-right: 5px solid #d7d7d7;">
-                  <div class="orari-header">
-                    Sera
-                  </div>
-                  <div *ngFor="let ora of getSera()">
-                    <button mat-raised-button color="{{getColor(ora)}}" (click)="selezionaOra(ora)" style="width:100%">
-                      {{ora | date: 'HH:mm'}}
-                    </button>
-                  </div>
-                </div>
+                 <div class="orari" *ngIf="getSera()?.length > 0">
+                   <div class="orari-header">
+                     Sera
+                   </div>
+                   <div *ngFor="let ora of getSera()">
+                     <button mat-raised-button color="{{getColor(ora)}}" (click)="selezionaOra(ora)" style="width:100%">
+                       {{ora | date: 'HH:mm'}}
+                     </button>
+                   </div>
+                 </div>
 
-              </div>
+               </div>
 
-            </div>
+             </div>
 
-            <mat-card-actions>
-              <div class="btn-navigation-container">
-                <button class="second-step-btn-avanti" mat-raised-button matStepperPrevious>
-                  <mat-icon matListAvatar inline="true">keyboard_double_arrow_left
-                  </mat-icon> Indietro
-                </button>
-                <button class="second-step-btn-indietro" mat-raised-button color="primary" matStepperNext
-                  (click)="scrollToTop()" *ngIf="!flagNextDisponibilita">
-                  Avanti <mat-icon inline="true" matListAvatar>keyboard_double_arrow_right</mat-icon>
-                </button>
-              </div>
-            </mat-card-actions>
+             <mat-card-actions>
+               <div class="btn-navigation-container">
+                 <button class="second-step-btn-indietro" mat-raised-button matStepperPrevious>
+                   <mat-icon matListAvatar inline="true">keyboard_double_arrow_left
+                   </mat-icon> Indietro
+                 </button>
+                 <button class="second-step-btn-avanti" mat-raised-button color="primary" matStepperNext
+                   (click)="scrollToTop()" *ngIf="!flagNextDisponibilita">
+                   Avanti <mat-icon inline="true" matListAvatar>keyboard_double_arrow_right</mat-icon>
+                 </button>
+               </div>
+             </mat-card-actions>
 
-          </mat-step>
+           </mat-step>
 
-          <mat-step>
-            <mat-card class="card-riepilogo">
-              <mat-card-title>
-                <h5>Riepilogo</h5>
-              </mat-card-title>
-              <mat-divider></mat-divider>
-              <mat-card-content style="margin-top: 20px;">
-                <!-- <strong>{{clienteObj.nome + ' ' + clienteObj.cognome}}</strong><br /> -->
-                <mat-chip-list aria-label="Servizi selezionati">
-                  <mat-chip color="warn" selected *ngFor="let s of serviziSelezionati">
-                    {{s.servizio + ' - ' + s.nomeCollaboratore.replace(' i collaboratori','')}}
-                  </mat-chip>
-                </mat-chip-list>
-                <div class="riepilogo-data">
-                  <div style="text-transform: capitalize;"><strong>Giorno:</strong>
-                    {{this.oraSelezionata | date: 'EEEE, dd/MM/yyyy' }}</div>
-                  <div><strong>Ora:</strong> {{this.oraSelezionata | date: 'HH:mm'}}</div>
-                </div>
-              </mat-card-content>
+           <mat-step>
+             <mat-card class="card-riepilogo">
+               <mat-card-title>
+                 <h5>Riepilogo</h5>
+               </mat-card-title>
+               <mat-divider></mat-divider>
+               <mat-card-content style="margin-top: 20px;">
+                 <!-- <strong>{{clienteObj.nome + ' ' + clienteObj.cognome}}</strong><br /> -->
+                 <mat-chip-list aria-label="Servizi selezionati">
+                   <mat-chip color="warn" selected *ngFor="let s of serviziSelezionati">
+                     {{s.servizio + ' - ' + s.nomeCollaboratore.replace(' i collaboratori','')}}
+                   </mat-chip>
+                 </mat-chip-list>
+                 <div class="riepilogo-data">
+                   <div style="text-transform: capitalize;"><strong>Giorno:</strong>
+                     {{this.oraSelezionata | date: 'EEEE, dd/MM/yyyy' }}</div>
+                   <div><strong>Ora:</strong> {{this.oraSelezionata | date: 'HH:mm'}}</div>
+                 </div>
+               </mat-card-content>
 
-              <mat-card-actions>
-                <div class="riepilogo-btn-navigation-container">
-                  <button class="second-step-btn-avanti" mat-raised-button color="basic" matStepperPrevious>
-                    <mat-icon matListAvatar inline="true">keyboard_double_arrow_left</mat-icon> Indietro
-                  </button>
-                  <button class="second-step-btn-avanti" [disabled]="isLoading" mat-raised-button color="accent"
-                    type="submit" (click)="confermaPrenotazione()">
-                    <mat-icon matListAvatar inline="true">save</mat-icon>
-                    Prenota
-                  </button>
-                </div>
-              </mat-card-actions>
-            </mat-card>
-          </mat-step>
+               <mat-card-actions>
+                 <div class="riepilogo-btn-navigation-container">
+                   <button class="second-step-btn-avanti" mat-raised-button color="basic" matStepperPrevious>
+                     <mat-icon matListAvatar inline="true">keyboard_double_arrow_left</mat-icon> Indietro
+                   </button>
+                   <button class="second-step-btn-avanti" [disabled]="isLoading" mat-raised-button color="accent"
+                     type="submit" (click)="confermaPrenotazione()">
+                     <mat-icon matListAvatar inline="true">save</mat-icon>
+                     Prenota
+                   </button>
+                 </div>
+               </mat-card-actions>
+             </mat-card>
+           </mat-step>
 
-          <mat-step>
-            <mat-card class="prenotazione-completata-card">
-              <mat-card-title>
-                <h5>Prenotazione confermata</h5>
-              </mat-card-title>
-              <mat-card-content>
-                <div class="success-icon">
-                  <mat-icon>check_circle</mat-icon>
-                </div>
-                <mat-divider></mat-divider>
-                <mat-card-actions class="mat-card-actions">
-                  <button mat-raised-button color="basic" class="btn-salvacalendar" (click)="salvaGoogleCalendar()">
-                    <span>Aggiungi a google calendar</span>
-                    <mat-icon inline="true">data_saver_on</mat-icon>
-                  </button>
-                  <button *ngIf="!notificationEnabled" mat-raised-button color="warn"
-                    (click)="subscribeToNotifications()">
-                    <span>Abilita le notifiche</span>
-                    <mat-icon inline="true">notifications</mat-icon>
-                  </button>
+           <mat-step>
+             <mat-card class="prenotazione-completata-card">
+               <mat-card-title>
+                 <h5>Prenotazione confermata</h5>
+               </mat-card-title>
+               <mat-card-content>
+                 <div class="success-icon">
+                   <mat-icon>check_circle</mat-icon>
+                 </div>
+                 <mat-divider></mat-divider>
+                 <mat-card-actions class="mat-card-actions">
+                   <button mat-raised-button color="basic" class="btn-salvacalendar" (click)="salvaGoogleCalendar()">
+                     <span>Aggiungi a google calendar</span>
+                     <mat-icon inline="true">data_saver_on</mat-icon>
+                   </button>
+                   <button *ngIf="!notificationEnabled" mat-raised-button color="warn"
+                     (click)="subscribeToNotifications()">
+                     <span>Abilita le notifiche</span>
+                     <mat-icon inline="true">notifications</mat-icon>
+                   </button>
 
-                  <button *ngIf="notificationEnabled" mat-raised-button style="background: #50bcbb;color: white;"
-                    disabled>
-                    <span>Notifiche abilitate</span>
-                    <mat-icon inline="true">notifications</mat-icon>
-                  </button>
+                   <button *ngIf="notificationEnabled" mat-raised-button style="background: #50bcbb;color: white;"
+                     disabled>
+                     <span>Notifiche abilitate</span>
+                     <mat-icon inline="true">notifications</mat-icon>
+                   </button>
 
-                  <button mat-raised-button (click)="home()" class="btn-home"
-                    style="background: darkcyan;color: white;">
-                    <span>Vai alla Home Page</span>
-                    <mat-icon matListAvatar inline="true">home</mat-icon>
-                  </button>
-                </mat-card-actions>
-              </mat-card-content>
-            </mat-card>
-          </mat-step>
+                   <button mat-raised-button (click)="home()" class="btn-home"
+                     style="background: darkcyan;color: white;">
+                     <span>Vai alla Home Page</span>
+                     <mat-icon matListAvatar inline="true">home</mat-icon>
+                   </button>
+                 </mat-card-actions>
+               </mat-card-content>
+             </mat-card>
+           </mat-step>
 
-        </mat-stepper>
-      </mat-card>
-    </form>
-  </div><!-- prenotazione clienti body -->
-</div><!-- prenotazione clienti -->
+         </mat-stepper>
+       </mat-card>
+     </form>
+   </div><!-- prenotazione clienti body -->
+ </div><!-- prenotazione clienti -->

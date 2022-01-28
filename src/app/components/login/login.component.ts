@@ -6,6 +6,7 @@ import { NotifierService } from 'angular-notifier';
 import { SaloniService } from 'src/app/Services/saloni.service';
 import { Salone } from 'src/app/Models/Salone';
 import { User } from 'src/app/Models/User';
+import { OpzioniPlanner } from 'src/app/Models/OpzioniPlanner';
 
 @Component({ 
   templateUrl: 'login.component.html' ,
@@ -72,6 +73,7 @@ export class LoginComponent implements OnInit {
         }
       }
     }
+   
   }
 
   ngOnInit() {

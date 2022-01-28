@@ -144,7 +144,6 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
     this.state[index] = (this.state[index] === 'closed' ? 'opened' : 'closed');
     if (this.state[index] == 'opened') { this.getSaloneCompleto(salone); }
     localStorage.setItem('state', JSON.stringify(this.state));
-
   }
 
   ngOnInit() {

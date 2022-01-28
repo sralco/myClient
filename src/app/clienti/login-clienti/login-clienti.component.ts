@@ -8,12 +8,21 @@ import { User } from 'src/app/Models/User';
 import { AuthClientiService } from 'src/app/Services/auth-clienti.service';
 import { Location } from '@angular/common';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
-
+import { OpzioniPlanner } from 'src/app/Models/OpzioniPlanner';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-login-clienti',
   templateUrl: './login-clienti.component.html',
-  styleUrls: ['./login-clienti.component.scss']
+  styleUrls: ['./login-clienti.component.scss'],
+  animations: [
+    trigger('fade', [ 
+      transition('void => *', [
+        style({ opacity: 0 }), 
+        animate(500, style({opacity: 1}))
+      ]) 
+    ])
+  ],
 })
 export class LoginClientiComponent implements OnInit {
   selectedStyle: string;
@@ -35,7 +44,10 @@ export class LoginClientiComponent implements OnInit {
   backgroundColor: string = '#000000';
   color: string = '#ffffff';
   backgroundUrl:string = '';
+  opzioniPlanner:OpzioniPlanner;
   logoUrl:string = '';
+
+  attesa:boolean = true;
 
   constructor(
     private loc: Location,
@@ -61,6 +73,7 @@ export class LoginClientiComponent implements OnInit {
           this.router.navigate(['loginclienti/' + this.gruppo + '/' + this.salone]);
         }
       }
+    }
 
       let salone: Salone = new Salone();
       this.service.getSaloni(this.gruppo).subscribe(
@@ -80,16 +93,16 @@ export class LoginClientiComponent implements OnInit {
           this.notifier.notify('warning', 'Salone non trovato');
         })
       );
-      if (this.service.saloneCorrente.opzioniPlanner.logo && this.service.saloneCorrente.opzioniPlanner.logo != null && this.service.saloneCorrente.opzioniPlanner.logo != ''){
-        this.logoUrl = '/images/PersonalizzazioniApp/' + (this.service.saloneCorrente.gruppo + '/' + this.service.saloneCorrente.salone + '/Skin/' + this.service.saloneCorrente.opzioniPlanner.logo).replace(/\s+/g, '_').toLowerCase();;
-        console.log(this.logoUrl)
+      this.opzioniPlanner = JSON.parse(localStorage.getItem('OpzioniPlanner'));
+
+      if (this.opzioniPlanner.logo && this.opzioniPlanner.logo != null && this.opzioniPlanner.logo != ''){
+        this.logoUrl = '/images/PersonalizzazioniApp/' + (this.gruppo + '/' + this.salone + '/Skin/' + this.opzioniPlanner.logo).replace(/\s+/g, '_').toLowerCase();;
+        //console.log(this.logoUrl)
       }
-    }
-
-
   }
 
   ngOnInit() {
+    this.attesa = false;
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]

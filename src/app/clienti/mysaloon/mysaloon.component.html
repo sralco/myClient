@@ -1,92 +1,96 @@
-
 <!--   <div class="bleeper" (click)="counter = 0" *ngIf="backgroundUrl != '' && counter > 0" [style.backgroundImage]="'url(' + backgroundUrl + ')'">
     <div class="logo" *ngIf="logoUrl != ''" [style.backgroundImage]="'url(' + logoUrl + ')'"></div>
   </div> -->
 
-<div class="mysaloon-container">
-
-  <div>
-
-  <mat-toolbar class="mysaloon-navbar">
-    <h4 class="mysaloon-navbar-gruppo">{{gruppo}}</h4>
-  </mat-toolbar>
-
-  <!-- css loader -->
-  <div *ngIf="attesa" class="mysaloon-loader" data-title=".dot-pulse">
+<!-- css loader -->
+<div *ngIf="attesa">
+  <div class="mysaloon-loader" data-title=".dot-pulse">
+    <div style="font-size: 16px;font-weight: 800;">mySaloon</div>
     <div class="stage" style="height: 20px;display: flex;align-items: center;">
       <div class="dot-pulse"></div>
     </div>
   </div>
+</div>
 
-  <div class="mysaloon-salone" *ngIf="!selezionandoSalone">
-    <div style="display: flex;align-items: center;gap: 5px;">
-      <div class="mysaloon-logo-salone">
-        <img *ngIf="logoUrl==''" src="assets/imgx32.png" width="50" height="50" alt="logo">
-        <img *ngIf="logoUrl!=''" src="{{logoUrl}}" width="50" height="50" alt="logo">
-      </div>
-      <div class="mysaloon-dettagli-salone">
-        <div class="mysaloon-titolo-salone">
-          <mat-icon>location_on</mat-icon>
-          <a (click)="googleMap(saloneSelezionato)">{{ saloneSelezionato.salone }}</a>
+<div @fade class="mysaloon-container" *ngIf="!attesa">
+
+  <div>
+
+    <mat-toolbar class="mysaloon-navbar">
+      <h4 class="mysaloon-navbar-gruppo">{{gruppo}}</h4>
+    </mat-toolbar>
+
+
+    <div class="mysaloon-salone" *ngIf="!selezionandoSalone">
+      <div style="display: flex;align-items: center;gap: 5px;">
+        <div class="mysaloon-logo-salone">
+          <img *ngIf="logoUrl==''" src="assets/imgx32.png" width="50" height="50" alt="logo">
+          <img *ngIf="logoUrl!=''" src="{{logoUrl}}" width="50" height="50" alt="logo">
         </div>
-        <div *ngIf="saloneSelezionato.indirizzo" class="mysaloon-indirizzo-salone">
-          <span>{{ saloneSelezionato.indirizzo }}</span>
+        <div class="mysaloon-dettagli-salone">
+          <div class="mysaloon-titolo-salone">
+            <mat-icon>location_on</mat-icon>
+            <a (click)="googleMap(saloneSelezionato)">{{ saloneSelezionato.salone }}</a>
+          </div>
+          <div *ngIf="saloneSelezionato.indirizzo" class="mysaloon-indirizzo-salone">
+            <span>{{ saloneSelezionato.indirizzo }}</span>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex;align-items: center;">
+        <div class="mysaloon-azioni-salone">
+          <a *ngIf="saloneSelezionato.telefono" mat-stroked-button href="tel:{{ saloneSelezionato.telefono }}">
+            <mat-icon inline="true">phone</mat-icon> {{ saloneSelezionato.telefono }}
+          </a>
+          <div class="mysaloon-seleziona-salone" *ngIf="saloni?.length > 1">
+            <mat-icon titolo="Seleziona salone" (click)="selezionandoSaloneFlag()">settings</mat-icon>
+          </div>
+          <!-- <button mat-stroked-button (click)="prenota(saloneSelezionato)">Prenota</button> -->
+        </div>
+
+      </div>
+    </div>
+
+    <div class="mysaloon-seleziona-saloni" *ngIf="selezionandoSalone">
+      <div class="mysaloon-seleziona-salone" *ngFor="let salone of saloni" (click)="selezionaSalone(salone)">
+        <div class="mysaloon-seleziona-logo-salone">
+          <img src="./assets/imgx32.png" width="40" height="40" alt="logo"
+            [ngStyle]="(salone == saloneSelezionato) && {'filter' : 'none'}">
+        </div>
+        <div class="mysaloon-seleziona-saloni-titolo"
+          [ngStyle]="(salone == saloneSelezionato) && {'color' : 'darkcyan'}">
+          {{salone.salone}}
         </div>
       </div>
     </div>
-    <div style="display: flex;align-items: center;">
-      <div class="mysaloon-azioni-salone">
-        <a *ngIf="saloneSelezionato.telefono" mat-stroked-button href="tel:{{ saloneSelezionato.telefono }}">
-          <mat-icon inline="true">phone</mat-icon> {{ saloneSelezionato.telefono }}
-        </a>
-        <div class="mysaloon-seleziona-salone" *ngIf="saloni?.length > 1">
-          <mat-icon titolo="Seleziona salone" (click)="selezionandoSaloneFlag()">settings</mat-icon>
-        </div>
-        <!-- <button mat-stroked-button (click)="prenota(saloneSelezionato)">Prenota</button> -->
-      </div>
 
-    </div>
-  </div>
+    <!-- [ngStyle]="(salone == saloneSelezionato) && {'filter' : 'none'}" -->
 
-  <div class="mysaloon-seleziona-saloni" *ngIf="selezionandoSalone">
-    <div class="mysaloon-seleziona-salone" *ngFor="let salone of saloni" (click)="selezionaSalone(salone)">
-      <div class="mysaloon-seleziona-logo-salone">
-        <img src="./assets/imgx32.png" width="40" height="40" alt="logo"
-          [ngStyle]="(salone == saloneSelezionato) && {'filter' : 'none'}">
-      </div>
-      <div class="mysaloon-seleziona-saloni-titolo" [ngStyle]="(salone == saloneSelezionato) && {'color' : 'darkcyan'}">
-        {{salone.salone}}
-      </div>
-    </div>
-  </div>
-
-  <!-- [ngStyle]="(salone == saloneSelezionato) && {'filter' : 'none'}" -->
-
-  <div *ngIf="userLoggedIn" class="mysaloon-user-bar">
-    <div style="width:20px;">&nbsp;</div>
-    <h5>{{user?.nome}} {{user?.cognome}}</h5>
-    <div>
-      <button mat-icon-button [matMenuTriggerFor]="menu"
-        style="font-size: 20px;width: 20px;height: 20px;line-height: 20px;margin-right: 10px;">
-        <mat-icon inline="true">menu</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <button (click)="logout()" mat-menu-item>
-          <mat-icon>logout</mat-icon>
-          <span>Logout</span>
+    <div *ngIf="userLoggedIn" class="mysaloon-user-bar">
+      <div style="width:20px;">&nbsp;</div>
+      <h5>{{user?.nome}} {{user?.cognome}}</h5>
+      <div>
+        <button mat-icon-button [matMenuTriggerFor]="menu"
+          style="font-size: 20px;width: 20px;height: 20px;line-height: 20px;margin-right: 10px;">
+          <mat-icon inline="true">menu</mat-icon>
         </button>
-      </mat-menu>
+        <mat-menu #menu="matMenu">
+          <button (click)="logout()" mat-menu-item>
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </div>
     </div>
-  </div>
-  <div class="mysaloon-nouser-bar" *ngIf="!userLoggedIn">&nbsp;</div>
+    <div class="mysaloon-nouser-bar" *ngIf="!userLoggedIn">&nbsp;</div>
 
-  <div class="mysaloon-bottoni-azione">
-    <mat-button-toggle-group #group="matButtonToggleGroup" name="azione" value="prenotazioni" aria-label="Font Style"
-      appearance="legacy">
-      <mat-button-toggle style="color:darkcyan;" value="orari" aria-pressed="true">Orari</mat-button-toggle>
-      <mat-button-toggle style="color:darkcyan;" value="prenotazioni">Prenotazioni</mat-button-toggle>
-    </mat-button-toggle-group>
-  </div>
+    <div class="mysaloon-bottoni-azione">
+      <mat-button-toggle-group #group="matButtonToggleGroup" name="azione" value="prenotazioni" aria-label="Font Style"
+        appearance="legacy">
+        <mat-button-toggle style="color:darkcyan;" value="orari" aria-pressed="true">Orari</mat-button-toggle>
+        <mat-button-toggle style="color:darkcyan;" value="prenotazioni">Prenotazioni</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
   </div>
 
   <!-- <app-spinner1center *ngIf="attesa"></app-spinner1center> -->
@@ -239,10 +243,9 @@
 
   <div *ngIf="group.value == 'prenotazioni'" class="mysaloon-card-prenotazioni">
 
-    <div class="mysaloon-card-prenotazioni-ticket add"
-      style="height: 146.4px;color: white;background: #50bcbb;margin-bottom: 10px;display: grid;"
-      [ngStyle]="((saloneSelezionato.prenotazioniAttive ?.length > 0) && userLoggedIn) && {'margin-bottom':'10px'}">
-      <div class="mysaloon-card-button" (click)="prenota(saloneSelezionato)" *ngIf="backgroundUrl != ''"  [style.backgroundImage]="'url(' + backgroundUrl + ')'">
+    <div class="mysaloon-card-prenotazioni-ticket add" [ngStyle]="(backgroundUrl != '') && {'background-image': 'url(' + backgroundUrl + ')'}">
+      <div class="mysaloon-card-button" (click)="prenota(saloneSelezionato)" *ngIf="backgroundUrl != ''"
+        [style.backgroundImage]="'url(' + backgroundUrl + ')'">
         <button mat-fab>
           <mat-icon inline="true" style="transform: scale(2);">add</mat-icon>
         </button>
@@ -260,8 +263,7 @@
       <!-- <div *ngFor="let prenotazioniAttive of saloneSelezionato.prenotazioniAttive" 
         class="mysaloon-card-prenotazioni-ticket"> -->
       <div *ngFor="let salone of saloni" style="display: flex;flex-direction: column;gap: 10px;">
-        <div *ngFor="let prenotazioniAttive of salone.prenotazioniAttive"
-          class="mysaloon-card-prenotazioni-ticket">
+        <div *ngFor="let prenotazioniAttive of salone.prenotazioniAttive" class="mysaloon-card-prenotazioni-ticket">
 
           <div class="left" [style.background-color]="prenotazioniAttive.backgroundColor.slice(0, -4) + '0.66)'">
             <div>
@@ -275,7 +277,8 @@
               <div style="display: flex;gap: 15px;align-items: center;flex-direction: column;justify-content: center;"
                 (click)="googleMap(salone)">
                 <mat-icon style="transform: scale(1.8);">place</mat-icon>
-                <div style="display: flex;flex-direction: column;line-height: initial;justify-content: center;text-align: center;">
+                <div
+                  style="display: flex;flex-direction: column;line-height: initial;justify-content: center;text-align: center;">
                   <div style="font-weight: 900;display: flex;justify-content: center;">{{salone.salone}}
                   </div>
                   <!-- <div style="font-size: 12px;color: #ffffff;font-weight: 500;">{{saloneSelezionato.indirizzo}}</div> -->

@@ -57,8 +57,8 @@ export class InfoClick {
       { provide: MAT_DATE_LOCALE, useValue: 'it-IT' },
       { provide: DateAdapter, useClass: CustomDateAdapter },
    ],
-
-   /* providers: [
+/* 
+   providers: [
       // The locale would typically be provided on the root module of your application. We do it at
       // the component level here, due to limitations of our example generation script.
       //{ provide: MAT_DATE_LOCALE, useValue: 'it' },
@@ -71,7 +71,7 @@ export class InfoClick {
          useClass: MomentDateAdapter,
          deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
       },
-      { provide: MAT_DATE_FORMATSpi, useValue: MAT_MOMENT_DATE_FORMATS },
+      //{ provide: MAT_DATE_FORMATSpi, useValue: MAT_MOMENT_DATE_FORMATS },
    ], */
 })
 export class PlannerComponent implements OnInit, OnDestroy {

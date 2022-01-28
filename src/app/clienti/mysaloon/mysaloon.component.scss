@@ -2,46 +2,26 @@
 $background-color:var(--background-color);
 $color:var(--color);
 
-.bleeper{
-  flex-direction: column;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width:100%;
-  height:100%;
-  position:absolute;
-  top:0;
-  bottom:100%;
-  z-index: 99999;
-  background-color: $background-color;
-  background-size: cover;
-}
-.bleeper .logo{
-  width:150px;
-  height:150px;
-  background-size: cover;
-}
 
 /**
  * ==============================================
  * Dot Pulse
  * ==============================================
  */
-.dot-pulse {
+ .dot-pulse {
   position: relative;
   left: -9999px;
   width: 10px;
   height: 10px;
   border-radius: 5px;
-  background-color: #008b8b;
-  color: #008b8b;
-  box-shadow: 9999px 0 0 -5px #008b8b;
-  animation: dotPulse 1.5s infinite linear;
+  background-color: #030303;
+  color: #030303;
+  box-shadow: 9999px 0 0 -5px #030303;
+  animation: dotPulse 1.0s infinite linear;
   animation-delay: .25s;
 }
 
-.dot-pulse::before,
-.dot-pulse::after {
+.dot-pulse::before, .dot-pulse::after {
   content: '';
   display: inline-block;
   position: absolute;
@@ -49,20 +29,59 @@ $color:var(--color);
   width: 10px;
   height: 10px;
   border-radius: 5px;
-  background-color: #008b8b;
-  color: #008b8b;
+  background-color: #030303;
+  color: #030303;
 }
 
 .dot-pulse::before {
-  box-shadow: 9984px 0 0 -5px #008b8b;
-  animation: dotPulseBefore 1.5s infinite linear;
+  box-shadow: 9984px 0 0 -5px #030303;
+  animation: dotPulseBefore 1.0s infinite linear;
   animation-delay: 0s;
 }
 
 .dot-pulse::after {
-  box-shadow: 10014px 0 0 -5px #008b8b;
-  animation: dotPulseAfter 1.5s infinite linear;
+  box-shadow: 10014px 0 0 -5px #030303;
+  animation: dotPulseAfter 1.0s infinite linear;
   animation-delay: .5s;
+}
+
+@keyframes dotPulseBefore {
+  0% {
+    box-shadow: 9984px 0 0 -5px #030303;
+  }
+  30% {
+    box-shadow: 9984px 0 0 2px #030303;
+  }
+  60%,
+  100% {
+    box-shadow: 9984px 0 0 -5px #030303;
+  }
+}
+
+@keyframes dotPulse {
+  0% {
+    box-shadow: 9999px 0 0 -5px #030303;
+  }
+  30% {
+    box-shadow: 9999px 0 0 2px #030303;
+  }
+  60%,
+  100% {
+    box-shadow: 9999px 0 0 -5px #030303;
+  }
+}
+
+@keyframes dotPulseAfter {
+  0% {
+    box-shadow: 10014px 0 0 -5px #030303;
+  }
+  30% {
+    box-shadow: 10014px 0 0 2px #030303;
+  }
+  60%,
+  100% {
+    box-shadow: 10014px 0 0 -5px #030303;
+  }
 }
 
 .mysaloon-container {
@@ -88,10 +107,11 @@ $color:var(--color);
 
 .mysaloon-loader {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 94px;
+  height: 100vh;
 }
 
 .mysaloon-saloni {
@@ -244,6 +264,7 @@ $color:var(--color);
   flex-direction: column;
   align-items: center;
   gap: 6px;
+  cursor: pointer;
 }
 
 .mysaloon-dettagli.salone {
@@ -285,6 +306,7 @@ $color:var(--color);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  min-height: 34px;
 }
 
 .mysaloon-user-bar h5 {
@@ -331,7 +353,7 @@ $color:var(--color);
 .mysaloon-card-prenotazioni {
   padding-top: 10px;
   padding-bottom: 10px;
-  background: #ffffff;
+  background: #f6f6f6;
   height: 100%;
   overflow: auto;
 }
@@ -368,9 +390,7 @@ $color:var(--color);
   max-width: 450px;
   margin: 0 auto;
   border-radius: 15px;
-  //border: 3px solid var(--background-color);
-  /* background: repeating-linear-gradient(
-131deg, #ffffff, #ffffff 10px, #ffffffba 10px, #ffffff 20px); */
+  border:3px solid #fff;
   position: relative;
   .left{
     width: 40%;
@@ -409,42 +429,60 @@ $color:var(--color);
   }
 }
 
-.add{
-  border: 3px solid $background-color;
-  background-color: $background-color!important;
-}
-
-.add:before, .add:after {
-  border: 3px solid $background-color;
-}
-.add:before{
-  border-left: none;
-}
-.add:after{
-  border-right: none;
-}
-
-.mysaloon-card-prenotazioni-ticket:before,
+/* .mysaloon-card-prenotazioni-ticket:before, */
 .mysaloon-card-prenotazioni-ticket:after{
   content: "";
   position: absolute;
   top: 36%;
   height: 36px;
   width: 18px;
-  //border: 3px solid $background-color;
+  right: -3px;
+  border-radius: 1em 0 0 1em;
+  background-color:#f6f6f6;
+  border: 3px solid #fff;
+  border-right: none;
 }
 .mysaloon-card-prenotazioni-ticket:before {
     left: -3px;
     border-radius: 0 1em 1em 0;
     //border-left:4px solid #50bcbb;
-    background-color: #ffffff;
+    background-color:#f6f6f6!important;
 }
-.mysaloon-card-prenotazioni-ticket:after {
-    right: -3px;
-    border-radius: 1em 0 0 1em;
-    //border-right:4px solid #50bcbb;
-    background-color: #ffffff;
+
+.add{
+  border: 3px solid $background-color;
+  background-color: #3f3d3d!important;
+  height: 146.4px;
+  margin-bottom: 10px;
+  display: grid;
 }
+
+.add:before, .add:after {
+  border: 3px solid $background-color;
+  background-color:#f6f6f6!important;
+}
+.add:before{
+  content: "";
+  position: absolute;
+  top: 36%;
+  height: 36px;
+  width: 18px;
+  right: -3px;
+  border-radius: 1em 0 0 1em;
+  background-color:#f6f6f6;
+    border-left: none;
+    left: -3px;
+    border-radius: 0 1em 1em 0;
+    //border-left:4px solid #50bcbb;
+    background-color:#f6f6f6!important;
+  }
+
+.add:after{
+  border-right: none;
+}
+
+
+
 
 .mysaloon-card-prenotaora {
   color: $color;
@@ -452,6 +490,7 @@ $color:var(--color);
   background: #303030aa;
   padding: 2px 6px 2px 6px;
   border-radius: 10px;
+  margin-top: 6px;
 }
 
 .mysaloon-card-button {
