@@ -27,7 +27,6 @@ import { filter } from 'rxjs/operators';
 import { QRCodeModule } from 'angularx-qrcode';
 import {WebcamModule} from 'ngx-webcam';
 import {NgxBarcodeScannerModule} from '@eisberg-labs/ngx-barcode-scanner';
-
 import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -308,8 +307,8 @@ const config = {
   exports: [NumberFormatPipe]
 })
 export class AppModule { 
-  constructor(router: Router, viewportScroller: ViewportScroller) {
-    router.events.pipe(
+  constructor(/* router: Router, viewportScroller: ViewportScroller */) {
+    /* router.events.pipe(
       filter((e: Event): e is Scroll => e instanceof Scroll)
     ).subscribe(e => {
       if (e.position) {
@@ -322,6 +321,6 @@ export class AppModule {
         // forward navigation
         viewportScroller.scrollToPosition([0, 0]);
       }
-    });
+    }); */
   }
 }

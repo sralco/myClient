@@ -8,8 +8,6 @@ if (start_url.includes('saloni')) {
 
 if (start_url.includes('/mysaloon/')) {
   myname = decodeURI(start_url.substring(start_url.lastIndexOf('/') + 1));
-  mycolor = '#008b8b';
-
   const arr = myname.split(" ");
   for (var i = 0; i < arr.length; i++) {
     arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
@@ -17,8 +15,8 @@ if (start_url.includes('/mysaloon/')) {
   myname = arr.join(" ") + " mySaloon";
 }
 
-if (start_url.includes('qrcode')) {
-  mycolor = '#008b8b';
+if (start_url.includes('/mysaloon/') || (start_url.includes('/prenotazioneclienti/'))) {
+  mycolor = '#000000';
 }
 
 var manifestJSON = {

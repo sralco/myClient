@@ -18,8 +18,9 @@
    </div>
    <mat-dialog-content style="margin-top:20px;">
      <mat-card class="select-card" hideToggle *ngFor="let s of dati.list" (click)="ok(s)">
-       <mat-card-content>
-         <div class="select-card-image" style="background-image: url('{{s.foto}}');" *ngIf="flagFoto"></div>
+       <mat-card-content style="height:40px;">
+         <div *ngIf="flagFoto && logoUrl !== '' && s.label == 'Tutti i collaboratori'" class="select-card-image" style="background-image: url('{{logoUrl}}');"></div>
+         <div *ngIf="flagFoto && s.label != 'Tutti i collaboratori'" class="select-card-image" style="background-image: url('{{s.foto}}');"></div>
          <div class="select-card-label">{{s.label}}</div>
        </mat-card-content>
      </mat-card>

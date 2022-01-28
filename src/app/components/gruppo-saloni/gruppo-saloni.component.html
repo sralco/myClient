@@ -8,7 +8,7 @@
     <mat-icon style="margin-top:-5px">reply</mat-icon>
   </button>
   <button mat-icon-button>
-    <mat-icon (click)="sidenav.toggle()" style="color: white;">menu</mat-icon>
+    <mat-icon (click)="sidenav.toggle()" style="color: white;cursor:pointer;">menu</mat-icon>
   </button>
 </mat-toolbar>
 
@@ -124,14 +124,16 @@
         </button>
         <div style="display:flex; justify-content:space-between;align-items:center;color: slategrey;">
           <div style="font-size: small;font-weight: 800;">{{ t.posizione }} ({{intervallo.name}})</div>
-          <div>
-            <mat-icon (click)="toggle(t,i)" [@openedState]='state[i]' inline="true" style="font-size: 32px;cursor: pointer;">arrow_circle_down</mat-icon>
+          <app-spinner1 *ngIf="t.attesa" style="width:30px;height:30px;"></app-spinner1>
+          <div style="height: 32px;cursor:pointer;">
+            <mat-icon (click)="toggle(t,i)" [@openedState]='state[i]' inline="true"
+              style="font-size: 32px;line-height: 32px;">arrow_circle_down</mat-icon>
           </div>
         </div>
         <div style="display:flex; align-items:center;grid-gap: 10px;">
           <div>
-            <button mat-mini-fab style="background-color: #fff;" (click)="aggiorna(t)">
-              <mat-icon style="color:darkcyan;transform: scale(1.2);font-weight: 800;">sync</mat-icon>
+            <button mat-mini-fab style="background-color: #fff;width:25px;height:25px;" (click)="aggiorna(t)">
+              <mat-icon style="color: darkcyan;font-weight: 800;margin-top: -16.5px;transform: scale(0.7);">sync</mat-icon>
             </button>
           </div>
           <div style="display: flex;flex-direction: column;color: slategrey;">
@@ -142,27 +144,35 @@
           </div>
         </div>
         <div
-          style="display: flex; justify-content: space-between; align-items: center;font-weight: 800;font-size: 16px;color:darkcyan;margin-top:20px">
-          <div style="display: flex;align-items: center;grid-gap: 3px;">
-            <mat-icon inline="true">content_cut</mat-icon> Lavorato {{ t.produzione1 | numberFormat}}
+          style="display: flex; justify-content: space-between; align-items: center;font-size: 16px;color:darkcyan;padding:4px;">
+          <div style="display: flex;align-items: center;grid-gap: 3px;width:48%;justify-content: space-between;">
+            <div style="display: flex;align-items: center;grid-gap: 4px;">
+              <mat-icon inline="true">content_cut</mat-icon> <strong>Lavorato</strong>
+            </div>
+            <div>
+              {{ t.produzione1 | numberFormat}}
+            </div>
           </div>
           <div (click)="openStatistiche(t,'Passaggi')"
-            style="display: flex;align-items: center;grid-gap: 3px;cursor: pointer;">
-            <mat-icon inline="true">person_pin_circle</mat-icon> Passaggi {{ t.passaggi1 }}
+            style="display: flex;align-items: center;grid-gap: 3px;width:48%;justify-content: space-between;cursor:pointer;">
+            <div style="display: flex;align-items: center;grid-gap: 4px;">
+              <mat-icon inline="true">person_pin_circle</mat-icon> <strong>Passaggi</strong>
+            </div>
+            <div>{{ t.passaggi1 }}</div>
           </div>
         </div>
         <div *ngIf="t.ChartData">
-          <div #canvasContainer style="display: block; max-height: 100%">
-            <canvas style="width:100%;background-color: white;" #myCanvas baseChart [datasets]="t.ChartData"
-              [labels]="barChartLabels" [options]="barChartOptions" [plugins]="barChartPlugins"
+          <div #canvasContainer style="display: block; height: 120px;">
+            <canvas style="width:100%;background-color: white;height:120px;" #myCanvas baseChart
+              [datasets]="t.ChartData" [labels]="barChartLabels" [options]="barChartOptions" [plugins]="barChartPlugins"
               [legend]="barChartLegend" [chartType]="barChartType">
             </canvas>
           </div>
         </div>
 
         <!-- <div class="gruppo-saloni-expandable" [ngClass]="{'expand': hideRuleContent[i], 'noexpand' : !hideRuleContent[i] }"> -->
-          <div class="gruppo-saloni-expandable" [@expandCollapse]="state[i]" style="overflow:hidden;">
-          <mat-card style="width: 100%;">
+        <div class="gruppo-saloni-expandable" [@expandCollapse]="state[i]" style="overflow:hidden;">
+          <mat-card style="width: 100%;padding: 0;">
             <mat-card-content>
               <div class="btnContainer">
                 <button mat-raised-button color="Basic" type="submit" style="width:37%; margin-left: 0; margin-right:0"
@@ -334,17 +344,17 @@
                 </tbody>
               </table>
             </mat-card-content>
-            <mat-card-footer>
+            <mat-card-footer style="height: 142px;">
               <div class="btnContainer">
                 <button mat-raised-button color="Basic" type="submit"
-                  style="width:100%; margin-left: 5px; margin-right:5px" (click)="openStatistiche(t,'FuoriFrequenza')">
+                  style="width:90%;" (click)="openStatistiche(t,'FuoriFrequenza')">
                   <mat-icon>supervisor_account</mat-icon> Fuori frequenza
                 </button>
               </div>
               <div class="btnContainer">
-                <button mat-raised-button color="Basic" type="submit" style="width:100%;"
+                <button mat-raised-button color="Basic" type="submit" style="width:90%;"
                   (click)="openStatistiche(t,'Stecchiti')">
-                  <mat-icon>supervisor_account</mat-icon> Clienti stecchiti
+                  <mat-icon>person_off</mat-icon> Clienti stecchiti
                 </button>
               </div>
             </mat-card-footer>

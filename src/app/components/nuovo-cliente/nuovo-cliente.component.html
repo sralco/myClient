@@ -1,5 +1,5 @@
 <mat-toolbar>
-  <mat-toolbar-row style="background-color: darkcyan;color:#ffffff;">
+  <mat-toolbar-row style="background-color: #000000;color:#ffffff;">
     <h3>{{gruppo}}</h3>
   </mat-toolbar-row>
   <mat-toolbar-row>
@@ -32,28 +32,28 @@
       <mat-form-field appearance="outline" style="width:100%;">
         <mat-label>Nome</mat-label>
         <input matInput placeholder="Nome" formControlName="nome" required>
-        <mat-error *ngIf="f.nome.errors.required">Il nome è obbligatorio</mat-error>
+        <mat-error *ngIf="f.nome.errors?.required">Il nome è obbligatorio</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" style="width:100%;">
         <mat-label>Cognome</mat-label>
         <input matInput placeholder="Cognome" formControlName="cognome" required>
-        <mat-error *ngIf="f.cognome.errors.required">Il cognome è obbligatorio</mat-error>
+        <mat-error *ngIf="f.cognome.errors?.required">Il cognome è obbligatorio</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" style="width:100%;">
         <mat-label>Cellulare</mat-label>
         <input matInput placeholder="Cellulare" formControlName="phone" required>
-        <mat-error *ngIf="f.phone.errors.required">Il cellulare è obbligatorio</mat-error>
-        <mat-error *ngIf="f.phone.errors.minlength">Il cellulare non è valido</mat-error>
-        <mat-error *ngIf="f.phone.errors.pattern">Sono ammessi solo numeri</mat-error>
+        <mat-error *ngIf="f.phone.errors?.required">Il cellulare è obbligatorio</mat-error>
+        <mat-error *ngIf="f.phone.errors?.minlength">Il cellulare non è valido</mat-error>
+        <mat-error *ngIf="f.phone.errors?.pattern">Sono ammessi solo numeri</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" style="width:100%;">
         <mat-label>E-mail</mat-label>
-        <input type="email" name="email" matInput placeholder="E-mail" formControlName="email" required>
-        <mat-error *ngIf="f.email.errors.email">L'email non è valida</mat-error>
-        <mat-error *ngIf="f.email.errors.required">L'email è obbligatoria</mat-error>
+        <input type="email" name="email" matInput placeholder="E-mail" formControlName="email" required ngModel email>
+        <mat-error *ngIf="f.email.errors?.email">L'email non è valida</mat-error>
+        <mat-error *ngIf="f.email.errors?.required">L'email è obbligatoria</mat-error>
       </mat-form-field>
 
       <mat-card-actions style="display: flex;justify-content: space-between;">

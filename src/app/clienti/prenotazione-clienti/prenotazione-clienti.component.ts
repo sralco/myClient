@@ -26,6 +26,7 @@ import { registerLocaleData } from '@angular/common';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import localeItalian from '@angular/common/locales/it';
 import { CustomDateAdapter } from 'src/app/Services/custom-date-adapter';
+import { trigger, transition, style, animate, state } from '@angular/animations';
 registerLocaleData(localeItalian, 'it');
 
 
@@ -38,7 +39,20 @@ registerLocaleData(localeItalian, 'it');
     { provide: LOCALE_ID, useValue: "it" },
     { provide: MAT_DATE_LOCALE, useValue: 'it-IT' },
     { provide: DateAdapter, useClass: CustomDateAdapter },
-  ]
+  ],
+  animations: [
+    trigger('fade', [ 
+      transition('void => *', [
+        style({ opacity: 0 }), 
+        animate(500, style({opacity: 1}))
+      ]) 
+    ]),
+    trigger('expandCollapse', [
+      state('opened', style({ height: '40px' })),
+      state('closed', style({ height: '0px', overflow: 'hidden' })),
+      transition('closed <=> opened', animate(200))
+    ])
+  ],
 })
 
 
@@ -66,6 +80,8 @@ export class PrenotazioneClientiComponent implements OnInit {
   serviziCaricati: boolean = false;
 
   prenotazioneConfermata: Prenotazione = new Prenotazione();
+
+  state:string = 'closed';
 
 
   dc: boolean = false;
@@ -119,6 +135,12 @@ export class PrenotazioneClientiComponent implements OnInit {
 
   user: User;
 
+  backgroundColor: string = '#000000';
+  color: string = '#ffffff';
+  backgroundUrl:string = '';
+  show:boolean = false;
+  attesa:boolean = true;
+
   constructor(private sanitizer: DomSanitizer, private dateAdapter: DateAdapter<any>, private swPush: SwPush, private aRoute: ActivatedRoute, private plannerSer: PlannerService, private fb: FormBuilder, public dialog: MatDialog, private auth: AuthService,
     private notifier: NotifierService, private router: Router, private loc: Location, private saloneService: SaloniService) {
     this.createForm();
@@ -149,9 +171,9 @@ export class PrenotazioneClientiComponent implements OnInit {
 
     this.caricaServizi();
   }
-
-  backgroundColor: string = '#008b8b';
-  color: string = '#ffffff';
+  ngAfterContentInit(){
+        this.show = true;
+  }
 
   ngOnInit(): void {
 
@@ -177,8 +199,16 @@ export class PrenotazioneClientiComponent implements OnInit {
     opzioniPlanner = JSON.parse(localStorage.getItem('OpzioniPlanner'));
 
     if (opzioniPlanner.logo && opzioniPlanner.logo != null && opzioniPlanner.logo != ''){
-      this.logoUrl = 'assets/' + opzioniPlanner.logo;
+      this.logoUrl = '/images/PersonalizzazioniApp/' + (this.salone.gruppo + '/' + this.salone.salone + '/Skin/' + opzioniPlanner.logo).replace(/\s+/g, '_').toLowerCase();;
+      //console.log(this.logoUrl)
     }
+    if (opzioniPlanner.backgroundUrl && opzioniPlanner.backgroundUrl != null && opzioniPlanner.backgroundUrl != ''){
+      this.backgroundUrl = '/images/PersonalizzazioniApp/' + (this.salone.gruppo + '/' + this.salone.salone + '/Skin/' + opzioniPlanner.backgroundUrl).replace(/\s+/g, '_').toLowerCase();;
+      //console.log(this.logoUrl)
+    }
+
+    this.attesa = false;
+
 
   }
 
@@ -591,7 +621,8 @@ export class PrenotazioneClientiComponent implements OnInit {
   }
 
   setFlagCercaServizi() {
-    this.flagCercaServizi = !this.flagCercaServizi;
+    //this.flagCercaServizi = !this.flagCercaServizi;
+    this.state = (this.state === 'closed' ? 'opened' : 'closed');
     const ele = this.cercaForm.nativeElement['servizio'];
     if (ele) {
       ele.focus();

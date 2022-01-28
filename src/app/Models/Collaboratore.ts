@@ -1,3 +1,6 @@
+import { OpzioniDelGiorno } from "./OpzioniDelGiorno";
+import { OpzioniPlanner } from "./OpzioniPlanner";
+
 export class Collaboratore {
   id: string;
   idServer:string;
@@ -18,4 +21,11 @@ export class Collaboratore {
   obiettivo:string;
   idServizio:string;
   foto:string;
+  opzioniPlanner:OpzioniPlanner;
+  giorniAbilitati:OpzioniDelGiorno[];
+
+  constructor(){
+    this.giorniAbilitati = [];
+    this.opzioniPlanner = new OpzioniPlanner();
+  }
 }

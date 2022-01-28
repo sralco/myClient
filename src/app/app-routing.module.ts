@@ -61,7 +61,7 @@ const routes: Routes = [
   { path: 'cliente', component: ClienteComponent },
 
   {
-    path: 'onde', component: OndeComponent,
+    path: 'onde', component: OndeComponent
     /*
     children: [
        { path: '', redirectTo: 'saloni', pathMatch: 'full' },
@@ -115,7 +115,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes,)],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

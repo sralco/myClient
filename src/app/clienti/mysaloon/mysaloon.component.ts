@@ -11,11 +11,20 @@ import { MatDialog } from '@angular/material/dialog';
 import { DettagliEventoClienteComponent } from '../dettagli-evento-cliente/dettagli-evento-cliente.component';
 import { MsgboxComponent } from 'src/app/components/share/msgbox/msgbox.component';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-mysaloon',
   templateUrl: './mysaloon.component.html',
   styleUrls: ['./mysaloon.component.scss'],
+  animations: [
+    trigger('fade', [ 
+      transition('void => *', [
+        style({ opacity: 0 }), 
+        animate(500, style({opacity: 1}))
+      ]) 
+    ])
+  ],
   encapsulation: ViewEncapsulation.None,
   providers: [
     { provide: LOCALE_ID, useValue: "it" }],
@@ -29,11 +38,16 @@ export class mysaloonComponent implements OnInit {
 
   userLoggedIn: boolean;
   saloni: Salone[];
-  attesa: boolean;
+  attesa: boolean = true;
   gruppo: string = '';
   user: User;
   selezionandoSalone: boolean = false;
   saloneSelezionato: Salone = new Salone();
+
+  backgroundColor: string = '#000000';
+  color: string = '#ffffff';
+  backgroundUrl:string = '';
+  logoUrl:string = '';
 
   constructor(private sanitizer: DomSanitizer, private dialog: MatDialog, private router: Router, private auth: AuthClientiService, aRoute: ActivatedRoute, private appuntamentiService: PlannerService, private service: SaloniService, private notifier: NotifierService) {
     this.userLoggedIn = auth.isUserLoggedIn();
@@ -50,11 +64,6 @@ export class mysaloonComponent implements OnInit {
     }
   }
 
-
-  backgroundColor: string = '#008b8b';
-  color: string = '#ffffff';
-  backgroundUrl:string = '';
-  logoUrl:string = '';
 
   convertBgColor(color): string {
     console.log(color)
@@ -78,12 +87,12 @@ export class mysaloonComponent implements OnInit {
     })
     );
 
-    setInterval(()=> { this.contoRovescia() }, this.total * 200);
+    //setInterval(()=> { this.contoRovescia() }, this.total * 200);
     
   }
-  contoRovescia(){
+ /*  contoRovescia(){
     this.counter = this.counter - 1;
-  }
+  } */
 
   selezionandoSaloneFlag() {
     this.selezionandoSalone = true;
@@ -99,11 +108,11 @@ export class mysaloonComponent implements OnInit {
       }
     });
     if (this.saloneSelezionato.opzioniPlanner.imgSfondo && this.saloneSelezionato.opzioniPlanner.imgSfondo != null && this.saloneSelezionato.opzioniPlanner.imgSfondo != ''){
-      this.backgroundUrl = ('/images/' + this.saloneSelezionato.gruppo + '/' + this.saloneSelezionato.salone + '/' + this.saloneSelezionato.opzioniPlanner.imgSfondo).replace(/\s+/g, '-').toLowerCase();
+      this.backgroundUrl = '/images/PersonalizzazioniApp/' + (this.saloneSelezionato.gruppo + '/' + this.saloneSelezionato.salone + '/Skin/' + this.saloneSelezionato.opzioniPlanner.imgSfondo).replace(/\s+/g, '_').toLowerCase();
       console.log(this.backgroundUrl)
     }
     if (this.saloneSelezionato.opzioniPlanner.logo && this.saloneSelezionato.opzioniPlanner.logo != null && this.saloneSelezionato.opzioniPlanner.logo != ''){
-      this.logoUrl = ('/images/' + this.saloneSelezionato.gruppo + '/' + this.saloneSelezionato.salone + '/' + this.saloneSelezionato.opzioniPlanner.logo).replace(/\s+/g, '-').toLowerCase();;
+      this.logoUrl = '/images/PersonalizzazioniApp/' + (this.saloneSelezionato.gruppo + '/' + this.saloneSelezionato.salone + '/Skin/' + this.saloneSelezionato.opzioniPlanner.logo).replace(/\s+/g, '_').toLowerCase();
       console.log(this.logoUrl)
     }
     this.selectedStyle = `

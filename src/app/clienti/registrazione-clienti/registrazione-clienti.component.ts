@@ -6,6 +6,7 @@ import { SaloniService } from 'src/app/Services/saloni.service';
 import { User } from 'src/app/Models/User';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 export function MustMatch(controlName: string, matchingControlName: string) {
   return (formGroup: FormGroup) => {
@@ -29,7 +30,15 @@ export function MustMatch(controlName: string, matchingControlName: string) {
 @Component({
   selector: 'app-registrazione-clienti',
   templateUrl: './registrazione-clienti.component.html',
-  styleUrls: ['./registrazione-clienti.component.scss']
+  styleUrls: ['./registrazione-clienti.component.scss'],
+  animations: [
+    trigger('fade', [ 
+      transition('void => *', [
+        style({ opacity: 0 }), 
+        animate(500, style({opacity: 1}))
+      ]) 
+    ])
+  ],
 })
 export class RegistrazioneClientiComponent implements OnInit {
   selectedStyle: string;
@@ -42,6 +51,7 @@ export class RegistrazioneClientiComponent implements OnInit {
   loading = false;
   gruppo: string = '';
   salone: string = '';
+  attesa:boolean = true;
 
   constructor(private _snackBar: MatSnackBar, private sanitizer: DomSanitizer, private loc: Location, private saloni: SaloniService, private formBuilder: FormBuilder, private route: Router,) {
     this.gruppo = localStorage.getItem('GruppoCliente');
@@ -67,6 +77,7 @@ export class RegistrazioneClientiComponent implements OnInit {
     --color: ${this.color};
     `;
     this.style = this.sanitizer.bypassSecurityTrustStyle(this.selectedStyle);
+    this.attesa = false;
   }
 
   openSnackBar(message: string, action: string) {

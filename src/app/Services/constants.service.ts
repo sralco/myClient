@@ -28,7 +28,6 @@ export class ConstantsService {
       this.baseSqlUrl = this.sitoWeb + 'myip/';
       this.baseLocalSqlUrl = 'http://192.168.1.2/myIP/api/';
     }
-
     this.baseSqlUrl = this.baseSqlUrl.replace('/api/api/', '/api/');
   }
 
