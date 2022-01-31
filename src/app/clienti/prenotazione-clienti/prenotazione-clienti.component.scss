@@ -2,6 +2,19 @@
 $background-color:var(--background-color);
 $color:var(--color);
 
+.prenotazione-clienti-loader{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.aspettaVerifica{
+  width:100%;
+  height:350px;
+}
+
 /**
  * ==============================================
  * Dot Pulse
@@ -357,6 +370,7 @@ $color:var(--color);
     display: flex;
     flex-direction: column;
     border: 1px solid #000000;
+    cursor: pointer;
   }
 
   .giornoSelezionato {
@@ -461,6 +475,7 @@ $color:var(--color);
       outline: none!important;
       border-radius: 6px;
       border: 1px solid #ffffff;
+      margin:0!important;
     }
   }
 }

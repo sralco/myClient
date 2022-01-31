@@ -1,9 +1,12 @@
- <!-- css loader -->
- <div *ngIf="attesa" class="mysaloon-loader" data-title=".dot-pulse">
-   <div class="stage" style="height: 20px;display: flex;align-items: center;">
-     <div class="dot-pulse"></div>
-   </div>
- </div>
+<!-- css loader -->
+<div *ngIf="attesa">
+  <div class="prenotazione-clienti-loader" data-title=".dot-pulse">
+    <div style="font-size: 16px;font-weight: 800;">mySaloon</div>
+    <div class="stage" style="height: 20px;display: flex;align-items: center;">
+      <div class="dot-pulse"></div>
+    </div>
+  </div>
+</div>
 
  <div @fade *ngIf="!attesa" class="prenotazione-clienti"
    style="display: flex;flex-flow: column;height: 100vh;margin:0 auto;">
@@ -50,6 +53,10 @@
           <mat-icon inline="true">menu</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
+          <button (click)="addToHomeScreen()" mat-menu-item>
+            <mat-icon>install_desktop</mat-icon>
+            <span>Installa</span>
+          </button>
           <button (click)="logout()" mat-menu-item>
             <mat-icon>logout</mat-icon>
             <span>Logout</span>
@@ -133,9 +140,7 @@
                          <small>€ {{s.prezzo.replace('0000','00')}}</small>
                        </div>
                      </div>
-                     <div>
-                       <mat-icon inline="true" *ngIf="serviziSelezionati.indexOf(s) > -1">done_outline</mat-icon>
-                     </div>
+                      <mat-icon *ngIf="serviziSelezionati.indexOf(s) > -1" style="transform: scale(1.1);">task_alt</mat-icon>
                    </div>
                  </div>
                </div>
@@ -153,9 +158,7 @@
                          <small>€ {{s.prezzo.replace('0000','00')}}</small>
                        </div>
                      </div>
-                     <div>
-                       <mat-icon inline="true" *ngIf="serviziSelezionati.indexOf(s) > -1">done_outline</mat-icon>
-                     </div>
+                       <mat-icon *ngIf="serviziSelezionati.indexOf(s) > -1" style="transform: scale(1.1);">task_alt</mat-icon>
                    </div>
                  </div>
 
@@ -190,7 +193,7 @@
                  <div *ngIf="fineScroll()" style="width:16px;"></div>
 
                  <div *ngIf="!fineScroll()" class="btn-giorno-indietro" (click)="settimanaIndietro()">
-                   <mat-icon style="transform: scale(3);color: #000000;" inline="true">
+                   <mat-icon style="transform: scale(3);color: #000000;cursor: pointer;" inline="true">
                      navigate_before</mat-icon>
                  </div>
 
@@ -209,7 +212,7 @@
                  </div>
 
                  <div class="btn-giorno-avanti" (click)="settimanaAvanti()">
-                   <mat-icon style="transform: scale(3);color: #000000" inline="true" class="icon-cambia-giorno">
+                   <mat-icon style="transform: scale(3);color: #000000;cursor: pointer;" inline="true" class="icon-cambia-giorno">
                      navigate_next</mat-icon>
                  </div>
 
@@ -217,27 +220,26 @@
 
              </div>
 
-             <mat-card class="orari-disponibili-errore" mat-subheader *ngIf="orariDisponibili.errore">
+             <mat-card class="orari-disponibili-errore" mat-subheader *ngIf="orariDisponibili.errore && !aspettaVerifica">
                <mat-icon style="transform: scale(2);color: red;">error</mat-icon>
                <span>{{orariDisponibili.errore}}</span>
              </mat-card>
 
              <mat-card class="orari-disponibili-errore" mat-subheader
-               *ngIf="!orariDisponibili.errore && orariDisponibili.orariDisponibili.length == 0">
+               *ngIf="!orariDisponibili.errore && orariDisponibili.orariDisponibili.length == 0 && !aspettaVerifica">
                <mat-icon style="transform: scale(2);color: red;">error</mat-icon>
                <span>Orari non disponibili</span>
              </mat-card>
 
              <!-- css loader -->
-             <div class="snippet" data-title=".dot-pulse"
-               style="display: flex;justify-content: center;align-items: center;width: 100%;height: 40vh;"
-               *ngIf="isLoadingDisponibilita">
+             <div class="aspettaVerifica" data-title=".dot-pulse"
+               style="display: flex;justify-content: center;align-items: center;width: 100%;height: 40vh;" *ngIf="aspettaVerifica">
                <div class="stage" style="height: 20px;display: flex;align-items: center;">
                  <div class="dot-pulse"></div>
                </div>
              </div>
 
-             <div class="orari-table-wrapper" *ngIf="orariDisponibili.orariDisponibili.length > 0" style="background: aliceblue;
+             <div @fade class="orari-table-wrapper" *ngIf="(orariDisponibili.orariDisponibili.length > 0) && (!aspettaVerifica) " style="background: aliceblue;
               padding: 10px;
               margin-top: 10px;
               border-radius: 6px;">

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, ViewEncapsulation, LOCALE_ID, HostBinding } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ViewEncapsulation, LOCALE_ID, HostBinding, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Cliente } from 'src/app/Models/Cliente';
@@ -41,11 +41,11 @@ registerLocaleData(localeItalian, 'it');
     { provide: DateAdapter, useClass: CustomDateAdapter },
   ],
   animations: [
-    trigger('fade', [ 
+    trigger('fade', [
       transition('void => *', [
-        style({ opacity: 0 }), 
-        animate(500, style({opacity: 1}))
-      ]) 
+        style({ opacity: 0 }),
+        animate('0s 400ms ease-in', style({ opacity: 1 }))
+      ])
     ]),
     trigger('expandCollapse', [
       state('opened', style({ height: '40px' })),
@@ -57,6 +57,17 @@ registerLocaleData(localeItalian, 'it');
 
 
 export class PrenotazioneClientiComponent implements OnInit {
+  deferredPrompt: any;
+  showButton = false;
+  @HostListener('window:beforeinstallprompt', ['$event'])
+  onbeforeinstallprompt($event) {
+    console.log($event);
+    // Prevent Chrome 67 and earlier from automatically showing the prompt
+    $event.preventDefault();
+    // Stash the event so it can be triggered later.
+    this.deferredPrompt = $event;
+    this.showButton = true;
+  }
 
   @ViewChild("cercaForm") cercaForm: ElementRef;
   selectedStyle: string;
@@ -81,7 +92,7 @@ export class PrenotazioneClientiComponent implements OnInit {
 
   prenotazioneConfermata: Prenotazione = new Prenotazione();
 
-  state:string = 'closed';
+  state: string = 'closed';
 
 
   dc: boolean = false;
@@ -126,7 +137,7 @@ export class PrenotazioneClientiComponent implements OnInit {
   isLoadingDisponibilita: boolean = false;
   notificationEnabled: boolean = this.swPush.isEnabled;
 
-  logoUrl:string = '';
+  logoUrl: string = '';
 
   currentTimestamp: any;
 
@@ -137,9 +148,10 @@ export class PrenotazioneClientiComponent implements OnInit {
 
   backgroundColor: string = '#000000';
   color: string = '#ffffff';
-  backgroundUrl:string = '';
-  show:boolean = false;
-  attesa:boolean = true;
+  backgroundUrl: string = '';
+  show: boolean = false;
+  attesa: boolean = true;
+  aspettaVerifica: boolean = false;
 
   constructor(private sanitizer: DomSanitizer, private dateAdapter: DateAdapter<any>, private swPush: SwPush, private aRoute: ActivatedRoute, private plannerSer: PlannerService, private fb: FormBuilder, public dialog: MatDialog, private auth: AuthService,
     private notifier: NotifierService, private router: Router, private loc: Location, private saloneService: SaloniService) {
@@ -171,8 +183,29 @@ export class PrenotazioneClientiComponent implements OnInit {
 
     this.caricaServizi();
   }
-  ngAfterContentInit(){
-        this.show = true;
+
+  addToHomeScreen() {
+    // hide our user interface that shows our A2HS button
+
+    // Show the prompt
+    if (this.deferredPrompt){
+    this.deferredPrompt.prompt();
+    // Wait for the user to respond to the prompt
+    this.deferredPrompt.userChoice
+      .then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the A2HS prompt');
+          this.showButton = false;
+        } else {
+          console.log('User dismissed the A2HS prompt');
+        }
+        this.deferredPrompt = null;
+      });
+    }
+  }
+  
+  ngAfterContentInit() {
+    this.show = true;
   }
 
   ngOnInit(): void {
@@ -198,11 +231,11 @@ export class PrenotazioneClientiComponent implements OnInit {
 
     opzioniPlanner = JSON.parse(localStorage.getItem('OpzioniPlanner'));
 
-    if (opzioniPlanner.logo && opzioniPlanner.logo != null && opzioniPlanner.logo != ''){
+    if (opzioniPlanner.logo && opzioniPlanner.logo != null && opzioniPlanner.logo != '') {
       this.logoUrl = '/images/PersonalizzazioniApp/' + (this.salone.gruppo + '/' + this.salone.salone + '/Skin/' + opzioniPlanner.logo).replace(/\s+/g, '_').toLowerCase();;
       //console.log(this.logoUrl)
     }
-    if (opzioniPlanner.backgroundUrl && opzioniPlanner.backgroundUrl != null && opzioniPlanner.backgroundUrl != ''){
+    if (opzioniPlanner.backgroundUrl && opzioniPlanner.backgroundUrl != null && opzioniPlanner.backgroundUrl != '') {
       this.backgroundUrl = '/images/PersonalizzazioniApp/' + (this.salone.gruppo + '/' + this.salone.salone + '/Skin/' + opzioniPlanner.backgroundUrl).replace(/\s+/g, '_').toLowerCase();;
       //console.log(this.logoUrl)
     }
@@ -228,15 +261,15 @@ export class PrenotazioneClientiComponent implements OnInit {
 
   settimanaAvanti() {
     for (let i = 0; i < 6; i++) {
-      this.settimanaCorrente[i] = moment(this.settimanaCorrente[5]).add(i+1, 'd').toDate();
+      this.settimanaCorrente[i] = moment(this.settimanaCorrente[5]).add(i + 1, 'd').toDate();
     }
   }
 
-    settimanaIndietro() {
-      for (let i = 0; i < 6; i++) {
-          this.settimanaCorrente[i] = moment(this.settimanaCorrente[i]).subtract(6, 'd').toDate();
-      }
+  settimanaIndietro() {
+    for (let i = 0; i < 6; i++) {
+      this.settimanaCorrente[i] = moment(this.settimanaCorrente[i]).subtract(6, 'd').toDate();
     }
+  }
 
   caricaServizi() {
     this.plannerSer.getServiziInPlanner(this.salone, '').subscribe((x: Servizio[]) => {
@@ -264,7 +297,7 @@ export class PrenotazioneClientiComponent implements OnInit {
   }
 
 
-  fineScroll(){
+  fineScroll() {
     if (this.dataCorrente.toString() === this.settimanaCorrente[0].toString()) return true;
   }
 
@@ -293,11 +326,13 @@ export class PrenotazioneClientiComponent implements OnInit {
   selezionaServizio(s: Servizio) {
     let flag: boolean = false;
 
-    this.serviziSelezionati.forEach(e => {
-      if (e.id === s.id) {
+    this.serviziSelezionati.forEach((element, index) => {
+      if (element.id === s.id) {
         flag = true;
+        this.removeService(s);
       }
     });
+
     if (!flag) {
       if (s.collaboratoriAbilitati) {
         console.log(s.collaboratoriAbilitati);
@@ -422,6 +457,7 @@ export class PrenotazioneClientiComponent implements OnInit {
   }
 
   verificaDisponibilita() {
+    this.aspettaVerifica = true;
     if (!this.SceltoServizioObbligatorio()) {
       console.log(this.TestoServiziObbligatori());
       alert('Selezionare uno tra i seguenti servizi prima di andare avanti:' + '\n' + this.TestoServiziObbligatori());
@@ -447,6 +483,7 @@ export class PrenotazioneClientiComponent implements OnInit {
     p.posizione = this.salone.destinazione;
     this.isLoadingDisponibilita = true;
     this.plannerSer.getDisponibilita(this.salone, p).subscribe((x: DisponibilitaPrenotazione) => {
+      this.aspettaVerifica = false;
       this.isLoadingDisponibilita = false;
       if (x.errore !== null && x.errore !== '') {
         console.log(x.errore);
@@ -455,7 +492,7 @@ export class PrenotazioneClientiComponent implements OnInit {
         this.orariDisponibili.orariDisponibili = [];
       } else {
         this.orariDisponibili = x;
-        
+
       }
 
     }, err => {

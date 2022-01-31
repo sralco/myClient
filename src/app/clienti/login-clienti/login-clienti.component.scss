@@ -172,10 +172,22 @@ $color:var(--color);
     color: $color;
     background-color: $background-color;
     flex: 1;
+    margin-right: 0!important;
 }
 .btn-registrati{
     color: $color;
     background-color: #dd0000;
     flex: 1;
     margin-right: 0!important;
+}
+
+.login-clienti-errore{
+  margin-top: 0;
+  padding: 16px!important;
+  display: flex!important;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  border-radius: 6px;
+  background: aliceblue;
 }

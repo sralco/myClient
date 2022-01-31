@@ -1,7 +1,7 @@
 
 @import "~angular-notifier/styles";
 
- html, body { height: 100%; }
+ html, body { height: 100%;  scroll-behavior: smooth !important;}
 
 .application {
   /*
