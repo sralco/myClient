@@ -172,6 +172,7 @@ import { CustomersSatisfactionComponent } from './components/customers-satisfact
 import { MysaloonHomeComponent } from './clienti/mysaloon-home/mysaloon-home.component';
 import { InputboxComponent } from './components/inputbox/inputbox.component';
 
+
 const config = {
   apiKey: "AIzaSyCWhjrXzMj1AXWI1ajBoRSE9VPy6XQTfbY",
   authDomain: "mysaloon-9b4e2.firebaseapp.com",

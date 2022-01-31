@@ -29,7 +29,7 @@
       </mat-card-title>
       <mat-divider></mat-divider>
       <mat-card-content class="mat-card-content">
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()"   >
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" (keyup.enter)="onSubmit()">
           <mat-form-field class="email-field" appearance="outline">
             <mat-label>Email</mat-label>
             <input type="email" name="email" matInput formControlName="email" placeholder="Email" autocomplete="email">
@@ -39,20 +39,27 @@
           <mat-form-field class="password-field" appearance="outline">
             <mat-label>Password</mat-label>
             <input [type]="hide ? 'password' : 'text'" type="password" name="current-password" matInput formControlName="password" placeholder="Password" autocomplete="current-password">
-            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
+            <!--<button mat-icon-button matSuffix (keydown.enter)="$event.preventDefault()" (keypress.enter)="$event.stopPropagation()">-->
+              <mat-icon matSuffix *ngIf="f.password.value != ''" (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <!--</button>-->
             <mat-error *ngIf="f.password.errors">La password è obbligatoria</mat-error>
           </mat-form-field>
   
-          <div *ngIf="alert" class="login-messaggio">
-            {{alertText}}
+          <mat-card class="login-clienti-errore" mat-subheader *ngIf="alert && !loading">
+            <mat-icon style="transform: scale(2);color: red;">error</mat-icon>
+            <span>{{alertText}}</span>
+          </mat-card>
+
+          <div *ngIf="loading" class="mysaloon-loader" data-title=".dot-pulse">
+            <div class="stage" style="height: 20px;display: flex;align-items: center;">
+              <div class="dot-pulse"></div>
+            </div>
           </div>
   
           <mat-card-actions class="mat-card-actions">
             <div class="main-actions">
-              <button mat-button (click)="openRegister()" class="btn-registrati">Registrati</button>
-              <button mat-button [disabled]="loading" class="btn-login">Login</button>
+              <button type="button" mat-button (click)="openRegister()" (keydown.enter)="$event.preventDefault()" (keypress.enter)="$event.stopPropagation()" class="btn-registrati">Registrati</button>
+              <button type="submit" mat-button class="btn-login">Login</button>
             </div>
             <div class="recupera-password">
               <small><a (click)="openPasswordDimenticata()">Recupera password</a></small>

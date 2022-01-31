@@ -19,7 +19,6 @@ import { TempFiche } from 'src/app/Models/Temp-Fiche';
 import { InAttesaComponent } from '../in-attesa/in-attesa.component';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
-import { NONE_TYPE } from '@angular/compiler';
 
 @Component({
   selector: 'app-gruppo-saloni',
@@ -37,7 +36,7 @@ import { NONE_TYPE } from '@angular/compiler';
     trigger('expandCollapse', [
       state('opened', style({ height: '*' })),
       state('closed', style({ height: '0px' })),
-      transition('closed <=> opened', animate(300))
+      transition('closed <=> opened', animate('300ms ease-in'))
     ])
   ]
 })
@@ -220,14 +219,20 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
             this.attesa = false;
           });
           if (!localStorage.hasOwnProperty('state')) {
-            this.temps.forEach((element, index) => {
-              this.state[index] = 'closed';
-            })
-            localStorage.setItem('state', JSON.stringify(this.state))
-
+            if (this.temps.length == 1) {
+              this.state[0] = 'opened';
+            } else {
+              this.temps.forEach((element, index) => {
+                this.state[index] = 'closed';
+              })
+            }
           } else {
             this.state = JSON.parse(localStorage.getItem('state'));
+            if (this.state.length == 1) {
+              this.state[0] = 'opened';
+            }
           }
+          localStorage.setItem('state', JSON.stringify(this.state))
         }, (err => {
           this.attesa = false;
           this.notifier.notify('warning', 'Errore nella connessione al server');
@@ -239,14 +244,20 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
       this.saloniCaricati = true;
       this.attesa = false;
       if (!localStorage.hasOwnProperty('state')) {
-        this.temps.forEach((element, index) => {
-          this.state[index] = 'closed';
-        })
-        localStorage.setItem('state', JSON.stringify(this.state))
-
+        if (this.temps.length == 1) {
+          this.state[0] = 'opened';
+        } else {
+          this.temps.forEach((element, index) => {
+            this.state[index] = 'closed';
+          })
+        }
       } else {
         this.state = JSON.parse(localStorage.getItem('state'));
+        if (this.state.length == 1) {
+          this.state[0] = 'opened';
+        }
       }
+      localStorage.setItem('state', JSON.stringify(this.state))
     }
 
   }

@@ -6,11 +6,21 @@ import { NotifierService } from 'angular-notifier';
 import { Esito } from 'src/app/Models/Esito';
 import { SaloniService } from 'src/app/Services/saloni.service';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { OpzioniPlanner } from 'src/app/Models/OpzioniPlanner';
 
 @Component({
   selector: 'app-recupera-password',
   templateUrl: './recupera-password.component.html',
-  styleUrls: ['./recupera-password.component.scss']
+  styleUrls: ['./recupera-password.component.scss'],
+  animations: [
+    trigger('fade', [ 
+      transition('void => *', [
+        style({ opacity: 0 }), 
+        animate('300ms ease-in', style({opacity: 1}))
+      ]) 
+    ])
+  ]
 })
 export class RecuperaPasswordComponent implements OnInit {
   selectedStyle: string;
@@ -26,6 +36,9 @@ export class RecuperaPasswordComponent implements OnInit {
   email: string = '';
   loginForm: FormGroup;
 
+  logoUrl:string = '';
+  opzioniPlanner:OpzioniPlanner;
+
   constructor(private sanitizer: DomSanitizer, private loc: Location, private formBuilder: FormBuilder,
     private aRoute: ActivatedRoute,
     private route: Router,
@@ -34,9 +47,15 @@ export class RecuperaPasswordComponent implements OnInit {
     this.gruppo = localStorage.getItem('GruppoCliente');
     this.salone = localStorage.getItem('SaloneCliente');
 
+    this.opzioniPlanner = JSON.parse(localStorage.getItem('OpzioniPlanner'));
+    if (this.opzioniPlanner.logo && this.opzioniPlanner.logo != null && this.opzioniPlanner.logo != ''){
+      this.logoUrl = '/images/PersonalizzazioniApp/' + (this.gruppo + '/' + this.salone + '/Skin/' + this.opzioniPlanner.logo).replace(/\s+/g, '_').toLowerCase();;
+      //console.log(this.logoUrl)
+    }
+
   }
 
-  backgroundColor: string = '#008b8b';
+  backgroundColor: string = '#000000';
   color: string = '#ffffff';
 
   ngOnInit(): void {

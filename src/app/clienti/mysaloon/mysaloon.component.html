@@ -66,16 +66,20 @@
 
     <!-- [ngStyle]="(salone == saloneSelezionato) && {'filter' : 'none'}" -->
 
-    <div *ngIf="userLoggedIn" class="mysaloon-user-bar">
+    <div class="mysaloon-user-bar">
       <div style="width:20px;">&nbsp;</div>
-      <h5>{{user?.nome}} {{user?.cognome}}</h5>
-      <div>
+      <h5 *ngIf="userLoggedIn">{{user?.nome}} {{user?.cognome}}</h5>
+      <div style="background-color: #000000;color:#fff;">
         <button mat-icon-button [matMenuTriggerFor]="menu"
           style="font-size: 20px;width: 20px;height: 20px;line-height: 20px;margin-right: 10px;">
           <mat-icon inline="true">menu</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-          <button (click)="logout()" mat-menu-item>
+          <button (click)="addToHomeScreen()" mat-menu-item>
+            <mat-icon>install_desktop</mat-icon>
+            <span>Installa</span>
+          </button>
+          <button *ngIf="userLoggedIn" (click)="logout()" mat-menu-item>
             <mat-icon>logout</mat-icon>
             <span>Logout</span>
           </button>

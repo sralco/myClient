@@ -19,7 +19,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
     trigger('fade', [ 
       transition('void => *', [
         style({ opacity: 0 }), 
-        animate(500, style({opacity: 1}))
+        animate('300ms ease-in', style({opacity: 1}))
       ]) 
     ])
   ],
@@ -93,8 +93,8 @@ export class LoginClientiComponent implements OnInit {
           this.notifier.notify('warning', 'Salone non trovato');
         })
       );
-      this.opzioniPlanner = JSON.parse(localStorage.getItem('OpzioniPlanner'));
 
+      this.opzioniPlanner = JSON.parse(localStorage.getItem('OpzioniPlanner'));
       if (this.opzioniPlanner.logo && this.opzioniPlanner.logo != null && this.opzioniPlanner.logo != ''){
         this.logoUrl = '/images/PersonalizzazioniApp/' + (this.gruppo + '/' + this.salone + '/Skin/' + this.opzioniPlanner.logo).replace(/\s+/g, '_').toLowerCase();;
         //console.log(this.logoUrl)
@@ -123,20 +123,21 @@ export class LoginClientiComponent implements OnInit {
   get f() { return this.loginForm.controls; }
 
   onSubmit() {
+    this.loading = true;
     this.submitted = true;
 
     // stop here if form is invalid
     if (this.loginForm.invalid) {
+      this.loading = false;
       return;
     }
 
-    this.loading = true;
     this.auth.logIn(this.f.email.value, this.f.password.value, this.gruppo, this.salone)
       .subscribe((data: User) => {
         if (data.errorMessage) {
+          this.loading = false;
           this.alert = true;
           this.alertText = data.errorMessage
-          this.loading = false;
         } else {
           this.user = data;
           localStorage.setItem('UserCliente', JSON.stringify(data));
@@ -144,6 +145,7 @@ export class LoginClientiComponent implements OnInit {
           let salone: Salone = new Salone();
           this.service.getSaloni(this.gruppo).subscribe(
             x => {
+              this.loading = false;
               x.forEach(element => {
                 if (element.salone.toLowerCase() === this.salone.toLowerCase()) {
                   console.log(x);
@@ -162,9 +164,9 @@ export class LoginClientiComponent implements OnInit {
         }
       },
         error => {
+          this.loading = false;
           this.alert = true;
           this.alertText = error;
-          this.loading = false;
         });
   }
 

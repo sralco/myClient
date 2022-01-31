@@ -7,6 +7,7 @@ import { User } from 'src/app/Models/User';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { OpzioniPlanner } from 'src/app/Models/OpzioniPlanner';
 
 export function MustMatch(controlName: string, matchingControlName: string) {
   return (formGroup: FormGroup) => {
@@ -53,12 +54,21 @@ export class RegistrazioneClientiComponent implements OnInit {
   salone: string = '';
   attesa:boolean = true;
 
+  opzioniPlanner:OpzioniPlanner;
+  logoUrl:string = '';
+
   constructor(private _snackBar: MatSnackBar, private sanitizer: DomSanitizer, private loc: Location, private saloni: SaloniService, private formBuilder: FormBuilder, private route: Router,) {
     this.gruppo = localStorage.getItem('GruppoCliente');
     this.salone = localStorage.getItem('SaloneCliente');
+
+    this.opzioniPlanner = JSON.parse(localStorage.getItem('OpzioniPlanner'));
+    if (this.opzioniPlanner.logo && this.opzioniPlanner.logo != null && this.opzioniPlanner.logo != ''){
+      this.logoUrl = '/images/PersonalizzazioniApp/' + (this.gruppo + '/' + this.salone + '/Skin/' + this.opzioniPlanner.logo).replace(/\s+/g, '_').toLowerCase();;
+      //console.log(this.logoUrl)
+    }
   }
 
-  backgroundColor: string = '#008b8b';
+  backgroundColor: string = '#000000';
   color: string = '#ffffff';
 
   ngOnInit() {
@@ -91,7 +101,6 @@ export class RegistrazioneClientiComponent implements OnInit {
 
     // stop here if form is invalid //this.form.invalid ||
     if (this.f.email.value === '' || this.f.pwd.value === '' || this.f.nome.value === '' || this.f.cognome.value === '' || this.f.phone.value === '') {
-      alert('Tutti i campi sono obbligatori');
       return;
     }
 

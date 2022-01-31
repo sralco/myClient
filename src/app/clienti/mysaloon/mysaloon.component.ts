@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, LOCALE_ID, HostBinding, Pipe, PipeTransform } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, LOCALE_ID, HostBinding, HostListener, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { SaloniService } from 'src/app/Services/saloni.service';
@@ -13,16 +13,18 @@ import { MsgboxComponent } from 'src/app/components/share/msgbox/msgbox.componen
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import { trigger, transition, style, animate } from '@angular/animations';
 
+
+
 @Component({
   selector: 'app-mysaloon',
   templateUrl: './mysaloon.component.html',
   styleUrls: ['./mysaloon.component.scss'],
   animations: [
-    trigger('fade', [ 
+    trigger('fade', [
       transition('void => *', [
-        style({ opacity: 0 }), 
-        animate(500, style({opacity: 1}))
-      ]) 
+        style({ opacity: 0 }),
+        animate(500, style({ opacity: 1 }))
+      ])
     ])
   ],
   encapsulation: ViewEncapsulation.None,
@@ -31,6 +33,18 @@ import { trigger, transition, style, animate } from '@angular/animations';
 })
 
 export class mysaloonComponent implements OnInit {
+  deferredPrompt: any;
+  showButton = false;
+  @HostListener('window:beforeinstallprompt', ['$event'])
+  onbeforeinstallprompt($event) {
+    console.log($event);
+    // Prevent Chrome 67 and earlier from automatically showing the prompt
+    $event.preventDefault();
+    // Stash the event so it can be triggered later.
+    this.deferredPrompt = $event;
+    this.showButton = true;
+  }
+
   total = 5;
   counter = this.total;
   selectedStyle: string;
@@ -46,10 +60,13 @@ export class mysaloonComponent implements OnInit {
 
   backgroundColor: string = '#000000';
   color: string = '#ffffff';
-  backgroundUrl:string = '';
-  logoUrl:string = '';
+  backgroundUrl: string = '';
+  logoUrl: string = '';
+  pwa: any;
+  navigator:any;
 
   constructor(private sanitizer: DomSanitizer, private dialog: MatDialog, private router: Router, private auth: AuthClientiService, aRoute: ActivatedRoute, private appuntamentiService: PlannerService, private service: SaloniService, private notifier: NotifierService) {
+ 
     this.userLoggedIn = auth.isUserLoggedIn();
     this.gruppo = aRoute.snapshot.paramMap.get('id');
     console.log('gruppo')
@@ -64,6 +81,24 @@ export class mysaloonComponent implements OnInit {
     }
   }
 
+  addToHomeScreen() {
+    // hide our user interface that shows our A2HS button
+    this.showButton = false;
+    // Show the prompt
+    if (this.deferredPrompt){
+    this.deferredPrompt.prompt();
+    // Wait for the user to respond to the prompt
+    this.deferredPrompt.userChoice
+      .then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the A2HS prompt');
+        } else {
+          console.log('User dismissed the A2HS prompt');
+        }
+        this.deferredPrompt = null;
+      });
+    }
+  }
 
   convertBgColor(color): string {
     console.log(color)
@@ -75,7 +110,7 @@ export class mysaloonComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+
     this.service.getSaloni(this.gruppo).subscribe(x => {
       this.attesa = false;
       this.saloni = x;
@@ -88,17 +123,17 @@ export class mysaloonComponent implements OnInit {
     );
 
     //setInterval(()=> { this.contoRovescia() }, this.total * 200);
-    
+
   }
- /*  contoRovescia(){
-    this.counter = this.counter - 1;
-  } */
+  /*  contoRovescia(){
+     this.counter = this.counter - 1;
+   } */
 
   selezionandoSaloneFlag() {
     this.selezionandoSalone = true;
   }
 
-  selezionaSalone(salone:Salone) {
+  selezionaSalone(salone: Salone) {
     this.saloneSelezionato = salone;
     this.appuntamentiService.GetOpzioniPlanner(salone).subscribe(x => {
       if (x) {
@@ -107,11 +142,11 @@ export class mysaloonComponent implements OnInit {
         localStorage.setItem('OpzioniPlanner', JSON.stringify(this.saloneSelezionato.opzioniPlanner));
       }
     });
-    if (this.saloneSelezionato.opzioniPlanner.imgSfondo && this.saloneSelezionato.opzioniPlanner.imgSfondo != null && this.saloneSelezionato.opzioniPlanner.imgSfondo != ''){
+    if (this.saloneSelezionato.opzioniPlanner.imgSfondo && this.saloneSelezionato.opzioniPlanner.imgSfondo != null && this.saloneSelezionato.opzioniPlanner.imgSfondo != '') {
       this.backgroundUrl = '/images/PersonalizzazioniApp/' + (this.saloneSelezionato.gruppo + '/' + this.saloneSelezionato.salone + '/Skin/' + this.saloneSelezionato.opzioniPlanner.imgSfondo).replace(/\s+/g, '_').toLowerCase();
       console.log(this.backgroundUrl)
     }
-    if (this.saloneSelezionato.opzioniPlanner.logo && this.saloneSelezionato.opzioniPlanner.logo != null && this.saloneSelezionato.opzioniPlanner.logo != ''){
+    if (this.saloneSelezionato.opzioniPlanner.logo && this.saloneSelezionato.opzioniPlanner.logo != null && this.saloneSelezionato.opzioniPlanner.logo != '') {
       this.logoUrl = '/images/PersonalizzazioniApp/' + (this.saloneSelezionato.gruppo + '/' + this.saloneSelezionato.salone + '/Skin/' + this.saloneSelezionato.opzioniPlanner.logo).replace(/\s+/g, '_').toLowerCase();
       console.log(this.logoUrl)
     }
