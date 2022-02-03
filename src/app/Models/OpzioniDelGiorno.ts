@@ -1,5 +1,6 @@
 import { OpzioniPlanner } from "./OpzioniPlanner";
-import { BusinessHoursInput } from "@fullcalendar/core";
+import { Collaboratore } from "./Collaboratore";
+import * as moment from "moment";
 
 export class OpzioniDelGiorno {
     giorno: number;
@@ -21,11 +22,11 @@ export class OpzioniDelGiorno {
                     endTime: opzioni.lunPausaInizio,
                     daysOfWeek: [1]
                 },
-                {
-                    startTime: opzioni.lunPausaFine,
-                    endTime: opzioni.lunFine,
-                    daysOfWeek: [1]
-                });
+                    {
+                        startTime: opzioni.lunPausaFine,
+                        endTime: opzioni.lunFine,
+                        daysOfWeek: [1]
+                    });
             } else {
                 this.res.push({
                     startTime: opzioni.lunInizio,
@@ -42,11 +43,11 @@ export class OpzioniDelGiorno {
                     endTime: opzioni.marPausaInizio,
                     daysOfWeek: [2]
                 },
-                {
-                    startTime: opzioni.marPausaFine,
-                    endTime: opzioni.marFine,
-                    daysOfWeek: [2]
-                });
+                    {
+                        startTime: opzioni.marPausaFine,
+                        endTime: opzioni.marFine,
+                        daysOfWeek: [2]
+                    });
             } else {
                 this.res.push({
                     startTime: opzioni.marInizio,
@@ -62,11 +63,11 @@ export class OpzioniDelGiorno {
                     endTime: opzioni.merPausaInizio,
                     daysOfWeek: [3]
                 },
-                {
-                    startTime: opzioni.merPausaFine,
-                    endTime: opzioni.merFine,
-                    daysOfWeek: [3]
-                });
+                    {
+                        startTime: opzioni.merPausaFine,
+                        endTime: opzioni.merFine,
+                        daysOfWeek: [3]
+                    });
             } else {
                 this.res.push({
                     startTime: opzioni.merInizio,
@@ -82,11 +83,11 @@ export class OpzioniDelGiorno {
                     endTime: opzioni.gioPausaInizio,
                     daysOfWeek: [4]
                 },
-                {
-                    startTime: opzioni.gioPausaFine,
-                    endTime: opzioni.gioFine,
-                    daysOfWeek: [4]
-                });
+                    {
+                        startTime: opzioni.gioPausaFine,
+                        endTime: opzioni.gioFine,
+                        daysOfWeek: [4]
+                    });
             } else {
                 this.res.push({
                     startTime: opzioni.gioInizio,
@@ -102,11 +103,11 @@ export class OpzioniDelGiorno {
                     endTime: opzioni.venPausaInizio,
                     daysOfWeek: [5]
                 },
-                {
-                    startTime: opzioni.venPausaFine,
-                    endTime: opzioni.venFine,
-                    daysOfWeek: [5]
-                });
+                    {
+                        startTime: opzioni.venPausaFine,
+                        endTime: opzioni.venFine,
+                        daysOfWeek: [5]
+                    });
             } else {
                 this.res.push({
                     startTime: opzioni.venInizio,
@@ -122,11 +123,11 @@ export class OpzioniDelGiorno {
                     endTime: opzioni.sabPausaInizio,
                     daysOfWeek: [6]
                 },
-                {
-                    startTime: opzioni.sabPausaFine,
-                    endTime: opzioni.sabFine,
-                    daysOfWeek: [6]
-                });
+                    {
+                        startTime: opzioni.sabPausaFine,
+                        endTime: opzioni.sabFine,
+                        daysOfWeek: [6]
+                    });
             } else {
                 this.res.push({
                     startTime: opzioni.sabInizio,
@@ -142,11 +143,11 @@ export class OpzioniDelGiorno {
                     endTime: opzioni.domPausaInizio,
                     daysOfWeek: [0]
                 },
-                {
-                    startTime: opzioni.domPausaFine,
-                    endTime: opzioni.domFine,
-                    daysOfWeek: [0]
-                });
+                    {
+                        startTime: opzioni.domPausaFine,
+                        endTime: opzioni.domFine,
+                        daysOfWeek: [0]
+                    });
             } else {
                 this.res.push({
                     startTime: opzioni.domInizio,
@@ -156,6 +157,8 @@ export class OpzioniDelGiorno {
             }
         }
     }
+
+    
 
     getBusinessHours() {
         console.log(this.res)

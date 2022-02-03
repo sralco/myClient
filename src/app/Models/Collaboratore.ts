@@ -23,7 +23,8 @@ export class Collaboratore {
   foto:string;
   opzioniPlanner:OpzioniPlanner;
   giorniAbilitati:OpzioniDelGiorno[];
-
+  businessHours:any[];
+  
   constructor(){
     this.giorniAbilitati = [];
     this.opzioniPlanner = new OpzioniPlanner();

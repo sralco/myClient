@@ -63,7 +63,7 @@ export class AuthClientiService {
   }
 
   logOut() {
-    localStorage.setItem('UserCliente', '');
+    localStorage.clear();
     this.isUserLogged = false;
     this.router.navigate(['/mysaloon/' + this.gruppo]);
 

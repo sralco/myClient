@@ -31,12 +31,12 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
     trigger('openedState', [
       state('closed', style({ transform: 'rotate(0)' })),
       state('opened', style({ transform: 'rotate(-180deg)' })),
-      transition('closed <=> opened', animate('300ms ease-in')),
+      transition('closed <=> opened', animate('200ms ease-in')),
     ]),
     trigger('expandCollapse', [
       state('opened', style({ height: '*' })),
       state('closed', style({ height: '0px' })),
-      transition('closed <=> opened', animate('300ms ease-in'))
+      transition('closed <=> opened', animate('200ms ease-in'))
     ])
   ]
 })
@@ -220,6 +220,7 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
           });
           if (!localStorage.hasOwnProperty('state')) {
             if (this.temps.length == 1) {
+              this.getSaloneCompleto(this.temps[0]);
               this.state[0] = 'opened';
             } else {
               this.temps.forEach((element, index) => {
@@ -229,6 +230,7 @@ export class GruppoSaloniComponent implements OnInit, AfterViewInit {
           } else {
             this.state = JSON.parse(localStorage.getItem('state'));
             if (this.state.length == 1) {
+              this.getSaloneCompleto(this.temps[0]);
               this.state[0] = 'opened';
             }
           }

@@ -1,5 +1,6 @@
 import { NumberFormatPipe } from './Pipe/number.pipe'
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HammerModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+import * as Hammer from 'hammerjs';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
@@ -281,6 +282,7 @@ const config = {
     WebcamModule,
     NgxBarcodeScannerModule,
     NgxStarRatingModule,
+    HammerModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
@@ -301,13 +303,17 @@ const config = {
     NumberFormatPipe,
     AuthService,
     AuthClientiService,
+    {provide: HAMMER_GESTURE_CONFIG, useClass: HammerGestureConfig },
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } }],
   bootstrap: [AppComponent],
   entryComponents: [],
   exports: [NumberFormatPipe]
 })
-export class AppModule { 
+export class AppModule {
+  overrides = {
+    swipe: { direction: Hammer.DIRECTION_ALL },
+  };
   constructor(/* router: Router, viewportScroller: ViewportScroller */) {
     /* router.events.pipe(
       filter((e: Event): e is Scroll => e instanceof Scroll)

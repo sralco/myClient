@@ -1,7 +1,8 @@
 const start_url = window.location.href;
 let myname = 'myClient';
 let mycolor = '#2f4f4f';
-let iconUrl = 'https://www.gamainformatica.it/myClient/assets/icons/';
+let iconUrl = 'https://www.gamainformatica.it/images/PersonalizzazioniApp/gaetano_di_matteo/AppIcons/';
+
 
 if (start_url.includes('saloni')) {
   myname = "Saloni";
@@ -13,7 +14,19 @@ if (start_url.includes('/mysaloon/')) {
   for (var i = 0; i < arr.length; i++) {
     arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
   }
-  iconUrl = 'https://www.gamainformatica.it/images/PersonalizzazioniApp/' + myname.split(' ').join('_') + '/AppIcons/';
+  iconUrl = 'https://www.gamainformatica.it/images/PersonalizzazioniApp/' + myname.split(' ').join('_').toLowerCase() + '/AppIcons/';
+  var xhr = new XMLHttpRequest();
+try{
+    xhr.open('HEAD', iconUrl, false);
+    xhr.send();
+    if (xhr.status == "404") {
+      iconUrl = 'https://www.gamainformatica.it/images/PersonalizzazioniApp/gaetano_di_matteo/AppIcons/';
+    }
+
+  } catch (error) {
+    console.log(error)
+  }
+
   console.log(iconUrl);
   myname = arr.join(" ") + " mySaloon";
 }

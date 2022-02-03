@@ -22,4 +22,5 @@ export class Servizio {
   idStrumento:string;
 
   note:string;
+  smontaggio:number;
 }

@@ -363,12 +363,12 @@
                 <mat-icon matChipRemove>cancel</mat-icon>
               </mat-chip>
             </mat-chip-list>
-            <strong>{{this.oraPrefissata | date:'dd/MM/YYYY HH:mm'}}</strong><br />
+            <strong>{{this.oraSelezionata | date:'dd/MM/YYYY HH:mm'}}</strong><br />
             <div style="margin-top: 15px;">
               <button mat-raised-button color="primary" matStepperPrevious>
                 <mat-icon matListAvatar>navigate_before
                 </mat-icon> Indietro
-              </button> &nbsp; &nbsp;
+              </button>
               <button [disabled]="loading" mat-raised-button color="accent" type="submit"
                 (click)="confermaPrenotazione()">
                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>Prenota<mat-icon
