@@ -44,19 +44,26 @@ registerLocaleData(localeItalian, 'it');
     trigger('fade', [
       transition('void => *', [
         style({ opacity: 0 }),
-        animate('0s 400ms ease-in', style({ opacity: 1 }))
+        animate('0s 300ms ease-in', style({ opacity: 1 }))
       ])
     ]),
     trigger('expandCollapse', [
       state('opened', style({ height: '40px' })),
       state('closed', style({ height: '0px', overflow: 'hidden' })),
       transition('closed <=> opened', animate(200))
-    ])
-  ],
+    ]),
+    trigger('slideInOut', [
+      state('in', style({transform: 'translateX(100%)'})),
+      state('out', style({transform: 'translateX(-100%)'})),
+      transition('in <=> out', animate(200))
+    ]),
+
+  ]
 })
 
 
 export class PrenotazioneClientiComponent implements OnInit {
+  settSlide:string;
   deferredPrompt: any;
   showButton = false;
   @HostListener('window:beforeinstallprompt', ['$event'])
@@ -266,9 +273,11 @@ export class PrenotazioneClientiComponent implements OnInit {
   }
 
   settimanaIndietro() {
+    if (!this.fineScroll()){
     for (let i = 0; i < 6; i++) {
       this.settimanaCorrente[i] = moment(this.settimanaCorrente[i]).subtract(6, 'd').toDate();
     }
+  }
   }
 
   caricaServizi() {
@@ -602,6 +611,7 @@ export class PrenotazioneClientiComponent implements OnInit {
               this.esito = true;
               //this.router.navigate(['prenotazionecompletata']);
               this.prenotazioneConfermata = p;
+              console.log(this.prenotazioneConfermata)
               let servizi: string = '';
               let tempo: number = 0;
               p.servizi.forEach(x => {
@@ -615,15 +625,22 @@ export class PrenotazioneClientiComponent implements OnInit {
                 arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
 
               }
-              const text = arr.join(" ");
-              let googleLocation: string = text + ', ' + this.salone.salone + ', ' + this.salone.indirizzo;
-
+              const gruppo = arr.join(" ");
+              let googleLocation: string = gruppo;
+              if (localStorage.hasOwnProperty('saloneSelezionato')) {
+                const saloneSelezionato = JSON.parse(localStorage.getItem('saloneSelezionato'));
+                googleLocation = googleLocation + ', ' + saloneSelezionato.indirizzo + ', ' + saloneSelezionato.cap + ', ' + saloneSelezionato.paese + ', ' + saloneSelezionato.provincia;
+              }
               console.log(googleLocation)
-              let dataFine: Date = new Date(this.prenotazioneConfermata.oraInizio);
-              dataFine.setMinutes(dataFine.getMinutes() + tempo);
-              let inizio: string = moment(this.prenotazioneConfermata.oraInizio).year() + ('0' + (moment(this.prenotazioneConfermata.oraInizio).month() + 1)).substr(-2) + ('0' + moment(this.prenotazioneConfermata.oraInizio).date()).substr(-2) + 'T' + ('0' + moment(this.prenotazioneConfermata.oraInizio).hour()).substr(-2) + ('0' + moment(this.prenotazioneConfermata.oraInizio).minutes()).substr(-2);
-              let fine: string = dataFine.getFullYear() + ('0' + (moment(dataFine).month() + 1)).substr(-2) + ('0' + moment(dataFine).date()).substr(-2) + 'T' + ('0' + dataFine.getHours()).substr(-2) + ('0' + dataFine.getMinutes()).substr(-2);
-              this.linkGoogle = 'https://www.google.com/calendar/event?action=TEMPLATE&dates=' + inizio.replace(':', '') + '%2F' + fine.replace(':', '') + '&text=' + text + '&location=' + googleLocation + '&details=' + servizi + '&trp=false&sprop=&sprop=name:';
+              /* let inizio: string = moment(this.prenotazioneConfermata.oraInizio).year() + ('0' + (moment(this.prenotazioneConfermata.oraInizio).month() + 1)).slice(-2) + ('0' + moment(this.prenotazioneConfermata.oraInizio).date()).slice(-2) + 'T' + ('0' + moment(this.prenotazioneConfermata.oraInizio).hour()).slice(-2) + ('0' + moment(this.prenotazioneConfermata.oraInizio).minutes()).slice(-2);
+              let fine: string = dataFine.getFullYear() + ('0' + (moment(dataFine).month() + 1)).slice(-2) + ('0' + moment(dataFine).date()).slice(-2) + 'T' + ('0' + dataFine.getHours()).slice(-2) + ('0' + dataFine.getMinutes()).slice(-2); */
+              const inizio = this.prenotazioneConfermata.oraInizio.split('-').join('').split(':').join('').slice(0, -2);
+              const fine = moment.utc(this.prenotazioneConfermata.oraInizio).add(tempo, 'minutes').format().toString().split('-').join('').split(':').join('').slice(0, -3);
+              console.log(inizio);
+              console.log(fine);
+              this.linkGoogle = 'https://www.google.com/calendar/event?action=TEMPLATE&dates=' + inizio + '/' + fine + '&text=' + gruppo + '&location=' + googleLocation + '&details=' + servizi + '&trp=false&sprop=&sprop=name:';
+              //this.linkGoogle = 'https://www.google.com/calendar/event?action=TEMPLATE&dates=' + inizio.replace(':', '') + '%2F' + fine.replace(':', '') + '&text=' + text + '&location=' + googleLocation + '&details=' + servizi + '&trp=false&sprop=&sprop=name:';
+              console.log(this.linkGoogle)
               this.myStepper.next();
             } else {
               console.log(ris.messaggio);

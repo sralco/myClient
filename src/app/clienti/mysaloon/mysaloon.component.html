@@ -269,7 +269,7 @@
       <div *ngFor="let salone of saloni" style="display: flex;flex-direction: column;gap: 10px;">
         <div *ngFor="let prenotazioniAttive of salone.prenotazioniAttive" class="mysaloon-card-prenotazioni-ticket">
 
-          <div class="left" [style.background-color]="prenotazioniAttive.backgroundColor.slice(0, -4) + '0.66)'">
+          <div class="left">
             <div>
               <mat-icon [matMenuTriggerFor]="menu" style="cursor: pointer;">more_vert</mat-icon>
               <mat-menu #menu="matMenu">
@@ -278,7 +278,7 @@
               </mat-menu>
             </div>
             <div class="salone-appuntamento" style="height: 100%;">
-              <div style="display: flex;gap: 15px;align-items: center;flex-direction: column;justify-content: center;"
+              <div title="Vedi posizione su Google Maps" style="display: flex;gap: 15px;align-items: center;flex-direction: column;justify-content: center;cursor:pointer;"
                 (click)="googleMap(salone)">
                 <mat-icon style="transform: scale(1.8);">place</mat-icon>
                 <div
@@ -294,7 +294,7 @@
           <div class="right">
             <div style="text-transform: capitalize;font-weight:800;">
               {{prenotazioniAttive.start | date:'EEEE, dd/MM/yy HH:mm'}}</div>
-            <h6 style="margin-top: 6px;margin-bottom:0;">Servizi</h6>
+            <div style="text-transform: capitalize; font-weight: 800;">Servizi</div>
             <ul class="servizi">
               <li *ngFor="let servizi of prenotazioniAttive.extendedProps.servizi.split('\r\n')">
                 {{ servizi }}

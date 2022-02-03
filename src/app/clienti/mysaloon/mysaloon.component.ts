@@ -135,6 +135,7 @@ export class mysaloonComponent implements OnInit {
 
   selezionaSalone(salone: Salone) {
     this.saloneSelezionato = salone;
+    localStorage.setItem('saloneSelezionato', JSON.stringify(this.saloneSelezionato));
     this.appuntamentiService.GetOpzioniPlanner(salone).subscribe(x => {
       if (x) {
         console.log(x);

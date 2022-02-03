@@ -199,7 +199,7 @@
 
                  <div class="seleziona-data">
 
-                   <div class="settimana settimana-corrente">
+                   <div class="settimana settimana-corrente" (swipeleft)="settimanaAvanti()" (swiperight)="settimanaIndietro()">
                      <div *ngFor="let data of settimanaCorrente" class="selezione-giorno"
                        [ngClass]="{'giornoSelezionato' : ifDataSelezionata(data)}" (click)="selezionaGiorno(data)">
                        <div
@@ -220,12 +220,12 @@
 
              </div>
 
-             <mat-card class="orari-disponibili-errore" mat-subheader *ngIf="orariDisponibili.errore && !aspettaVerifica">
+             <mat-card @fade class="orari-disponibili-errore" mat-subheader *ngIf="orariDisponibili.errore && !aspettaVerifica">
                <mat-icon style="transform: scale(2);color: red;">error</mat-icon>
                <span>{{orariDisponibili.errore}}</span>
              </mat-card>
 
-             <mat-card class="orari-disponibili-errore" mat-subheader
+             <mat-card @fade class="orari-disponibili-errore" mat-subheader
                *ngIf="!orariDisponibili.errore && orariDisponibili.orariDisponibili.length == 0 && !aspettaVerifica">
                <mat-icon style="transform: scale(2);color: red;">error</mat-icon>
                <span>Orari non disponibili</span>

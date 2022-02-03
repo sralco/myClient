@@ -16,11 +16,11 @@ import { trigger, transition, style, animate } from '@angular/animations';
   templateUrl: './login-clienti.component.html',
   styleUrls: ['./login-clienti.component.scss'],
   animations: [
-    trigger('fade', [ 
+    trigger('fade', [
       transition('void => *', [
-        style({ opacity: 0 }), 
-        animate('300ms ease-in', style({opacity: 1}))
-      ]) 
+        style({ opacity: 0 }),
+        animate('300ms ease-in', style({ opacity: 1 }))
+      ])
     ])
   ],
 })
@@ -43,11 +43,11 @@ export class LoginClientiComponent implements OnInit {
 
   backgroundColor: string = '#000000';
   color: string = '#ffffff';
-  backgroundUrl:string = '';
-  opzioniPlanner:OpzioniPlanner;
-  logoUrl:string = '';
+  backgroundUrl: string = '';
+  opzioniPlanner: OpzioniPlanner;
+  logoUrl: string = '';
 
-  attesa:boolean = true;
+  attesa: boolean = true;
 
   constructor(
     private loc: Location,
@@ -75,30 +75,32 @@ export class LoginClientiComponent implements OnInit {
       }
     }
 
-      let salone: Salone = new Salone();
-      this.service.getSaloni(this.gruppo).subscribe(
-        x => {
-          x.forEach(element => {
-            if (element.salone.toLowerCase() === this.salone.toLowerCase()) {
-              salone = element;
-              this.service.saloneCorrente = salone;
-              localStorage.setItem('PlannerCorrente', salone.gruppo + ';' + salone.salone + ';' + salone.destinazione + ';' + salone.indirizzoIP + ';' + salone.porta + ';' + salone.posizionePlanner);
-              localStorage.setItem('OpzioniPlanner', JSON.stringify(salone.opzioniPlanner));
-              this.router.navigate(['prenotazioneclienti/' + this.salone]);
-            } else {
-              this.notifier.notify('warning', 'Salone non trovato');
+    let salone: Salone = new Salone();
+    this.service.getSaloni(this.gruppo).subscribe(
+      x => {
+        x.forEach(element => {
+          if (element.salone.toLowerCase() === this.salone.toLowerCase()) {
+            salone = element;
+            this.service.saloneCorrente = salone;
+            localStorage.setItem('PlannerCorrente', salone.gruppo + ';' + salone.salone + ';' + salone.destinazione + ';' + salone.indirizzoIP + ';' + salone.porta + ';' + salone.posizionePlanner);
+            localStorage.setItem('OpzioniPlanner', JSON.stringify(salone.opzioniPlanner));
+            this.router.navigate(['prenotazioneclienti/' + this.salone]);
+            this.opzioniPlanner = salone.opzioniPlanner;
+            if (this.opzioniPlanner.logo && this.opzioniPlanner.logo != null && this.opzioniPlanner.logo != '') {
+              this.logoUrl = '/images/PersonalizzazioniApp/' + (this.gruppo + '/' + this.salone + '/Skin/' + this.opzioniPlanner.logo).replace(/\s+/g, '_').toLowerCase();;
+              //console.log(this.logoUrl)
             }
-          });
-        }, (err => {
-          this.notifier.notify('warning', 'Salone non trovato');
-        })
-      );
+          } else {
+            this.notifier.notify('warning', 'Salone non trovato');
+          }
+        });
+      }, (err => {
+        this.notifier.notify('warning', 'Salone non trovato');
+      })
+    );
 
-      this.opzioniPlanner = JSON.parse(localStorage.getItem('OpzioniPlanner'));
-      if (this.opzioniPlanner.logo && this.opzioniPlanner.logo != null && this.opzioniPlanner.logo != ''){
-        this.logoUrl = '/images/PersonalizzazioniApp/' + (this.gruppo + '/' + this.salone + '/Skin/' + this.opzioniPlanner.logo).replace(/\s+/g, '_').toLowerCase();;
-        //console.log(this.logoUrl)
-      }
+      
+
   }
 
   ngOnInit() {

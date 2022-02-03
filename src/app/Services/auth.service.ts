@@ -43,6 +43,13 @@ export class AuthService {
 
   logOut() {
     localStorage.clear();
+/*     localStorage.removeItem('saloneSelezionato');
+    localStorage.removeItem('OpzioniPlanner');
+    localStorage.removeItem('GruppoCliente');
+    localStorage.removeItem('SaloneCliente');
+    localStorage.removeItem('PlannerCorrente');
+    localStorage.removeItem('UserCliente');
+    localStorage.removeItem('Prenotazione'); */
     // localStorage.setItem('user', '');
     // localStorage.setItem('GruppoSaloni', '');
     // localStorage.removeItem('token');

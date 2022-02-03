@@ -57,22 +57,22 @@ export class InfoClick {
       { provide: MAT_DATE_LOCALE, useValue: 'it-IT' },
       { provide: DateAdapter, useClass: CustomDateAdapter },
    ],
-/* 
-   providers: [
-      // The locale would typically be provided on the root module of your application. We do it at
-      // the component level here, due to limitations of our example generation script.
-      //{ provide: MAT_DATE_LOCALE, useValue: 'it' },
-
-      // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
-      // `MatMomentDateModule` in your applications root module. We provide it at the component level
-      // here, due to limitations of our example generation script.
-      {
-         provide: DateAdapter,
-         useClass: MomentDateAdapter,
-         deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-      },
-      //{ provide: MAT_DATE_FORMATSpi, useValue: MAT_MOMENT_DATE_FORMATS },
-   ], */
+   /* 
+      providers: [
+         // The locale would typically be provided on the root module of your application. We do it at
+         // the component level here, due to limitations of our example generation script.
+         //{ provide: MAT_DATE_LOCALE, useValue: 'it' },
+   
+         // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+         // `MatMomentDateModule` in your applications root module. We provide it at the component level
+         // here, due to limitations of our example generation script.
+         {
+            provide: DateAdapter,
+            useClass: MomentDateAdapter,
+            deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+         },
+         //{ provide: MAT_DATE_FORMATSpi, useValue: MAT_MOMENT_DATE_FORMATS },
+      ], */
 })
 export class PlannerComponent implements OnInit, OnDestroy {
 
@@ -163,8 +163,8 @@ export class PlannerComponent implements OnInit, OnDestroy {
          this.saloneSelezionato.opzioniPlanner.dom = false;
       }
 
-      const giorno:OpzioniDelGiorno = new OpzioniDelGiorno(this.saloneSelezionato.opzioniPlanner);
-      
+      const giorno: OpzioniDelGiorno = new OpzioniDelGiorno(this.saloneSelezionato.opzioniPlanner);
+
       this.calendarOptions = {
          schedulerLicenseKey: '0449068578-fcs-1612134483',
          plugins: [resourceTimeGridPlugin, interactionPlugin, resourceTimeGridWeek,],
@@ -189,15 +189,75 @@ export class PlannerComponent implements OnInit, OnDestroy {
             }
 
             plannerSer.getCollaboratori(salone).subscribe(res => {
+               console.log('getCollaboratori');
+               console.log(res);
                let resourceArray = [];
+               let bh = [];
                if (res) {
                   /* for (let item of res) {
                     resourceArray.push({ id: item.id, title: item.nome });
                   } */
-                  res.forEach(x => {
-                     resourceArray.push({ id: x.id, title: x.nome, ordine: x.ordine });
+                  res.forEach((x, index) => {
+                     console.log('bbbbb')
+                     if (x.giorniAbilitati.length > 0) {
+                        x.giorniAbilitati.forEach(y => {
+                           let dow = [moment(y.data).day()];
+                           console.log('data')
+                           console.log(y.data)
+                           console.log(dow)
+
+                           if (bh.length == 0) {
+                              bh[+x.id] = [
+                                 {
+                                    startTime: y.oraInizio,
+                                    endTime: y.pausaInizio,
+                                    daysOfWeek: dow
+                                 },
+                                 {
+                                    startTime: y.pausaFine,
+                                    endTime: y.oraFine,
+                                    daysOfWeek: dow
+                                 }
+                              ]
+                           } else {
+                       
+                              bh.splice(+x.id, 0, bh[+x.id].concat([
+                                 {
+                                    startTime: y.oraInizio,
+                                    endTime: y.pausaInizio,
+                                    daysOfWeek: dow
+                                 },
+                                 {
+                                    startTime: y.pausaFine,
+                                    endTime: y.oraFine,
+                                    daysOfWeek: dow
+                                 }
+                              ]))
+                           }
+                           
+                           console.log(bh)
+                        })
+                        
+                     }
+                     resourceArray.push({
+                        id: x.id,
+                        title: x.nome,
+                        ordine: x.ordine,
+                        businessHours: bh[+x.id]
+                     })
                   })
+
+                /*   res.forEach((x, index) => {
+                     console.log('aaaa');
+                     resourceArray.push({
+                        id: x.id,
+                        title: x.nome,
+                        ordine: x.ordine,
+                        businessHours: bh[+x.id]
+                     })
+                  }) */
                   resourceArray.sort((a, b) => a.ordine - b.ordine);
+                  console.log(resourceArray)
                   successCallback(resourceArray);
                }
             },
@@ -352,9 +412,39 @@ export class PlannerComponent implements OnInit, OnDestroy {
          },
 
       };
+      console.log(this.calendarOptions)
 
       // need for load calendar bundle first
       forwardRef(() => Calendar);
+   }
+
+   getResourceBusinessHours(x: Collaboratore) {
+      console.log('bbbbb')
+      if (x.giorniAbilitati.length > 0) {
+         x.giorniAbilitati.forEach(y => {
+            console.log('bbbb')
+            let dow = [moment(y.data).day()];
+            let bh = [];
+
+            bh.push([
+               {
+                  startTime: y.oraInizio,
+                  endTime: y.pausaInizio,
+                  daysOfWeek: dow
+               },
+               {
+                  startTime: y.pausaFine,
+                  endTime: y.oraFine,
+                  daysOfWeek: dow
+               }
+            ])
+
+            console.log(bh)
+            return bh
+
+         })
+
+      }
    }
 
    ngAfterViewInit() {
@@ -367,6 +457,7 @@ export class PlannerComponent implements OnInit, OnDestroy {
    }
 
    ngOnInit() {
+
 
       this.saloneService.getSaloni(this.saloneSelezionato.gruppo).subscribe(x => {
          this.saloni = x;
@@ -389,6 +480,8 @@ export class PlannerComponent implements OnInit, OnDestroy {
          this.prelevaDati(this.calendarApi.view.currentStart, this.calendarApi.view.currentEnd);
          this.weeklyEndDate = moment(this.calendarApi.view.currentEnd).subtract(1, 'days').toDate();
       });
+
+
 
    }
 
@@ -773,7 +866,7 @@ export class PlannerComponent implements OnInit, OnDestroy {
       this.gotoDate(this.dataCorrente);
    }
 
-   weeklyEndDate:Date;
+   weeklyEndDate: Date;
 
    cambiaSettimana(direzione: string) {
       const element = document.querySelector('.fc-scrollgrid-section-liquid .fc-scroller');
@@ -786,26 +879,26 @@ export class PlannerComponent implements OnInit, OnDestroy {
          this.calendarApi.setOption('visibleRange', {
             start: start,
             end: end
-          });
-          console.log('avanti')
-          this.gotoDate(start);
-         
+         });
+         console.log('avanti')
+         this.gotoDate(start);
+
       } else if (direzione === 'indietro') {
          const start = moment(this.calendarApi.view.currentStart).subtract(7, 'days').toDate();
          const end = moment(this.calendarApi.view.currentEnd).subtract(7, 'days').toDate();
          this.calendarApi.setOption('visibleRange', {
             start: start,
             end: end
-          });
-          this.gotoDate(start);
+         });
+         this.gotoDate(start);
       } else if (direzione === '') {
          this.dataCorrente = new Date();
          this.gotoDate(this.dataCorrente);
       }
       this.calendarApi.render();
       this.weeklyEndDate = moment(this.calendarApi.view.currentEnd).subtract(1, 'days').toDate();
-      
- 
+
+
    }
 
    openDialog() {
