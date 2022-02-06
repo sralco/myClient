@@ -7,6 +7,8 @@ export class User {
   cognome: string;
   email:string;
   cell: string;
+  paese: string;
+  compleanno: string;
   token: string;
   super: boolean;
   tipo:string;

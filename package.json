@@ -52,6 +52,7 @@
     "moment": "^2.27.0",
     "ng2-charts": "^2.4.0",
     "ngx-device-detector": "^2.1.1",
+    "ngx-google-places-autocomplete": "^2.0.5",
     "ngx-perfect-scrollbar": "^10.0.1",
     "ngx-star-rating": "^2.0.3",
     "ngx-webcam": "^0.3.2",

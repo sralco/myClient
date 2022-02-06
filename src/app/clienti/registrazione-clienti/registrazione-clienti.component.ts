@@ -1,13 +1,14 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
+import { Component, OnInit, HostBinding, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { SaloniService } from 'src/app/Services/saloni.service';
 import { User } from 'src/app/Models/User';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { OpzioniPlanner } from 'src/app/Models/OpzioniPlanner';
+import { CercaCittaService } from 'src/app/Services/cercacitta.service';
 
 export function MustMatch(controlName: string, matchingControlName: string) {
   return (formGroup: FormGroup) => {
@@ -33,36 +34,46 @@ export function MustMatch(controlName: string, matchingControlName: string) {
   templateUrl: './registrazione-clienti.component.html',
   styleUrls: ['./registrazione-clienti.component.scss'],
   animations: [
-    trigger('fade', [ 
+    trigger('fade', [
       transition('void => *', [
-        style({ opacity: 0 }), 
-        animate(500, style({opacity: 1}))
-      ]) 
+        style({ opacity: 0 }),
+        animate(500, style({ opacity: 1 }))
+      ])
     ])
   ],
 })
 export class RegistrazioneClientiComponent implements OnInit {
+  option: any;
+  public handleAddressChange(event: any) {
+
+    this.citta.cerca(event.target.value).subscribe(x=>{
+      this.option = x;
+     // this.getitaly();
+      console.log(x)
+    })
+  }
+
   selectedStyle: string;
   @HostBinding('style') style: SafeStyle;
 
-  form: FormGroup;
+  regClientiForm: FormGroup;
   submitted = false;
   alert: boolean = false;
   alertText: string = '';
   loading = false;
   gruppo: string = '';
   salone: string = '';
-  attesa:boolean = true;
+  attesa: boolean = true;
 
-  opzioniPlanner:OpzioniPlanner;
-  logoUrl:string = '';
+  opzioniPlanner: OpzioniPlanner;
+  logoUrl: string = '';
 
-  constructor(private _snackBar: MatSnackBar, private sanitizer: DomSanitizer, private loc: Location, private saloni: SaloniService, private formBuilder: FormBuilder, private route: Router,) {
+  constructor(private _snackBar: MatSnackBar, private sanitizer: DomSanitizer, private loc: Location, private saloni: SaloniService, private formBuilder: FormBuilder, private route: Router, private citta: CercaCittaService) {
     this.gruppo = localStorage.getItem('GruppoCliente');
     this.salone = localStorage.getItem('SaloneCliente');
 
     this.opzioniPlanner = JSON.parse(localStorage.getItem('OpzioniPlanner'));
-    if (this.opzioniPlanner.logo && this.opzioniPlanner.logo != null && this.opzioniPlanner.logo != ''){
+    if (this.opzioniPlanner.logo && this.opzioniPlanner.logo != null && this.opzioniPlanner.logo != '') {
       this.logoUrl = '/images/PersonalizzazioniApp/' + (this.gruppo + '/' + this.salone + '/Skin/' + this.opzioniPlanner.logo).replace(/\s+/g, '_').toLowerCase();;
       //console.log(this.logoUrl)
     }
@@ -72,20 +83,24 @@ export class RegistrazioneClientiComponent implements OnInit {
   color: string = '#ffffff';
 
   ngOnInit() {
-    this.form = this.formBuilder.group({
-      nome: ['', Validators.required],
-      cognome: ['', Validators.required],
-      phone: ['', [Validators.required, Validators.minLength(8), Validators.pattern("^[0-9]*$")]],
-      email: ['', [Validators.required,]],// Validators.email
-      pwd: ['', [Validators.required, Validators.minLength(2)]],
-      pwd2: ['', Validators.required]
-    }, {
-      validator: MustMatch('pwd', 'pwd2')
+    this.regClientiForm = new FormGroup({
+      nome: new FormControl('', Validators.required),
+      cognome: new FormControl('', Validators.required),
+      phone: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern("^[0-9]*$")]),
+      email: new FormControl('', [Validators.required,]),// Validators.email
+      giorno: new FormControl(),
+      mese: new FormControl(),
+      anno: new FormControl(),
+      paese: new FormControl(),
+      pwd: new FormControl('', [Validators.required, Validators.minLength(2)]),
+      pwd2: new FormControl('', Validators.required)
     });
+
     this.selectedStyle = `
     --background-color: ${this.backgroundColor};
     --color: ${this.color};
     `;
+
     this.style = this.sanitizer.bypassSecurityTrustStyle(this.selectedStyle);
     this.attesa = false;
   }
@@ -95,7 +110,7 @@ export class RegistrazioneClientiComponent implements OnInit {
   }
 
   // convenience getter for easy access to form fields
-  get f() { return this.form.controls; }
+  get f() { return this.regClientiForm.controls; }
 
   onSubmit() {
 
@@ -119,6 +134,9 @@ export class RegistrazioneClientiComponent implements OnInit {
     user.nome = this.f.nome.value;
     user.cognome = this.f.cognome.value;
     user.cell = this.f.phone.value;
+    user.paese = this.f.paese.value;
+    user.compleanno = this.f.giorno.value + '/' + this.f.mese.value + '/' + this.f.anno.value;
+    console.log(user)
 
     this.saloni.addUserCliente(user).subscribe(
       (data: User) => {
@@ -142,6 +160,7 @@ export class RegistrazioneClientiComponent implements OnInit {
         //this.openSnackBar(this.alertText, 'X');
       });
   }
+
 
   removeAlert() {
     this.alert = false;
