@@ -25,7 +25,7 @@
    </mat-toolbar>
 
    <!-- form registrazione -->
-   <form [formGroup]="form" (ngSubmit)="onSubmit()">
+   <form [formGroup]="regClientiForm" (ngSubmit)="onSubmit()">
 
      <mat-card class="card">
        <mat-card-header>
@@ -61,13 +61,43 @@
 
          <mat-form-field class="phone-field" appearance="outline">
            <mat-label>Cellulare</mat-label>
-           <input name="phone" type="number" matInput formControlName="phone" placeholder="Cellulare">
+           <input name="phone" type="text" matInput formControlName="phone" placeholder="Cellulare">
            <mat-error *ngIf="f.phone.errors?.required">Il cellulare è obbligatorio</mat-error>
            <mat-error *ngIf="f.phone.errors?.minlength">Il cellulare non è valido</mat-error>
            <mat-error *ngIf="f.phone.errors?.pattern">Sono ammessi solo numeri</mat-error>
          </mat-form-field>
 
+         <fieldset>
+           <legend style="font-size:16px;margin-bottom:0;">Data di nascita</legend>
+           <div style="display:flex;gap:6px;align-items:center;">
+             <mat-form-field appearance="outline" style="width:50px;">
+              <mat-label>GG</mat-label>
+               <input #giorno type="number" name="giorno" id="giorno" matInput placeholder="GG" maxlength="2" autocomplete="false" formControlName="giorno"
+                 (keyup)="(giorno.value.length == 2) ? mese.focus() : ''">
+             </mat-form-field>
+             <mat-form-field appearance="outline" style="width:50px;">
+              <mat-label>MM</mat-label>
+               <input #mese type="number" name="mese" matInput placeholder="MM" maxlength="2" formControlName="mese" autocomplete="false"
+                 (keyup)="(mese.value.length == 2) ? anno.focus() : ''">
+             </mat-form-field>
+             <mat-form-field appearance="outline" style="width:60px;">
+              <mat-label>AAAA</mat-label>
+               <input #anno type="number" name="anno" matInput placeholder="AAAA" maxlength="4" autocomplete="false" formControlName="anno">
+             </mat-form-field>
+           </div>
+         </fieldset>
 
+         <mat-form-field appearance="outline" style="width:100%;">
+          <mat-label>Città</mat-label>
+           <input #paese (keydown)="handleAddressChange($event)"  matInput placeholder="Paese" [matAutocomplete]="auto" formControlName="paese">
+           <mat-autocomplete #auto="matAutocomplete">
+             <div *ngFor="let c of option?._embedded['city:search-results']">
+             <mat-option *ngIf="c.matching_full_name.includes('Italy')" [value]="c.matching_full_name.split(',')[0]">
+               {{ c.matching_full_name.split(',')[0] }}
+             </mat-option>
+             </div>
+           </mat-autocomplete>
+         </mat-form-field>
 
          <mat-form-field class="password-field" appearance="outline">
            <mat-label>Password</mat-label>
@@ -82,9 +112,9 @@
            <mat-error *ngIf="f.pwd2.errors?.MustMatch">La password noon coincide</mat-error>
          </mat-form-field>
 
-         <div *ngIf="alert" style="width:100%;display:flex;justify-content: center; align-items: center;padding:10px;background-color: aliceblue;border-radius: 6px;
+         <div *ngIf="alert" style="width:100%;display:flex;justify-content: space-evenly; align-items: center;padding:10px;background-color: aliceblue;border-radius: 6px;
           margin-bottom: 12px;">
-           <mat-icon style="color: red;">error</mat-icon>
+           <mat-icon style="color: red;transform: scale(1.5);">error</mat-icon>
            <div>{{alertText}}</div>
          </div>
 
